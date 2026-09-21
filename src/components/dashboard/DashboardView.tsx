@@ -131,17 +131,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           ) : (
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#F29191] via-[#F7ADAD] to-[#B1E5E6] p-[2px] shadow-sm shadow-[#F29191]/25 group-hover:scale-105 transition-transform">
               <div className="w-full h-full rounded-[14px] bg-white flex items-center justify-center text-[#D45B5B] font-extrabold text-sm">
-                {(user?.name || settings.photographerName || 'AV').slice(0, 2).toUpperCase()}
+                {(user?.name || settings.photographerName || 'PV').slice(0, 2).toUpperCase()}
               </div>
             </div>
           )}
           <div>
             <div className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[#D45B5B]">
               <Sparkles className="w-3 h-3" />
-              <span>{user?.studioName || settings.studioName || 'Vance Visuals'}</span>
+              <span>{user?.studioName || settings.studioName || 'Photo Studio Vault'}</span>
             </div>
             <h1 className="text-xl font-black tracking-tight text-slate-900 mt-0.5 font-display group-hover:text-[#D45B5B] transition-colors">
-              {user?.name || settings.photographerName || 'Alex Vance'}
+              {user?.name || settings.photographerName || 'Photographer'}
             </h1>
           </div>
         </div>

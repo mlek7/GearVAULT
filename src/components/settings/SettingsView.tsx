@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Bell,
   Clock,
@@ -55,6 +55,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [studioName, setStudioName] = useState(
     user?.studioName || settings.studioName || ''
   );
+
+  useEffect(() => {
+    if (user?.name) {
+      setPhotographerName(user.name);
+    }
+    if (user?.studioName) {
+      setStudioName(user.studioName);
+    }
+  }, [user?.name, user?.studioName]);
   const [browserPermState, setBrowserPermState] = useState<NotificationPermission>(
     typeof Notification !== 'undefined' ? Notification.permission : 'default'
   );

@@ -231,6 +231,19 @@ export default function App() {
     setUser(null);
   };
 
+  const handleLoginSuccess = (loggedInUser: UserProfile) => {
+    setUser(loggedInUser);
+    setSettings((prev) => {
+      const updated = {
+        ...prev,
+        photographerName: loggedInUser.name,
+        studioName: loggedInUser.studioName || prev.studioName,
+      };
+      StorageService.saveSettings(updated);
+      return updated;
+    });
+  };
+
   // Active Shoot for Shoot Hub
   const activeShoot = useMemo(
     () => shoots.find((s) => s.id === activeShootId),
@@ -239,7 +252,7 @@ export default function App() {
 
   // Authentication Gate: if user is not authenticated, render LoginView
   if (!user) {
-    return <LoginView onLoginSuccess={(u) => setUser(u)} />;
+    return <LoginView onLoginSuccess={handleLoginSuccess} />;
   }
 
   return (

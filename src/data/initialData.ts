@@ -336,7 +336,7 @@ export const INITIAL_SETTINGS: AppSettings = {
   morningAlertTime: '06:00',
   enableMorningAlerts: true,
   enableTwoHourCriticalAlert: true,
-  photographerName: 'Alex Rivera',
-  studioName: 'Lumina Craft Studios',
+  photographerName: '',
+  studioName: '',
   soundEnabled: true,
 };

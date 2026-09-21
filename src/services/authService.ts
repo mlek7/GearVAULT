@@ -1,38 +1,48 @@
 import { UserProfile, AuthProvider } from '../types';
 
 const AUTH_STORAGE_KEY = 'shutterhub_auth_user';
+const USERS_REGISTRY_KEY = 'shutterhub_registered_accounts';
 
-export const DEMO_USERS: Record<string, UserProfile> = {
-  alex: {
-    id: 'usr_google_alex_vance',
-    email: 'alex.vance@shutterhub.photo',
-    name: 'Alex Vance',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-    provider: 'google',
-    role: 'Lead Commercial & Wedding Photographer',
-    studioName: 'Vance Visuals Studio',
-    createdAt: '2024-01-15T09:00:00.000Z',
-    lastLoginAt: new Date().toISOString(),
-  },
-  elena: {
-    id: 'usr_apple_elena_rostova',
-    email: 'elena.rostova@icloud.com',
-    name: 'Elena Rostova',
-    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
-    provider: 'apple',
-    role: 'Fashion & Editorial Director',
-    studioName: 'Lumina Creative Co.',
-    createdAt: '2024-03-10T14:30:00.000Z',
-    lastLoginAt: new Date().toISOString(),
-  },
-};
+export interface RegisteredAccount {
+  user: UserProfile;
+  passwordHash?: string;
+}
 
 export const AuthService = {
+  getRegisteredAccounts(): RegisteredAccount[] {
+    try {
+      const raw = localStorage.getItem(USERS_REGISTRY_KEY);
+      if (!raw) return [];
+      return JSON.parse(raw) as RegisteredAccount[];
+    } catch {
+      return [];
+    }
+  },
+
+  saveRegisteredAccounts(accounts: RegisteredAccount[]): void {
+    try {
+      localStorage.setItem(USERS_REGISTRY_KEY, JSON.stringify(accounts));
+    } catch (err) {
+      console.warn('Error saving registered accounts:', err);
+    }
+  },
+
   getCurrentUser(): UserProfile | null {
     try {
       const raw = localStorage.getItem(AUTH_STORAGE_KEY);
       if (!raw) return null;
-      return JSON.parse(raw) as UserProfile;
+      const user = JSON.parse(raw) as UserProfile;
+      // Purge any legacy default or demo profiles
+      if (
+        user.email === 'alex.vance@shutterhub.photo' ||
+        user.email === 'elena.rostova@icloud.com' ||
+        user.id?.includes('alex_vance') ||
+        user.id?.includes('elena_rostova')
+      ) {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        return null;
+      }
+      return user;
     } catch (err) {
       console.warn('Error reading authenticated user:', err);
       return null;
@@ -51,104 +61,219 @@ export const AuthService = {
     }
   },
 
-  async loginWithGoogle(customEmail?: string, customName?: string): Promise<UserProfile> {
-    // Simulate brief network handshake
-    await new Promise((resolve) => setTimeout(resolve, 450));
+  async loginWithGoogle(email: string, name: string): Promise<UserProfile> {
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedName = name.trim();
 
-    const email = customEmail || 'alex.vance@shutterhub.photo';
-    const name = customName || (email.split('@')[0].replace('.', ' ').replace(/\b\w/g, (c) => c.toUpperCase()));
-    
-    const user: UserProfile = {
-      id: `usr_google_${Date.now()}`,
-      email,
-      name,
-      avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`,
-      provider: 'google',
-      role: 'Professional Photographer',
-      studioName: `${name.split(' ')[0]}'s Studio`,
-      createdAt: new Date().toISOString(),
-      lastLoginAt: new Date().toISOString(),
-    };
+    if (!trimmedEmail || !trimmedEmail.includes('@')) {
+      throw new Error('Please provide a valid Google account email address.');
+    }
+    if (!trimmedName) {
+      throw new Error('Please enter your full name as registered on Google.');
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    const accounts = this.getRegisteredAccounts();
+    const existing = accounts.find(
+      (a) => a.user.email.toLowerCase() === trimmedEmail
+    );
+
+    let user: UserProfile;
+    if (existing) {
+      user = {
+        ...existing.user,
+        name: trimmedName || existing.user.name,
+        lastLoginAt: new Date().toISOString(),
+      };
+      existing.user = user;
+      this.saveRegisteredAccounts(accounts);
+    } else {
+      user = {
+        id: `usr_google_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        email: trimmedEmail,
+        name: trimmedName,
+        avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(trimmedName)}`,
+        provider: 'google',
+        role: 'Professional Photographer',
+        studioName: `${trimmedName} Studio`,
+        createdAt: new Date().toISOString(),
+        lastLoginAt: new Date().toISOString(),
+      };
+      accounts.push({ user });
+      this.saveRegisteredAccounts(accounts);
+    }
 
     this.setCurrentUser(user);
     return user;
   },
 
-  async loginWithApple(options?: { email?: string; name?: string; hideMyEmail?: boolean }): Promise<UserProfile> {
-    await new Promise((resolve) => setTimeout(resolve, 450));
+  async directGoogleLogin(): Promise<UserProfile> {
+    const accounts = this.getRegisteredAccounts();
+    const existingGoogle = accounts.find((a) => a.user.provider === 'google');
 
-    const isHidden = options?.hideMyEmail ?? false;
-    const email = isHidden
+    const targetEmail = existingGoogle?.user.email || 'melek.ben.moussa97@gmail.com';
+    const targetName = existingGoogle?.user.name || 'Melek Ben Moussa';
+
+    return this.loginWithGoogle(targetEmail, targetName);
+  },
+
+  async directAppleLogin(): Promise<UserProfile> {
+    const accounts = this.getRegisteredAccounts();
+    const existingApple = accounts.find((a) => a.user.provider === 'apple');
+
+    const targetEmail = existingApple?.user.email || 'melek.benmoussa@icloud.com';
+    const targetName = existingApple?.user.name || 'Melek Ben Moussa';
+
+    return this.loginWithApple({
+      email: targetEmail,
+      name: targetName,
+      hideMyEmail: false,
+    });
+  },
+
+  async loginWithApple(options: {
+    email: string;
+    name: string;
+    hideMyEmail?: boolean;
+  }): Promise<UserProfile> {
+    const trimmedEmail = options.email.trim().toLowerCase();
+    const trimmedName = options.name.trim();
+
+    if (!trimmedEmail) {
+      throw new Error('Please enter a valid Apple ID.');
+    }
+    if (!trimmedName) {
+      throw new Error('Please enter your name for your Apple ID.');
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const finalEmail = options.hideMyEmail
       ? `photographer_${Math.random().toString(36).substring(2, 8)}@privaterelay.appleid.com`
-      : options?.email || 'elena.rostova@icloud.com';
-    const name = options?.name || 'Elena Rostova';
+      : trimmedEmail;
 
-    const user: UserProfile = {
-      id: `usr_apple_${Date.now()}`,
-      email,
-      name,
-      avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`,
-      provider: 'apple',
-      role: 'Creative Director & Photographer',
-      studioName: `${name.split(' ')[0]} Imagery`,
-      createdAt: new Date().toISOString(),
-      lastLoginAt: new Date().toISOString(),
-    };
+    const accounts = this.getRegisteredAccounts();
+    const existing = accounts.find(
+      (a) => a.user.email.toLowerCase() === finalEmail.toLowerCase()
+    );
+
+    let user: UserProfile;
+    if (existing) {
+      user = {
+        ...existing.user,
+        name: trimmedName || existing.user.name,
+        lastLoginAt: new Date().toISOString(),
+      };
+      existing.user = user;
+      this.saveRegisteredAccounts(accounts);
+    } else {
+      user = {
+        id: `usr_apple_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        email: finalEmail,
+        name: trimmedName,
+        avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(trimmedName)}`,
+        provider: 'apple',
+        role: 'Pro Photographer',
+        studioName: `${trimmedName.split(' ')[0]} Imagery`,
+        createdAt: new Date().toISOString(),
+        lastLoginAt: new Date().toISOString(),
+      };
+      accounts.push({ user });
+      this.saveRegisteredAccounts(accounts);
+    }
 
     this.setCurrentUser(user);
     return user;
   },
 
-  async loginWithEmail(email: string, _password: string): Promise<UserProfile> {
+  async loginWithEmail(email: string, password: string): Promise<UserProfile> {
+    const trimmedEmail = email.trim().toLowerCase();
+    if (!trimmedEmail || !trimmedEmail.includes('@')) {
+      throw new Error('Please enter a valid email address.');
+    }
+    if (!password) {
+      throw new Error('Please enter your password.');
+    }
+
     await new Promise((resolve) => setTimeout(resolve, 400));
 
-    const name = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-    const existing = this.getCurrentUser();
+    const accounts = this.getRegisteredAccounts();
+    const match = accounts.find(
+      (a) => a.user.email.toLowerCase() === trimmedEmail
+    );
 
-    const user: UserProfile = {
-      id: existing?.id || `usr_email_${Date.now()}`,
-      email,
-      name: existing?.name || name,
-      avatarUrl: existing?.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`,
-      provider: 'email',
-      role: 'Member Photographer',
-      studioName: existing?.studioName || `${name.split(' ')[0]} Photography`,
-      createdAt: existing?.createdAt || new Date().toISOString(),
+    if (!match) {
+      throw new Error(
+        'No account found with this email. Click "Create Account" above to register.'
+      );
+    }
+
+    if (match.passwordHash && match.passwordHash !== password) {
+      throw new Error('Incorrect password. Please verify your credentials and retry.');
+    }
+
+    const updatedUser: UserProfile = {
+      ...match.user,
       lastLoginAt: new Date().toISOString(),
     };
-
-    this.setCurrentUser(user);
-    return user;
+    match.user = updatedUser;
+    this.saveRegisteredAccounts(accounts);
+    this.setCurrentUser(updatedUser);
+    return updatedUser;
   },
 
-  async registerWithEmail(name: string, email: string, _password: string, studioName?: string): Promise<UserProfile> {
+  async registerWithEmail(
+    name: string,
+    email: string,
+    password: string,
+    studioName?: string
+  ): Promise<UserProfile> {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+
+    if (!trimmedName) {
+      throw new Error('Please enter your full name.');
+    }
+    if (!trimmedEmail || !trimmedEmail.includes('@')) {
+      throw new Error('Please enter a valid email address.');
+    }
+    if (!password || password.length < 6) {
+      throw new Error('Password must be at least 6 characters long.');
+    }
+
     await new Promise((resolve) => setTimeout(resolve, 450));
 
-    const user: UserProfile = {
-      id: `usr_email_${Date.now()}`,
-      email,
-      name,
-      avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`,
+    const accounts = this.getRegisteredAccounts();
+    const existing = accounts.find(
+      (a) => a.user.email.toLowerCase() === trimmedEmail
+    );
+
+    if (existing) {
+      throw new Error(
+        'An account with this email address already exists. Please sign in.'
+      );
+    }
+
+    const newUser: UserProfile = {
+      id: `usr_email_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      email: trimmedEmail,
+      name: trimmedName,
+      avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(trimmedName)}`,
       provider: 'email',
-      role: 'Pro Photographer',
-      studioName: studioName || `${name.split(' ')[0]} Studio`,
+      role: 'Member Photographer',
+      studioName: studioName?.trim() || `${trimmedName.split(' ')[0]} Photography`,
       createdAt: new Date().toISOString(),
       lastLoginAt: new Date().toISOString(),
     };
 
-    this.setCurrentUser(user);
-    return user;
-  },
-
-  async loginAsDemo(key: 'alex' | 'elena'): Promise<UserProfile> {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    const demo = DEMO_USERS[key];
-    const user: UserProfile = {
-      ...demo,
-      lastLoginAt: new Date().toISOString(),
-    };
-    this.setCurrentUser(user);
-    return user;
+    accounts.push({
+      user: newUser,
+      passwordHash: password,
+    });
+    this.saveRegisteredAccounts(accounts);
+    this.setCurrentUser(newUser);
+    return newUser;
   },
 
   logout(): void {
@@ -160,6 +285,13 @@ export const AuthService = {
     if (!current) return null;
     const updated: UserProfile = { ...current, ...updates };
     this.setCurrentUser(updated);
+
+    const accounts = this.getRegisteredAccounts();
+    const idx = accounts.findIndex((a) => a.user.id === current.id);
+    if (idx !== -1) {
+      accounts[idx].user = updated;
+      this.saveRegisteredAccounts(accounts);
+    }
     return updated;
   },
 };
