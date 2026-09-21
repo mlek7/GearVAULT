@@ -1,0 +1,8 @@
+{
+  "name": "Photo Gear Vault & Shoot Manager",
+  "description": "Comprehensive mobile app for professional photographers with Google and Apple sign-in to manage gear inventory, schedule photoshoots, organize dynamic packing lists, configure morning alerts, check shoot location weather forecasts with golden hour calculations, and curate moodboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

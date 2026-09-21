@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F29191" />
+      <stop offset="100%" stop-color="#F7ADAD" />
+    </linearGradient>
+    <linearGradient id="lensGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B1E5E6" />
+      <stop offset="100%" stop-color="#CCFBFA" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.18" />
+    </filter>
+  </defs>
+
+  <!-- iOS App Icon Squircle Background -->
+  <rect width="512" height="512" rx="115" fill="url(#bgGradient)" />
+
+  <!-- Camera Body -->
+  <g filter="url(#shadow)">
+    <!-- Pentaprism top bump -->
+    <path d="M196 150 L316 150 L340 190 L172 190 Z" fill="#FFFFFF" opacity="0.95" />
+    <!-- Flash / Viewfinder bump -->
+    <rect x="226" y="132" width="60" height="24" rx="6" fill="#0F172A" opacity="0.8" />
+    <!-- Main Body -->
+    <rect x="96" y="190" width="320" height="200" rx="36" fill="#FFFFFF" opacity="0.95" />
+    <!-- Grip accent -->
+    <rect x="114" y="210" width="32" height="160" rx="16" fill="#F29191" opacity="0.25" />
+  </g>
+
+  <!-- Big Central Lens -->
+  <circle cx="256" cy="290" r="76" fill="#FFFFFF" />
+  <circle cx="256" cy="290" r="68" fill="url(#lensGradient)" />
+  <circle cx="256" cy="290" r="50" fill="#0F172A" />
+  <!-- Aperture reflection -->
+  <circle cx="270" cy="276" r="14" fill="#CCFBFA" opacity="0.8" />
+  <circle cx="280" cy="286" r="6" fill="#FFFFFF" opacity="0.9" />
+
+  <!-- Red Recording / Sensor Dot -->
+  <circle cx="370" cy="226" r="8" fill="#F29191" />
+</svg>
