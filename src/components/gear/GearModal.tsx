@@ -28,6 +28,7 @@ import {
   GearSpecs,
   GearDbSearchResult,
 } from '../../types';
+import { apiUrl } from '../../services/api';
 
 interface GearModalProps {
   isOpen: boolean;
@@ -268,7 +269,7 @@ export const GearModal: React.FC<GearModalProps> = ({
       setSearchError(null);
       try {
         const res = await fetch(
-          `/api/gear-db/search?q=${encodeURIComponent(q)}&category=${searchCategory}&limit=20`
+          apiUrl(`/api/gear-db/search?q=${encodeURIComponent(q)}&category=${searchCategory}&limit=20`)
         );
         if (!res.ok) {
           throw new Error('Database search failed');
@@ -304,7 +305,7 @@ export const GearModal: React.FC<GearModalProps> = ({
       try {
         const fetchUrl =
           item.source === 'cined'
-            ? `/api/gear-db/image?url=${encodeURIComponent(item.imageUrl)}`
+            ? apiUrl(`/api/gear-db/image?url=${encodeURIComponent(item.imageUrl)}`)
             : item.imageUrl;
 
         const res = await fetch(fetchUrl);
@@ -377,7 +378,7 @@ export const GearModal: React.FC<GearModalProps> = ({
       downloadedPhoto ||
       (selectedGearItem.imageUrl
         ? selectedGearItem.source === 'cined'
-          ? `/api/gear-db/image?url=${encodeURIComponent(selectedGearItem.imageUrl)}`
+          ? apiUrl(`/api/gear-db/image?url=${encodeURIComponent(selectedGearItem.imageUrl)}`)
           : selectedGearItem.imageUrl
         : defaultFallbackImage);
 
@@ -595,7 +596,7 @@ export const GearModal: React.FC<GearModalProps> = ({
                                 <img
                                   src={
                                     item.source === 'cined'
-                                      ? `/api/gear-db/image?url=${encodeURIComponent(item.imageUrl)}`
+                                      ? apiUrl(`/api/gear-db/image?url=${encodeURIComponent(item.imageUrl)}`)
                                       : item.imageUrl
                                   }
                                   alt={item.model}
@@ -717,7 +718,7 @@ export const GearModal: React.FC<GearModalProps> = ({
                           <img
                             src={
                               selectedGearItem.source === 'cined'
-                                ? `/api/gear-db/image?url=${encodeURIComponent(selectedGearItem.imageUrl)}`
+                                ? apiUrl(`/api/gear-db/image?url=${encodeURIComponent(selectedGearItem.imageUrl)}`)
                                 : selectedGearItem.imageUrl
                             }
                             alt={selectedGearItem.model}

@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
-import { AccountDb } from './server/accountDb';
 import { cinedService } from './server/cinedService';
 import { lightbagGearDb } from './server/lightbagGearDb';
 
@@ -11,192 +10,34 @@ async function startServer() {
 
   app.use(express.json({ limit: '15mb' }));
 
+  // CORS for native Capacitor platforms (iOS: capacitor://localhost, Android: https://localhost or http://localhost)
+  const allowedNativeOrigins = [
+    'capacitor://localhost',
+    'https://localhost',
+    'http://localhost',
+  ];
+
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && allowedNativeOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+    next();
+  });
+
   // Health check
   app.get('/api/health', (req, res) => {
     res.json({
       status: 'ok',
-      totalAccounts: AccountDb.getAccounts().length,
+      service: 'Lightbag Gear & Shoot Platform',
+      timestamp: new Date().toISOString(),
     });
-  });
-
-  // ==========================================
-  // CROSS-DEVICE AUTHENTICATION API
-  // ==========================================
-
-  // Register an account (available across all devices)
-  app.post('/api/auth/register', (req, res) => {
-    try {
-      const { email, name, password, studioName, role, provider, avatarUrl } = req.body;
-      const user = AccountDb.registerAccount({
-        email,
-        name,
-        password,
-        studioName,
-        role,
-        provider,
-        avatarUrl,
-      });
-      return res.status(201).json({ success: true, user });
-    } catch (err: any) {
-      return res.status(400).json({ error: err.message || 'Registration failed' });
-    }
-  });
-
-  // Login with email & password across devices
-  app.post('/api/auth/login', (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = AccountDb.loginAccount(email, password);
-      return res.json({ success: true, user });
-    } catch (err: any) {
-      return res.status(401).json({ error: err.message || 'Authentication failed' });
-    }
-  });
-
-  // Google credential login / registration across devices
-  app.post('/api/auth/google', (req, res) => {
-    try {
-      const { email, name, password, avatarUrl } = req.body;
-      const user = AccountDb.upsertSocialAccount({
-        email,
-        name,
-        password,
-        provider: 'google',
-        avatarUrl,
-      });
-      return res.json({ success: true, user });
-    } catch (err: any) {
-      return res.status(400).json({ error: err.message || 'Google authentication failed' });
-    }
-  });
-
-  // Apple ID credential login / registration across devices
-  app.post('/api/auth/apple', (req, res) => {
-    try {
-      const { email, name, password, hideMyEmail } = req.body;
-      const finalEmail = hideMyEmail
-        ? `relay_${Date.now()}_${Math.random().toString(36).substring(2, 6)}@privaterelay.appleid.com`
-        : email;
-
-      const user = AccountDb.upsertSocialAccount({
-        email: finalEmail,
-        name,
-        password,
-        provider: 'apple',
-      });
-      return res.json({ success: true, user });
-    } catch (err: any) {
-      return res.status(400).json({ error: err.message || 'Apple authentication failed' });
-    }
-  });
-
-  // Update user profile (name, studioName, avatarUrl)
-  app.post('/api/auth/profile', (req, res) => {
-    try {
-      const { id, email, name, studioName, avatarUrl, profileUpdatedAt, user: fullUser } = req.body;
-      const accounts = AccountDb.getAccounts();
-      let target: any = accounts.find(
-        (a) => (id && a.user.id === id) || (email && a.user.email.toLowerCase() === String(email).toLowerCase())
-      );
-      if (!target && email) {
-        // Server lost this account (e.g. after a restart/redeploy): recreate it from the client copy
-        target = {
-          user: { ...(fullUser || {}), id: id || fullUser?.id, email, name: name || fullUser?.name || '' },
-          updatedAt: new Date().toISOString(),
-        };
-        accounts.push(target);
-      }
-      if (target) {
-        if (name) target.user.name = name;
-        if (studioName !== undefined) target.user.studioName = studioName;
-        if (avatarUrl !== undefined) target.user.avatarUrl = avatarUrl || undefined;
-        target.profileUpdatedAt = profileUpdatedAt || target.profileUpdatedAt || new Date().toISOString();
-        target.updatedAt = new Date().toISOString();
-        AccountDb.saveAccounts(accounts);
-        return res.json({ success: true, user: target.user, profileUpdatedAt: target.profileUpdatedAt });
-      }
-      return res.json({ success: true });
-    } catch (err: any) {
-      return res.status(500).json({ error: err.message || 'Failed to update profile' });
-    }
-  });
-
-  // Get the latest saved profile for an account (used to sync name/studio/photo across devices)
-  app.get('/api/auth/me', (req, res) => {
-    const email = String(req.query.email || '').trim().toLowerCase();
-    if (!email) return res.status(400).json({ error: 'Email is required' });
-    const account: any = AccountDb.getAccounts().find((a) => a.user.email.toLowerCase() === email);
-    if (!account) return res.status(404).json({ error: 'Not found' });
-    const { githubToken, ...safeUser } = account.user as any;
-    return res.json({ success: true, user: safeUser, profileUpdatedAt: account.profileUpdatedAt || null });
-  });
-
-  // Sync client-local accounts to server
-  app.post('/api/auth/sync-local', (req, res) => {
-    try {
-      const { accounts } = req.body;
-      const merged = AccountDb.mergeLocalAccounts(accounts || []);
-      return res.json({
-        success: true,
-        merged,
-        total: AccountDb.getAccounts().length,
-      });
-    } catch (err: any) {
-      return res.status(500).json({ error: err.message || 'Failed to sync local accounts' });
-    }
-  });
-
-  // Check if an email exists on the server
-  app.get('/api/auth/check', (req, res) => {
-    const email = (req.query.email as string) || '';
-    if (!email) return res.json({ exists: false });
-    const account = AccountDb.findAccountByEmail(email);
-    if (!account) return res.json({ exists: false });
-    return res.json({
-      exists: true,
-      provider: account.user.provider,
-      name: account.user.name,
-      hasPassword: Boolean(account.passwordHash),
-    });
-  });
-
-  // ==========================================
-  // CROSS-DEVICE VAULT DATA SYNC API
-  // ==========================================
-
-  const handleVaultSave = (req: express.Request, res: express.Response) => {
-    try {
-      const { userId, email, vaultData } = req.body;
-      if (!vaultData) return res.status(400).json({ error: 'Missing vaultData' });
-
-      if (userId) AccountDb.saveVault(userId, vaultData);
-      if (email) AccountDb.saveVault(email, vaultData);
-
-      return res.json({ success: true, savedAt: new Date().toISOString() });
-    } catch (err: any) {
-      return res.status(500).json({ error: err.message || 'Failed to save vault' });
-    }
-  };
-
-  // Support both /api/vault/save and /api/vault/sync
-  app.post('/api/vault/save', handleVaultSave);
-  app.post('/api/vault/sync', handleVaultSave);
-
-  // Load vault data across devices
-  app.get('/api/vault/load', (req, res) => {
-    try {
-      const userId = (req.query.userId as string) || '';
-      const email = (req.query.email as string) || '';
-
-      let data = userId ? AccountDb.getVault(userId) : null;
-      if (!data && email) {
-        data = AccountDb.getVault(email);
-      }
-
-      return res.json({ success: true, vaultData: data });
-    } catch (err: any) {
-      return res.status(500).json({ error: err.message || 'Failed to load vault' });
-    }
   });
 
   // ==========================================

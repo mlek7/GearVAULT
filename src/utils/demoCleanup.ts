@@ -184,21 +184,9 @@ export function sanitizeNotificationsList(notifs: AlertNotification[] = []): Ale
   return notifs.filter((notif) => !isDemoNotification(notif));
 }
 
-export function sanitizeSettings(settings: AppSettings | null | undefined): AppSettings {
+export function sanitizeSettings(settings: Partial<AppSettings> | null | undefined): Partial<AppSettings> {
   if (!settings || typeof settings !== 'object') {
-    return {
-      theme: 'system',
-      tempUnit: 'C',
-      timeFormat: '24h',
-      dateFormat: 'dd/mm/yyyy',
-      morningAlertTime: '06:00',
-      enableMorningAlerts: true,
-      enableTwoHourCriticalAlert: true,
-      photographerName: '',
-      studioName: '',
-      soundEnabled: true,
-      selectedCity: '',
-    };
+    return {};
   }
 
   const cleaned = { ...settings };

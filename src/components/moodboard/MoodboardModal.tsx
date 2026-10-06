@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Upload, Link as LinkIcon, Image as ImageIcon, Palette, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { MoodboardItem } from '../../types';
+import { apiUrl } from '../../services/api';
 
 interface MoodboardModalProps {
   isOpen: boolean;
@@ -56,7 +57,7 @@ export const MoodboardModal: React.FC<MoodboardModalProps> = ({
     setExtractedSuccess(null);
 
     try {
-      const res = await fetch('/api/extract-image', {
+      const res = await fetch(apiUrl('/api/extract-image'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: trimmed }),

@@ -19,6 +19,7 @@ import {
   sanitizeSettings,
 } from './utils/demoCleanup';
 import { AuthService } from './services/authService';
+import { FirebaseAuthService, FirestoreVaultService } from './services/firebase';
 import { evaluateShootAlerts, formatShootTime } from './utils/dateUtils';
 import { Navigation } from './components/Navigation';
 import { DashboardView } from './components/dashboard/DashboardView';
@@ -32,8 +33,19 @@ import { AlertsBottomSheet } from './components/alerts/AlertsBottomSheet';
 import { ShootModal } from './components/shoots/ShootModal';
 import { GearModal } from './components/gear/GearModal';
 import { LoginView } from './components/auth/LoginView';
+import { StandaloneLegalPage } from './components/legal/StandaloneLegalPage';
+import { NativeApp } from './services/nativeApp';
 
 export default function App() {
+  // Public standalone legal URLs for store reviewers: /privacy and /terms
+  const [currentPath, setCurrentPath] = useState(() => window.location.pathname);
+
+  useEffect(() => {
+    const handlePopState = () => setCurrentPath(window.location.pathname);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   // Authentication gate state
   const [user, setUser] = useState<UserProfile | null>(() =>
     AuthService.getCurrentUser()
@@ -60,12 +72,92 @@ export default function App() {
   const [isGlobalShootModalOpen, setIsGlobalShootModalOpen] = useState(false);
   const [isGlobalGearModalOpen, setIsGlobalGearModalOpen] = useState(false);
 
+  // Initialize native platform capabilities on mount
+  useEffect(() => {
+    NativeApp.initialize();
+  }, []);
+
+  // Android hardware back button handler
+  useEffect(() => {
+    return NativeApp.onBackButton(() => {
+      if (activeShootId) {
+        setActiveShootId(null);
+        return true;
+      }
+      if (isAlertsSheetOpen) {
+        setIsAlertsSheetOpen(false);
+        return true;
+      }
+      if (isGlobalGearModalOpen) {
+        setIsGlobalGearModalOpen(false);
+        return true;
+      }
+      if (isGlobalShootModalOpen) {
+        setIsGlobalShootModalOpen(false);
+        return true;
+      }
+      if (currentTab !== 'dashboard') {
+        setCurrentTab('dashboard');
+        return true;
+      }
+      return false;
+    });
+  }, [activeShootId, isAlertsSheetOpen, isGlobalGearModalOpen, isGlobalShootModalOpen, currentTab]);
+
+  // 1. Firebase Auth listener for automatic session persistence
+  useEffect(() => {
+    const unsubscribe = FirebaseAuthService.onAuthChange((authUser) => {
+      setUser(authUser);
+      AuthService.setCurrentUser(authUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // 2. Cloud Firestore Real-Time Synchronization under users/{uid}
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const unsubscribe = FirestoreVaultService.subscribeToVault(user.id, {
+      onGear: (remoteGear) => {
+        const cleaned = sanitizeGearList(remoteGear);
+        setGear(cleaned);
+        StorageService.saveGear(cleaned);
+      },
+      onShoots: (remoteShoots) => {
+        const cleaned = sanitizeShootsList(remoteShoots);
+        setShoots(cleaned);
+        StorageService.saveShoots(cleaned);
+      },
+      onPacking: (remotePacking) => {
+        const cleaned = sanitizePackingList(remotePacking);
+        setPacking(cleaned);
+        StorageService.savePacking(cleaned);
+      },
+      onMoodboards: (remoteMoodboards) => {
+        const cleaned = sanitizeMoodboardsList(remoteMoodboards);
+        setMoodboards(cleaned);
+        StorageService.saveMoodboards(cleaned);
+      },
+      onSettings: (remoteSettings) => {
+        const cleaned = sanitizeSettings(remoteSettings);
+        setSettings((prev) => {
+          const merged = { ...prev, ...cleaned };
+          StorageService.saveSettings(merged);
+          return merged;
+        });
+      },
+    });
+
+    return () => unsubscribe();
+  }, [user?.id]);
+
   // Apply theme (Light / Dark / System)
   useEffect(() => {
     const root = document.documentElement;
     const theme = settings.theme || 'system';
 
     const applyDark = (isDark: boolean) => {
+      NativeApp.updateTheme(isDark);
       if (isDark) {
         root.classList.add('dark');
         document.body.classList.add('dark');
@@ -96,11 +188,14 @@ export default function App() {
       const nextTheme: ThemeMode = isCurrentlyDark ? 'light' : 'dark';
       const updated = { ...prev, theme: nextTheme };
       StorageService.saveSettings(updated);
+      if (user?.id) {
+        FirestoreVaultService.saveSettings(user.id, updated).catch(() => {});
+      }
       return updated;
     });
   };
 
-  // Sync to local storage
+  // Sync to local storage for instant offline cache
   useEffect(() => {
     StorageService.saveGear(gear);
   }, [gear]);
@@ -121,130 +216,6 @@ export default function App() {
     StorageService.saveSettings(settings);
   }, [settings]);
 
-  // Sync any local accounts on this device to the central server
-  useEffect(() => {
-    AuthService.syncLocalAccountsToServer().catch(() => {});
-  }, []);
-
-  // Keep profile (name, studio, photo) in sync across devices:
-  // refresh on login, when the app comes back to the foreground, and every 60s
-  useEffect(() => {
-    if (!user?.email) return;
-    let cancelled = false;
-    const refresh = async () => {
-      const fresh = await AuthService.refreshFromServer();
-      if (cancelled || !fresh) return;
-      setUser(fresh);
-      setSettings((prev) => ({
-        ...prev,
-        photographerName: fresh.name || prev.photographerName,
-        studioName: fresh.studioName ?? prev.studioName,
-      }));
-    };
-    refresh();
-    const onVisible = () => {
-      if (document.visibilityState === 'visible') refresh();
-    };
-    document.addEventListener('visibilitychange', onVisible);
-    const interval = window.setInterval(refresh, 60000);
-    return () => {
-      cancelled = true;
-      document.removeEventListener('visibilitychange', onVisible);
-      window.clearInterval(interval);
-    };
-  }, [user?.email]);
-
-  // Cross-device Server Vault Sync: Load saved vault from server on login
-  useEffect(() => {
-    if (!user) return;
-    let isMounted = true;
-    const fetchServerVault = async () => {
-      try {
-        const query = new URLSearchParams();
-        if (user.id) query.set('userId', user.id);
-        if (user.email) query.set('email', user.email);
-
-        const res = await fetch(`/api/vault/load?${query.toString()}`);
-        if (!res.ok) return;
-        const json = await res.json();
-        if (!isMounted || !json.vaultData) return;
-
-        const data = json.vaultData;
-        const cleanedGear = sanitizeGearList(data.gear || []);
-        const cleanedShoots = sanitizeShootsList(data.shoots || []);
-        const cleanedPacking = sanitizePackingList(data.packing || []);
-        const cleanedMoodboards = sanitizeMoodboardsList(data.moodboards || []);
-        const cleanedSettings = sanitizeSettings(data.settings);
-
-        if (Array.isArray(data.gear)) {
-          setGear(cleanedGear);
-          StorageService.saveGear(cleanedGear);
-        }
-        if (Array.isArray(data.shoots)) {
-          setShoots(cleanedShoots);
-          StorageService.saveShoots(cleanedShoots);
-        }
-        if (Array.isArray(data.packing)) {
-          setPacking(cleanedPacking);
-          StorageService.savePacking(cleanedPacking);
-        }
-        if (Array.isArray(data.moodboards)) {
-          setMoodboards(cleanedMoodboards);
-          StorageService.saveMoodboards(cleanedMoodboards);
-        }
-        if (data.settings && typeof data.settings === 'object') {
-          setSettings((prev) => ({ ...prev, ...cleanedSettings }));
-        }
-      } catch (err) {
-        console.warn('Silent server vault load info:', err);
-      }
-    };
-    fetchServerVault();
-    return () => {
-      isMounted = false;
-    };
-  }, [user]);
-
-  // Automatic Background Server Vault Backup (Silent sync every 30 seconds when changed)
-  const isDataDirtyRef = React.useRef(false);
-  useEffect(() => {
-    isDataDirtyRef.current = true;
-  }, [gear, shoots, packing, moodboards, settings]);
-
-  useEffect(() => {
-    if (!user) return;
-    const interval = setInterval(async () => {
-      if (!isDataDirtyRef.current) return;
-      try {
-        const payloadGear = sanitizeGearList(gear);
-        const payloadShoots = sanitizeShootsList(shoots);
-        const payloadPacking = sanitizePackingList(packing);
-        const payloadMoodboards = sanitizeMoodboardsList(moodboards);
-        const payloadSettings = sanitizeSettings(settings);
-
-        await fetch('/api/vault/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userId: user.id,
-            email: user.email,
-            vaultData: {
-              gear: payloadGear,
-              shoots: payloadShoots,
-              packing: payloadPacking,
-              moodboards: payloadMoodboards,
-              settings: payloadSettings,
-            },
-          }),
-        });
-        isDataDirtyRef.current = false;
-      } catch (e) {
-        // silent fail
-      }
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [user, gear, shoots, packing, moodboards, settings]);
-
   // Active alerts evaluation
   const activeAlerts = useMemo(() => {
     const evaluated = evaluateShootAlerts(shoots, packing, gear, settings);
@@ -264,12 +235,18 @@ export default function App() {
   // Shoot management
   const handleAddShoot = (newShoot: Shoot) => {
     setShoots((prev) => [newShoot, ...prev]);
+    if (user?.id) {
+      FirestoreVaultService.saveShoot(user.id, newShoot).catch(console.error);
+    }
   };
 
   const handleUpdateShoot = (updatedShoot: Shoot) => {
     setShoots((prev) =>
       prev.map((s) => (s.id === updatedShoot.id ? updatedShoot : s))
     );
+    if (user?.id) {
+      FirestoreVaultService.saveShoot(user.id, updatedShoot).catch(console.error);
+    }
   };
 
   const handleDeleteShoot = (shootId: string) => {
@@ -279,22 +256,34 @@ export default function App() {
     if (activeShootId === shootId) {
       setActiveShootId(null);
     }
+    if (user?.id) {
+      FirestoreVaultService.deleteShoot(user.id, shootId).catch(console.error);
+    }
   };
 
   // Gear management
   const handleAddGear = (newGear: GearItem) => {
     setGear((prev) => [newGear, ...prev]);
+    if (user?.id) {
+      FirestoreVaultService.saveGear(user.id, newGear).catch(console.error);
+    }
   };
 
   const handleUpdateGear = (updatedGear: GearItem) => {
     setGear((prev) =>
       prev.map((g) => (g.id === updatedGear.id ? updatedGear : g))
     );
+    if (user?.id) {
+      FirestoreVaultService.saveGear(user.id, updatedGear).catch(console.error);
+    }
   };
 
   const handleDeleteGear = (gearId: string) => {
     setGear((prev) => prev.filter((g) => g.id !== gearId));
     setPacking((prev) => prev.filter((p) => p.gearId !== gearId));
+    if (user?.id) {
+      FirestoreVaultService.deleteGear(user.id, gearId).catch(console.error);
+    }
   };
 
   // Packing management
@@ -302,26 +291,41 @@ export default function App() {
     setPacking((prev) =>
       prev.map((p) => (p.id === updatedItem.id ? updatedItem : p))
     );
+    if (user?.id) {
+      FirestoreVaultService.savePackingItem(user.id, updatedItem).catch(console.error);
+    }
   };
 
   const handleAddPackingItems = (newItems: PackingItem[]) => {
     setPacking((prev) => [...newItems, ...prev]);
+    if (user?.id) {
+      FirestoreVaultService.savePackingItems(user.id, newItems).catch(console.error);
+    }
   };
 
   const handleDeletePackingItem = (id: string) => {
     setPacking((prev) => prev.filter((p) => p.id !== id));
+    if (user?.id) {
+      FirestoreVaultService.deletePackingItem(user.id, id).catch(console.error);
+    }
   };
 
   // Moodboard actions
   const handleAddMoodboardItem = (item: MoodboardItem) => {
     setMoodboards((prev) => [item, ...prev]);
+    if (user?.id) {
+      FirestoreVaultService.saveMoodboardItem(user.id, item).catch(console.error);
+    }
   };
 
   const handleDeleteMoodboardItem = (id: string) => {
     setMoodboards((prev) => prev.filter((m) => m.id !== id));
+    if (user?.id) {
+      FirestoreVaultService.deleteMoodboardItem(user.id, id).catch(console.error);
+    }
   };
 
-  // Reset all data (Requirement 4)
+  // Reset all data (Keep account, clear inventory)
   const handleResetData = async () => {
     StorageService.resetAll();
     setGear([]);
@@ -335,38 +339,21 @@ export default function App() {
     setSimulatedAlerts([]);
     setActiveShootId(null);
 
-    // If logged in, also sync empty vault to server
-    if (user) {
-      try {
-        await fetch('/api/vault/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userId: user.id,
-            email: user.email,
-            vaultData: {
-              gear: [],
-              shoots: [],
-              packing: [],
-              moodboards: [],
-              settings: resetSettings,
-            },
-          }),
-        });
-      } catch (err) {
-        console.warn('Silent server vault reset notice:', err);
-      }
+    if (user?.id) {
+      await FirestoreVaultService.resetVaultData(user.id).catch(console.error);
     }
   };
 
-  const handleLogout = () => {
-    AuthService.logout();
+  const handleLogout = async () => {
+    await AuthService.logout();
+    StorageService.clearAll();
     setUser(null);
   };
 
-  const handleDeleteAccount = () => {
+  // Delete Account & Data (Apple guideline 5.1.1(v) & Google Play)
+  const handleDeleteAccount = async () => {
+    await AuthService.deleteAccountAndData();
     StorageService.clearAll();
-    AuthService.logout();
     setUser(null);
   };
 
@@ -383,16 +370,29 @@ export default function App() {
     });
   };
 
-  // Active Shoot for Shoot Hub
-  const activeShoot = useMemo(
-    () => shoots.find((s) => s.id === activeShootId),
-    [shoots, activeShootId]
-  );
+  const handleUpdateSettings = (newSettings: AppSettings) => {
+    setSettings(newSettings);
+    StorageService.saveSettings(newSettings);
+    if (user?.id) {
+      FirestoreVaultService.saveSettings(user.id, newSettings).catch(console.error);
+    }
+  };
+
+  // Public standalone legal URLs (/privacy & /terms)
+  if (currentPath === '/privacy') {
+    return <StandaloneLegalPage type="privacy" onBack={() => { window.history.pushState({}, '', '/'); setCurrentPath('/'); }} />;
+  }
+  if (currentPath === '/terms') {
+    return <StandaloneLegalPage type="terms" onBack={() => { window.history.pushState({}, '', '/'); setCurrentPath('/'); }} />;
+  }
 
   // Authentication Gate: if user is not authenticated, render LoginView
   if (!user) {
     return <LoginView onLoginSuccess={handleLoginSuccess} />;
   }
+
+  // Active Shoot for Shoot Hub
+  const activeShoot = shoots.find((s) => s.id === activeShootId);
 
   return (
     <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#000000] text-black dark:text-white flex flex-col selection:bg-[#FF2D20] selection:text-white transition-colors duration-200">
@@ -453,7 +453,7 @@ export default function App() {
               <WeatherForecastView
                 shoots={shoots}
                 settings={settings}
-                onUpdateSettings={(newSettings) => setSettings((prev) => ({ ...prev, ...newSettings }))}
+                onUpdateSettings={(newSettings) => handleUpdateSettings({ ...settings, ...newSettings })}
               />
             )}
 
@@ -482,7 +482,7 @@ export default function App() {
                 user={user}
                 onLogout={handleLogout}
                 onDeleteAccount={handleDeleteAccount}
-                onUpdateSettings={(newSettings) => setSettings(newSettings)}
+                onUpdateSettings={handleUpdateSettings}
                 onUpdateUser={(updated) => setUser(updated)}
                 onResetData={handleResetData}
                 onToggleTheme={handleToggleTheme}
@@ -496,13 +496,14 @@ export default function App() {
       <Navigation
         currentTab={currentTab}
         onTabChange={(tab) => {
+          NativeApp.triggerHaptic('selection');
           setActiveShootId(null);
           setCurrentTab(tab);
         }}
         alertCount={activeAlerts.length}
       />
 
-      {/* Alerts Bottom Sheet (Requirement 9) */}
+      {/* Alerts Bottom Sheet */}
       <AlertsBottomSheet
         isOpen={isAlertsSheetOpen}
         onClose={() => setIsAlertsSheetOpen(false)}

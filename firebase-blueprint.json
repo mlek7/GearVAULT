@@ -1,0 +1,110 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile information and general application settings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "name": { "type": "string", "maxLength": 128 },
+        "studioName": { "type": "string", "maxLength": 128 },
+        "avatarUrl": { "type": "string", "maxLength": 2097152 },
+        "provider": { "type": "string", "maxLength": 32 },
+        "role": { "type": "string", "maxLength": 64 },
+        "settings": { "type": "object" },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "email", "name"]
+    },
+    "GearItem": {
+      "title": "GearItem",
+      "description": "Individual photography/videography gear item in the user's vault",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 256 },
+        "brand": { "type": "string", "maxLength": 128 },
+        "model": { "type": "string", "maxLength": 256 },
+        "category": { "type": "string", "maxLength": 64 },
+        "serialNumber": { "type": "string", "maxLength": 128 },
+        "notes": { "type": "string", "maxLength": 4096 },
+        "imageUrl": { "type": "string", "maxLength": 2097152 },
+        "source": { "type": "string", "maxLength": 64 },
+        "sourceUrl": { "type": "string", "maxLength": 2048 },
+        "specs": { "type": "object" },
+        "keySpecs": { "type": "object" }
+      },
+      "required": ["id", "name", "category"]
+    },
+    "Shoot": {
+      "title": "Shoot",
+      "description": "Scheduled photoshoot with date, timing, and gear allocations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "clientName": { "type": "string", "maxLength": 128 },
+        "date": { "type": "string", "maxLength": 32 },
+        "startTime": { "type": "string", "maxLength": 16 },
+        "endTime": { "type": "string", "maxLength": 16 },
+        "locationName": { "type": "string", "maxLength": 256 },
+        "address": { "type": "string", "maxLength": 512 },
+        "gearIds": { "type": "array" },
+        "status": { "type": "string", "maxLength": 32 }
+      },
+      "required": ["id", "title", "date"]
+    },
+    "PackingItem": {
+      "title": "PackingItem",
+      "description": "Item in shoot packing checklist",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "shootId": { "type": "string", "maxLength": 128 },
+        "gearId": { "type": "string", "maxLength": 128 },
+        "customName": { "type": "string", "maxLength": 256 },
+        "packed": { "type": "boolean" },
+        "category": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "shootId"]
+    },
+    "MoodboardItem": {
+      "title": "MoodboardItem",
+      "description": "Inspirational image or concept for a shoot",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "shootId": { "type": "string", "maxLength": 128 },
+        "imageUrl": { "type": "string", "maxLength": 2097152 },
+        "title": { "type": "string", "maxLength": 256 },
+        "notes": { "type": "string", "maxLength": 4096 },
+        "sourceUrl": { "type": "string", "maxLength": 2048 }
+      },
+      "required": ["id", "shootId", "imageUrl"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile, settings and metadata"
+    },
+    "/users/{userId}/gear/{gearId}": {
+      "schema": "GearItem",
+      "description": "User's gear equipment catalog items"
+    },
+    "/users/{userId}/shoots/{shootId}": {
+      "schema": "Shoot",
+      "description": "User's scheduled photoshoots"
+    },
+    "/users/{userId}/packing/{packingId}": {
+      "schema": "PackingItem",
+      "description": "Packing checklist items per shoot"
+    },
+    "/users/{userId}/moodboards/{moodboardId}": {
+      "schema": "MoodboardItem",
+      "description": "Moodboard visual assets per shoot"
+    }
+  }
+}

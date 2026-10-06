@@ -26,6 +26,7 @@ import {
   Upload,
   RotateCcw,
   Loader2,
+  Mail,
 } from 'lucide-react';
 import {
   AppSettings,
@@ -38,6 +39,7 @@ import {
 import { StorageService, playAlertChime } from '../../services/storage';
 import { processProfilePhoto } from '../../utils/imageUtils';
 import { AuthService } from '../../services/authService';
+import { LegalModal } from '../legal/LegalModal';
 
 interface SettingsViewProps {
   settings: AppSettings;
@@ -212,13 +214,28 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     { value: '08:00', label: settings.timeFormat === '12h' ? '8:00 AM' : '08:00' },
   ];
 
-  const handlePerformDeleteAll = () => {
-    setShowDeleteDataConfirm(false);
-    StorageService.clearAll();
-    if (onDeleteAccount) {
-      onDeleteAccount();
-    } else if (onLogout) {
-      onLogout();
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms' | null>(null);
+
+  const handlePerformDeleteAll = async () => {
+    setIsDeletingAccount(true);
+    try {
+      if (onDeleteAccount) {
+        await onDeleteAccount();
+      } else {
+        await AuthService.deleteAccountAndData();
+        StorageService.clearAll();
+        if (onLogout) onLogout();
+      }
+    } catch (err: any) {
+      console.error('Failed to delete account:', err);
+      alert(
+        err?.message ||
+          'Could not delete account. If you have been signed in for a long time, please sign out, sign back in, and try deleting again.'
+      );
+    } finally {
+      setIsDeletingAccount(false);
+      setShowDeleteDataConfirm(false);
     }
   };
 
@@ -704,19 +721,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       {/* ========================================================================= */}
       <div className="mb-6">
         <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93] px-3 block mb-2">
-          About
+          About &amp; Legal
         </span>
         <div className="rounded-[28px] bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] divide-y divide-black/[0.06] dark:divide-white/[0.06] overflow-hidden text-xs">
           {/* App Version */}
           <div className="p-4 flex items-center justify-between">
             <div className="font-normal text-black dark:text-white">App Version</div>
-            <span className="font-mono text-[#6E6E73] dark:text-[#8E8E93]">1.2.0 (Build 42)</span>
+            <span className="font-mono text-[#6E6E73] dark:text-[#8E8E93]">Lightbag 1.0.0 (Build 1)</span>
           </div>
 
           {/* Privacy Policy */}
           <button
             type="button"
-            onClick={() => setShowPrivacyPolicy(true)}
+            onClick={() => setLegalModalType('privacy')}
             className="w-full p-4 flex items-center justify-between text-left hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-3">
@@ -726,18 +743,33 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <ChevronRight className="w-4 h-4 text-[#8E8E93]" />
           </button>
 
-          {/* Support Link */}
+          {/* Terms of Use */}
           <button
             type="button"
-            onClick={() => setShowTerms(true)}
+            onClick={() => setLegalModalType('terms')}
             className="w-full p-4 flex items-center justify-between text-left hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <HelpCircle className="w-4 h-4 text-[#8E8E93]" />
-              <span className="font-normal text-black dark:text-white">Support & Feedback</span>
+              <FileText className="w-4 h-4 text-[#8E8E93]" />
+              <span className="font-normal text-black dark:text-white">Terms of Use</span>
             </div>
             <ChevronRight className="w-4 h-4 text-[#8E8E93]" />
           </button>
+
+          {/* Contact Support Link (Requirement 4) */}
+          <a
+            href="mailto:melek.ben.moussa97@gmail.com"
+            className="w-full p-4 flex items-center justify-between text-left hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <Mail className="w-4 h-4 text-[#8E8E93]" />
+              <div>
+                <span className="font-normal text-black dark:text-white block">Contact Support</span>
+                <span className="text-[11px] font-mono text-[#6E6E73] dark:text-[#8E8E93]">melek.ben.moussa97@gmail.com</span>
+              </div>
+            </div>
+            <ExternalLink className="w-4 h-4 text-[#8E8E93]" />
+          </a>
         </div>
       </div>
 
@@ -808,7 +840,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
       )}
 
-      {/* Confirmation Dialog: Delete Account & Data */}
+      {/* Confirmation Dialog: Delete Account & Data (Requirement 3) */}
       {showDeleteDataConfirm && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="w-full max-w-sm bg-[#FFFFFF] dark:bg-[#121212] rounded-[28px] p-6 border border-black/[0.08] dark:border-white/[0.08] shadow-2xl text-center">
@@ -816,90 +848,47 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <Trash2 className="w-5 h-5" />
             </div>
             <h3 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">
-              Delete Account & All Data?
+              Delete Account &amp; All Data?
             </h3>
             <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] mt-1 mb-5 leading-relaxed">
-              This will permanently delete your photographer profile, gear vault inventory, scheduled shoots, packing checklists, and moodboard items. This action cannot be undone.
+              This will permanently delete your photographer profile, gear vault inventory, scheduled shoots, packing checklists, moodboard images, and Firebase account. This action is irreversible.
             </p>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
+                disabled={isDeletingAccount}
                 onClick={() => setShowDeleteDataConfirm(false)}
-                className="min-h-[44px] py-2.5 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-black dark:text-white text-xs font-medium active:scale-[0.97] cursor-pointer"
+                className="min-h-[44px] py-2.5 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-black dark:text-white text-xs font-medium active:scale-[0.97] cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 id="btn-confirm-delete-forever"
+                disabled={isDeletingAccount}
                 onClick={handlePerformDeleteAll}
-                className="min-h-[44px] py-2.5 rounded-full bg-[#FF2D20] hover:bg-[#E02619] text-white text-xs font-medium active:scale-[0.97] cursor-pointer"
+                className="min-h-[44px] py-2.5 rounded-full bg-[#FF2D20] hover:bg-[#E02619] text-white text-xs font-medium active:scale-[0.97] cursor-pointer disabled:opacity-60 flex items-center justify-center gap-1.5"
               >
-                Delete Forever
+                {isDeletingAccount ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>Deleting...</span>
+                  </>
+                ) : (
+                  <span>Delete Forever</span>
+                )}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Privacy Policy Modal */}
-      {showPrivacyPolicy && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-          <div className="w-full max-w-lg bg-[#FFFFFF] dark:bg-[#121212] rounded-t-[28px] sm:rounded-[28px] border border-black/[0.08] dark:border-white/[0.08] p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">Privacy Policy</h2>
-              <button
-                onClick={() => setShowPrivacyPolicy(false)}
-                className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-[#8E8E93] hover:text-black dark:hover:text-white cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="space-y-3 text-xs text-[#6E6E73] dark:text-[#8E8E93] leading-relaxed">
-              <p>
-                <strong className="text-black dark:text-white font-medium">Lightbag</strong> values your privacy. Your data, equipment inventory, serial numbers, photoshoot bookings, and moodboard assets are stored on your device or linked account.
-              </p>
-              <p>
-                <strong className="text-black dark:text-white font-medium">Weather and Sun Times:</strong> Solar calculations are computed via mathematical algorithms on your device. Weather requests use Open-Meteo with no personal information or tracking.
-              </p>
-              <p>
-                <strong className="text-black dark:text-white font-medium">Camera EXIF Data:</strong> Metadata extracted from camera files is parsed locally to verify shutter counts and lens specifications. No camera images are transmitted to external servers.
-              </p>
-              <p>
-                <strong className="text-black dark:text-white font-medium">Data Deletion:</strong> You have full control to export or permanently delete your account and all associated data at any time via Settings.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Support Modal */}
-      {showTerms && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-          <div className="w-full max-w-lg bg-[#FFFFFF] dark:bg-[#121212] rounded-t-[28px] sm:rounded-[28px] border border-black/[0.08] dark:border-white/[0.08] p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">Support & Feedback</h2>
-              <button
-                onClick={() => setShowTerms(false)}
-                className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-[#8E8E93] hover:text-black dark:hover:text-white cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="space-y-3 text-xs text-[#6E6E73] dark:text-[#8E8E93] leading-relaxed">
-              <p>
-                Need assistance with your gear vault, shoot scheduler, or solar golden hour calculations?
-              </p>
-              <p>
-                Contact developer support at: <strong className="text-black dark:text-white font-mono">support@photogearvault.app</strong>
-              </p>
-              <p>
-                Version 1.2.0 • Capacitor iOS native build.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Legal Modal (Privacy & Terms) */}
+      <LegalModal
+        type={legalModalType || 'privacy'}
+        isOpen={legalModalType !== null}
+        onClose={() => setLegalModalType(null)}
+      />
     </div>
   );
 };

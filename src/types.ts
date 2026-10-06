@@ -198,11 +198,9 @@ export interface UserProfile {
   provider: AuthProvider;
   role?: string;
   studioName?: string;
-  githubUsername?: string;
-  githubToken?: string;
-  githubSync?: GitHubSyncMetadata;
-  createdAt: string;
-  lastLoginAt: string;
+  createdAt?: string;
+  lastLoginAt?: string;
+  emailVerified?: boolean;
 }
 
 export interface VaultBackupPayload {

@@ -51,8 +51,16 @@
     transition: background-color 0.2s ease, color 0.2s ease;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
     overscroll-behavior-y: none;
     letter-spacing: -0.01em;
+  }
+
+  input, textarea {
+    user-select: text;
+    -webkit-user-select: text;
   }
 
   h1, h2, h3, h4, .font-display {

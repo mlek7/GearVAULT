@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Lightbag</string>
+    <string name="title_activity_main">Lightbag</string>
+    <string name="package_name">com.lightbag.app</string>
+    <string name="custom_url_scheme">com.lightbag.app</string>
+</resources>
