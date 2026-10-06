@@ -212,11 +212,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 priority = "critical",
                 title = "HIGH-PRIORITY: Shoot starts in 1h 45m!",
                 message = "Crucial items for \"${targetShoot.title}\" are still marked as Needed or Missing. Check packing immediately!",
-                missingItems = listOf(
-                    "Profoto B10X Plus 500Ws Strobe (Missing)",
-                    "Sony FE 24-70mm f/2.8 GM II (Needed)",
-                    "Peak Design Carbon Tripod (Needed)"
-                ),
+                missingItems = emptyList(),
                 timestamp = java.time.Instant.now().toString(),
                 read = false
             )
@@ -229,7 +225,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 priority = "high",
                 title = "Morning Call (${_settings.value.morningAlertTime} AM): \"${targetShoot.title}\"",
                 message = "Good morning! You have a booked shoot today. Please verify and pack all camera bodies, lenses, and batteries.",
-                missingItems = listOf("Sony FE 24-70mm f/2.8 GM II", "Profoto B10X Plus"),
+                missingItems = emptyList(),
                 timestamp = java.time.Instant.now().toString(),
                 read = false
             )

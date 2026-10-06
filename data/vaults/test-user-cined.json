@@ -1,0 +1,28 @@
+{
+  "gear": [
+    {
+      "id": "gear-test-cined",
+      "name": "FX3",
+      "category": "Camera Body",
+      "serialNumber": "SN-TEST-1234",
+      "image": "data:image/jpeg;base64,mock",
+      "notes": "Sensor: Full Frame 35mm\nMount: E",
+      "brand": "Sony",
+      "createdAt": "2026-10-06T19:24:45.491Z",
+      "source": "cined",
+      "sourceId": "cined-cam-137",
+      "sourceUrl": "https://www.cined.com/camera-database/?camera=FX3",
+      "specs": {
+        "sensor": "Full Frame 35mm",
+        "mounts": [
+          "E"
+        ],
+        "weightG": 640
+      }
+    }
+  ],
+  "shoots": [],
+  "packing": [],
+  "moodboards": [],
+  "settings": {}
+}

@@ -23,6 +23,7 @@
     "enableTwoHourCriticalAlert": true,
     "photographerName": "Melek Ben Moussa",
     "studioName": "Melek Imagery",
-    "soundEnabled": true
+    "soundEnabled": true,
+    "selectedCity": "athens"
   }
 }

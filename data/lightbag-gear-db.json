@@ -1,0 +1,2749 @@
+[
+  {
+    "id": "lb-light-aputure-ls-600d-pro",
+    "category": "light",
+    "subcategory": "Point-Source COB",
+    "brand": "Aputure",
+    "model": "LS 600d Pro",
+    "keySpecs": {
+      "type": "Daylight COB LED",
+      "power": "600W (720W Max Draw)",
+      "cct": "5600K",
+      "cri": "96+",
+      "tlci": "96+",
+      "mount": "Bowens Mount",
+      "batteryOption": "Dual V-Mount / Gold Mount 48V DC",
+      "waterproof": "IP54 Weather Resistant"
+    },
+    "weight": "4.64 kg (Lamp Head)",
+    "officialUrl": "https://www.aputure.com/products/ls-600d-pro",
+    "imageUrl": "https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=600&q=80",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-ls-600x-pro",
+    "category": "light",
+    "subcategory": "Bi-Color COB",
+    "brand": "Aputure",
+    "model": "LS 600x Pro",
+    "keySpecs": {
+      "type": "Bi-Color COB LED",
+      "power": "600W (720W Max Draw)",
+      "cct": "2700K - 6500K",
+      "cri": "96+",
+      "tlci": "98+",
+      "mount": "Bowens Mount",
+      "batteryOption": "Dual V-Mount / Gold Mount",
+      "waterproof": "IP54 Weather Resistant"
+    },
+    "weight": "5.21 kg (Lamp Head)",
+    "officialUrl": "https://www.aputure.com/products/ls-600x-pro",
+    "imageUrl": "https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=600&q=80",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-ls-300x",
+    "category": "light",
+    "subcategory": "Bi-Color COB",
+    "brand": "Aputure",
+    "model": "LS 300x",
+    "keySpecs": {
+      "type": "Bi-Color COB LED",
+      "power": "300W (350W Max Draw)",
+      "cct": "2700K - 6500K",
+      "cri": "96+",
+      "tlci": "96+",
+      "mount": "Bowens Mount",
+      "batteryOption": "Dual V-Mount / Gold Mount"
+    },
+    "weight": "3.1 kg (Lamp Head)",
+    "officialUrl": "https://www.aputure.com/products/ls-300x",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-ls-300d-ii",
+    "category": "light",
+    "subcategory": "Point-Source COB",
+    "brand": "Aputure",
+    "model": "LS C300d II",
+    "keySpecs": {
+      "type": "Daylight COB LED",
+      "power": "300W",
+      "cct": "5500K",
+      "cri": "96+",
+      "tlci": "97+",
+      "mount": "Bowens Mount",
+      "batteryOption": "V-Mount / Gold Mount"
+    },
+    "weight": "3.1 kg (Lamp Head)",
+    "officialUrl": "https://www.aputure.com/products/ls-c300d-ii",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-ls-1200d-pro",
+    "category": "light",
+    "subcategory": "High-Output COB",
+    "brand": "Aputure",
+    "model": "LS 1200d Pro",
+    "keySpecs": {
+      "type": "Daylight COB LED",
+      "power": "1200W (1440W Max Draw)",
+      "cct": "5600K",
+      "cri": "96+",
+      "tlci": "98+",
+      "mount": "Bowens Mount",
+      "waterproof": "IP54 Weather Resistant"
+    },
+    "weight": "8.95 kg (Lamp Head)",
+    "officialUrl": "https://www.aputure.com/products/ls-1200d-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-amaran-100d-s",
+    "category": "light",
+    "subcategory": "Compact COB",
+    "brand": "Aputure",
+    "model": "Amaran 100d S",
+    "keySpecs": {
+      "type": "Daylight COB LED",
+      "power": "100W",
+      "cct": "5600K",
+      "cri": "96+",
+      "tlci": "99+",
+      "mount": "Bowens Mount",
+      "control": "Sidus Link App Bluetooth"
+    },
+    "weight": "1.42 kg",
+    "officialUrl": "https://www.aputure.com/products/amaran-100d-s",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-amaran-200d-s",
+    "category": "light",
+    "subcategory": "Compact COB",
+    "brand": "Aputure",
+    "model": "Amaran 200d S",
+    "keySpecs": {
+      "type": "Daylight COB LED",
+      "power": "200W",
+      "cct": "5600K",
+      "cri": "96+",
+      "tlci": "99+",
+      "mount": "Bowens Mount",
+      "control": "Sidus Link App Bluetooth"
+    },
+    "weight": "1.56 kg",
+    "officialUrl": "https://www.aputure.com/products/amaran-200d-s",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-amaran-150c",
+    "category": "light",
+    "subcategory": "Full-Color RGBWW COB",
+    "brand": "Aputure",
+    "model": "Amaran 150c",
+    "keySpecs": {
+      "type": "Full-Color RGBWW Point-Source",
+      "power": "150W (180W Max Draw)",
+      "cct": "2500K - 7500K + Full RGB",
+      "cri": "95+",
+      "tlci": "95+",
+      "mount": "Bowens Mount",
+      "control": "Sidus Link App"
+    },
+    "weight": "2.66 kg",
+    "officialUrl": "https://www.aputure.com/products/amaran-150c",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-amaran-300c",
+    "category": "light",
+    "subcategory": "Full-Color RGBWW COB",
+    "brand": "Aputure",
+    "model": "Amaran 300c",
+    "keySpecs": {
+      "type": "Full-Color RGBWW Point-Source",
+      "power": "300W (360W Max Draw)",
+      "cct": "2500K - 7500K + Full RGB",
+      "cri": "95+",
+      "tlci": "95+",
+      "mount": "Bowens Mount",
+      "control": "Sidus Link App"
+    },
+    "weight": "3.52 kg",
+    "officialUrl": "https://www.aputure.com/products/amaran-300c",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-mc-pro",
+    "category": "light",
+    "subcategory": "Pocket RGBWW Mini",
+    "brand": "Aputure",
+    "model": "MC Pro",
+    "keySpecs": {
+      "type": "RGBWW Mini Pocket Light",
+      "power": "5W (7W Output)",
+      "cct": "2000K - 10000K + Full RGB",
+      "cri": "96",
+      "tlci": "96",
+      "batteryLife": "Up to 2 hours at 100%",
+      "waterproof": "IP65 Weather Resistant",
+      "mount": "1/4-20 & Magnetic Back"
+    },
+    "weight": "247 g",
+    "officialUrl": "https://www.aputure.com/products/mc-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-nova-p300c",
+    "category": "light",
+    "subcategory": "Soft LED Panel",
+    "brand": "Aputure",
+    "model": "Nova P300c",
+    "keySpecs": {
+      "type": "RGBWW Soft Light Panel",
+      "power": "300W (360W Max Draw)",
+      "cct": "2000K - 10000K",
+      "cri": "95+",
+      "tlci": "95+",
+      "beamAngle": "120°",
+      "control": "DMX512, Sidus Link, CRMX"
+    },
+    "weight": "10.35 kg",
+    "officialUrl": "https://www.aputure.com/products/nova-p300c",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-infinibar-pb6",
+    "category": "light",
+    "subcategory": "Pixel Tube LED",
+    "brand": "Aputure",
+    "model": "Infinibar PB6",
+    "keySpecs": {
+      "type": "RGBWW Full-Color Pixel Bar (2ft / 60cm)",
+      "power": "14W (27W Battery Draw)",
+      "cct": "2000K - 10000K",
+      "pixels": "48 Pixel Engines",
+      "batteryLife": "100 mins at max output"
+    },
+    "weight": "1.00 kg",
+    "officialUrl": "https://www.aputure.com/products/infinibar-pb6",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-nanlite-forza-60b-ii",
+    "category": "light",
+    "subcategory": "Compact COB",
+    "brand": "Nanlite",
+    "model": "Forza 60B II",
+    "keySpecs": {
+      "type": "Ultra-Compact Bi-Color COB",
+      "power": "72W",
+      "cct": "2700K - 6500K",
+      "cri": "96",
+      "tlci": "98",
+      "mount": "FM Mount (Bowens Adapter included)",
+      "batteryOption": "NP-F Grip / V-Mount"
+    },
+    "weight": "0.70 kg",
+    "officialUrl": "https://nanliteus.com/products/forza-60b-ii",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-nanlite-forza-300b-ii",
+    "category": "light",
+    "subcategory": "Bi-Color COB",
+    "brand": "Nanlite",
+    "model": "Forza 300B II",
+    "keySpecs": {
+      "type": "Bi-Color Studio COB LED",
+      "power": "350W",
+      "cct": "2700K - 6500K",
+      "cri": "96",
+      "tlci": "97",
+      "mount": "Bowens Mount",
+      "control": "NANLINK App, 2.4G, DMX/RDM"
+    },
+    "weight": "2.88 kg",
+    "officialUrl": "https://nanliteus.com/products/forza-300b-ii",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-nanlite-pavotube-ii-15x",
+    "category": "light",
+    "subcategory": "Pixel Tube LED",
+    "brand": "Nanlite",
+    "model": "PavoTube II 15X",
+    "keySpecs": {
+      "type": "RGBWW Pixel Tube Light (2ft)",
+      "power": "18W",
+      "cct": "2700K - 12000K",
+      "cri": "97",
+      "tlci": "98",
+      "batteryLife": "1.5 hrs at 100%",
+      "mount": "T12 Clips & 1/4-20"
+    },
+    "weight": "0.97 kg",
+    "officialUrl": "https://nanliteus.com/products/pavotube-ii-15x",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-nanlite-pavotube-ii-30x",
+    "category": "light",
+    "subcategory": "Pixel Tube LED",
+    "brand": "Nanlite",
+    "model": "PavoTube II 30X",
+    "keySpecs": {
+      "type": "RGBWW Pixel Tube Light (4ft)",
+      "power": "36W",
+      "cct": "2700K - 12000K",
+      "cri": "97",
+      "tlci": "98",
+      "batteryLife": "1.5 hrs at 100%",
+      "mount": "T12 Clips & 1/4-20"
+    },
+    "weight": "1.56 kg",
+    "officialUrl": "https://nanliteus.com/products/pavotube-ii-30x",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-nanlite-fs-300b",
+    "category": "light",
+    "subcategory": "All-in-One COB",
+    "brand": "Nanlite",
+    "model": "FS-300B",
+    "keySpecs": {
+      "type": "Monolight Bi-Color LED (AC Only)",
+      "power": "350W",
+      "cct": "2700K - 6500K",
+      "cri": "96",
+      "tlci": "97",
+      "mount": "Bowens Mount",
+      "cooling": "Built-in Fan with Silent Mode"
+    },
+    "weight": "3.03 kg",
+    "officialUrl": "https://nanliteus.com/products/fs-300b",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-sl60w",
+    "category": "light",
+    "subcategory": "Budget COB",
+    "brand": "Godox",
+    "model": "SL-60W",
+    "keySpecs": {
+      "type": "Continuous Daylight LED Monolight",
+      "power": "60W",
+      "cct": "5600K",
+      "cri": "93+",
+      "tlci": "95+",
+      "mount": "Bowens Mount"
+    },
+    "weight": "1.61 kg",
+    "officialUrl": "https://www.godox.com/product-d/SL-Series.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-vl150",
+    "category": "light",
+    "subcategory": "Point-Source COB",
+    "brand": "Godox",
+    "model": "VL150",
+    "keySpecs": {
+      "type": "Daylight LED Video Light",
+      "power": "150W",
+      "cct": "5600K",
+      "cri": "96",
+      "tlci": "95",
+      "mount": "Bowens Mount",
+      "batteryOption": "V-Mount DC"
+    },
+    "weight": "1.97 kg",
+    "officialUrl": "https://www.godox.com/product-d/VL150.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-ad200-pro",
+    "category": "light",
+    "subcategory": "Battery Strobe Flash",
+    "brand": "Godox",
+    "model": "AD200 Pro",
+    "keySpecs": {
+      "type": "Pocket TTL Strobe Flash",
+      "power": "200Ws",
+      "recycleTime": "0.01 - 1.8s",
+      "cct": "5600K (±200K)",
+      "batteryLife": "500 Full Power Flashes (14.4V 2900mAh)",
+      "syncSpeed": "HSS up to 1/8000s"
+    },
+    "weight": "590 g (without head)",
+    "officialUrl": "https://www.godox.com/product-d/AD200Pro.html",
+    "imageUrl": "https://images.unsplash.com/photo-1544967082-d9d25d867d66?auto=format&fit=crop&w=600&q=80",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-ad600-pro",
+    "category": "light",
+    "subcategory": "Outdoor Battery Strobe",
+    "brand": "Godox",
+    "model": "AD600 Pro",
+    "keySpecs": {
+      "type": "Outdoor Monolight Strobe",
+      "power": "600Ws",
+      "recycleTime": "0.01 - 0.9s",
+      "batteryLife": "360 Full Power Flashes (28.8V 2600mAh)",
+      "syncSpeed": "HSS up to 1/8000s",
+      "mount": "Bowens Mount",
+      "modelingLight": "38W LED (4800K)"
+    },
+    "weight": "3.00 kg",
+    "officialUrl": "https://www.godox.com/product-d/AD600Pro.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-v1",
+    "category": "light",
+    "subcategory": "Round Head Speedlight",
+    "brand": "Godox",
+    "model": "V1 Round Head Speedlight",
+    "keySpecs": {
+      "type": "Camera Round-Head Speedlight (TTL)",
+      "power": "76Ws",
+      "recycleTime": "1.5s",
+      "batteryLife": "480 Full Power Flashes (7.2V Li-ion)",
+      "syncSpeed": "HSS up to 1/8000s",
+      "mount": "Magnetic Godox AK-R1 Accessory Mount"
+    },
+    "weight": "530 g (with battery)",
+    "officialUrl": "https://www.godox.com/product-d/V1.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-ml60",
+    "category": "light",
+    "subcategory": "Compact Handheld COB",
+    "brand": "Godox",
+    "model": "ML60",
+    "keySpecs": {
+      "type": "Portable Daylight COB LED",
+      "power": "60W",
+      "cct": "5600K",
+      "cri": "96",
+      "tlci": "97",
+      "mount": "Godox Mount (Bowens Adapter)",
+      "batteryOption": "Dual NP-F970 Battery Handle"
+    },
+    "weight": "770 g",
+    "officialUrl": "https://www.godox.com/product-d/ML60.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-profoto-b10x",
+    "category": "light",
+    "subcategory": "Studio Strobe Monolight",
+    "brand": "Profoto",
+    "model": "B10X OCF Flash",
+    "keySpecs": {
+      "type": "Cordless Battery Monolight Strobe",
+      "power": "250Ws",
+      "recycleTime": "0.05 - 1.3s",
+      "batteryLife": "400 Full Power Flashes",
+      "continuousLight": "3250 Lumens LED (Bi-Color 3000K-6500K)",
+      "mount": "Profoto OCF Mount"
+    },
+    "weight": "1.50 kg",
+    "officialUrl": "https://profoto.com/products/lights/battery-generators/profoto-b10x",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-profoto-b10x-plus",
+    "category": "light",
+    "subcategory": "Studio Strobe Monolight",
+    "brand": "Profoto",
+    "model": "B10X Plus OCF Flash",
+    "keySpecs": {
+      "type": "Cordless Battery Monolight Strobe",
+      "power": "500Ws",
+      "recycleTime": "0.05 - 2.2s",
+      "batteryLife": "200 Full Power Flashes",
+      "continuousLight": "3250 Lumens LED (Bi-Color 3000K-6500K)",
+      "mount": "Profoto OCF Mount"
+    },
+    "weight": "1.90 kg",
+    "officialUrl": "https://profoto.com/products/lights/battery-generators/profoto-b10x-plus",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-profoto-a10",
+    "category": "light",
+    "subcategory": "On-Camera Studio Flash",
+    "brand": "Profoto",
+    "model": "A10 AirTTL",
+    "keySpecs": {
+      "type": "On-Camera Round Head Studio Flash",
+      "power": "76Ws",
+      "recycleTime": "0.05 - 1.0s",
+      "batteryLife": "450 Full Power Flashes",
+      "airX": "AirX Bluetooth Smartphone Connectivity",
+      "syncSpeed": "HSS up to 1/8000s"
+    },
+    "weight": "560 g (with battery)",
+    "officialUrl": "https://profoto.com/products/lights/on-camera-flashes/profoto-a10",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-arri-skypanel-s60-c",
+    "category": "light",
+    "subcategory": "Cinema Soft Panel",
+    "brand": "ARRI",
+    "model": "SkyPanel S60-C",
+    "keySpecs": {
+      "type": "Cinema RGBW Soft LED Panel",
+      "power": "420W (450W Max)",
+      "cct": "2800K - 10000K + Full Gamut",
+      "cri": "95",
+      "tlci": "91",
+      "beamAngle": "115°",
+      "control": "DMX, RDM, Art-Net, sACN"
+    },
+    "weight": "12.8 kg",
+    "officialUrl": "https://www.arri.com/en/lighting/led/skypanel/s60-c",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-zhiyun-molus-g60",
+    "category": "light",
+    "subcategory": "Ultra-Mini COB",
+    "brand": "Zhiyun",
+    "model": "MOLUS G60",
+    "keySpecs": {
+      "type": "Pocket High-Power Mini COB",
+      "power": "60W",
+      "cct": "2700K - 6500K",
+      "cri": "96",
+      "tlci": "97",
+      "cooling": "DynaVort Cooling System",
+      "mount": "ZY Mount (Bowens Adapter)"
+    },
+    "weight": "300 g",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/668",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-zhiyun-molus-x100",
+    "category": "light",
+    "subcategory": "Pocket COB",
+    "brand": "Zhiyun",
+    "model": "MOLUS X100",
+    "keySpecs": {
+      "type": "Vintage Style Slim Pocket COB",
+      "power": "100W",
+      "cct": "2700K - 6500K",
+      "cri": "95",
+      "tlci": "97",
+      "batteryOption": "Grip Battery (included in combo) / 100W USB-C PD"
+    },
+    "weight": "385 g",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/667",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-wireless-pro",
+    "category": "audio",
+    "subcategory": "Wireless Microphone System",
+    "brand": "Rode",
+    "model": "Wireless PRO",
+    "keySpecs": {
+      "type": "Dual-Channel Digital Wireless System",
+      "frequency": "2.4 GHz Series IV",
+      "recording": "32-bit Float On-Board Recording (32GB internal)",
+      "range": "Up to 260m (850 ft) Line of Sight",
+      "timecode": "Internal Genlock / SMPTE Timecode Generator",
+      "batteryLife": "Up to 7 hours (21 hours with charging case)",
+      "lavaliers": "2x Lavalier II Included"
+    },
+    "weight": "35 g (Transmitter)",
+    "officialUrl": "https://rode.com/microphones/wireless/wireless-pro",
+    "imageUrl": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-wireless-go-ii",
+    "category": "audio",
+    "subcategory": "Wireless Microphone System",
+    "brand": "Rode",
+    "model": "Wireless GO II",
+    "keySpecs": {
+      "type": "Dual-Channel Digital Wireless System",
+      "frequency": "2.4 GHz Series IV",
+      "recording": "On-Board Recording (over 40 hrs compressed / 7 hrs uncompressed)",
+      "range": "Up to 200m (656 ft)",
+      "connection": "3.5mm TRS analog & USB-C digital out",
+      "batteryLife": "Up to 7 hours"
+    },
+    "weight": "30 g (Transmitter)",
+    "officialUrl": "https://rode.com/microphones/wireless/wirelessgoii",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-videomic-ntg",
+    "category": "audio",
+    "subcategory": "On-Camera Shotgun",
+    "brand": "Rode",
+    "model": "VideoMic NTG",
+    "keySpecs": {
+      "type": "Multi-Mode Shotgun Microphone",
+      "polarPattern": "Supercardioid",
+      "frequencyResponse": "20Hz - 20kHz",
+      "batteryLife": "30+ hours (Internal Lithium-Ion)",
+      "usbAudio": "Class-Compliant USB-C audio out for phone/computer",
+      "gainControl": "Infinitely variable gain knob + safety channel (-20dB)"
+    },
+    "weight": "94 g",
+    "officialUrl": "https://rode.com/microphones/on-camera/videomic-ntg",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-ntg3",
+    "category": "audio",
+    "subcategory": "Broadcast Shotgun",
+    "brand": "Rode",
+    "model": "NTG3",
+    "keySpecs": {
+      "type": "RF-Bias Condenser Shotgun",
+      "polarPattern": "Supercardioid",
+      "frequencyResponse": "40Hz - 20kHz",
+      "weatherResistant": "High RF-Bias Moisture Resistance",
+      "connection": "3-Pin XLR (48V Phantom Power)"
+    },
+    "weight": "163 g",
+    "officialUrl": "https://rode.com/microphones/shotgun/ntg3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-ntg5",
+    "category": "audio",
+    "subcategory": "Short Shotgun",
+    "brand": "Rode",
+    "model": "NTG5",
+    "keySpecs": {
+      "type": "Acoustic Port Shotgun Microphone",
+      "polarPattern": "Supercardioid",
+      "frequencyResponse": "20Hz - 20kHz",
+      "selfNoise": "Ultra-low 10 dBA",
+      "connection": "3-Pin XLR (48V Phantom)"
+    },
+    "weight": "76 g",
+    "officialUrl": "https://rode.com/microphones/shotgun/ntg5",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-podmic-usb",
+    "category": "audio",
+    "subcategory": "Broadcast Dynamic",
+    "brand": "Rode",
+    "model": "PodMic USB",
+    "keySpecs": {
+      "type": "Dynamic Broadcast Microphone",
+      "polarPattern": "Cardioid",
+      "connection": "XLR & USB-C dual connectivity",
+      "dsp": "Internal APHEX Audio Processing & Revolution Preamp",
+      "headphoneMonitoring": "Zero-latency 3.5mm jack"
+    },
+    "weight": "900 g",
+    "officialUrl": "https://rode.com/microphones/usb/podmic-usb",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-dji-mic-2",
+    "category": "audio",
+    "subcategory": "Wireless Microphone System",
+    "brand": "DJI",
+    "model": "DJI Mic 2",
+    "keySpecs": {
+      "type": "Dual-Channel Wireless Microphone System",
+      "recording": "32-bit Float Internal Recording (8GB / 14 hrs)",
+      "noiseCancelling": "Intelligent Active Noise Cancelling",
+      "range": "Up to 250m (820 ft) FCC Line of Sight",
+      "batteryLife": "6 hours (18 hours with charging case)",
+      "bluetooth": "Direct Bluetooth connection to smartphones & DJI Pocket 3/Action 4"
+    },
+    "weight": "28 g (Transmitter)",
+    "officialUrl": "https://www.dji.com/mic-2",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-dji-mic-mini",
+    "category": "audio",
+    "subcategory": "Ultra-Compact Wireless",
+    "brand": "DJI",
+    "model": "DJI Mic Mini",
+    "keySpecs": {
+      "type": "Ultralight Clip-on Wireless Microphone",
+      "weightPerTx": "Only 10 g",
+      "batteryLife": "11.5 hours Tx (48 hours with charging case)",
+      "noiseCancelling": "Two-level Noise Cancelling",
+      "range": "Up to 400m"
+    },
+    "weight": "10 g (Transmitter)",
+    "officialUrl": "https://www.dji.com/mic-mini",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-sennheiser-mke-600",
+    "category": "audio",
+    "subcategory": "Shotgun Microphone",
+    "brand": "Sennheiser",
+    "model": "MKE 600",
+    "keySpecs": {
+      "type": "Camera Shotgun Microphone",
+      "polarPattern": "Supercardioid / Lobar",
+      "powerOption": "48V Phantom or 1x AA Battery (150 hrs runtime)",
+      "lowCut": "Switchable Low-Cut Filter at 100 Hz",
+      "connection": "3-Pin XLR"
+    },
+    "weight": "128 g",
+    "officialUrl": "https://www.sennheiser.com/mke-600",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-sennheiser-mkh-416",
+    "category": "audio",
+    "subcategory": "Industry Standard Shotgun",
+    "brand": "Sennheiser",
+    "model": "MKH 416-P48U3",
+    "keySpecs": {
+      "type": "RF Condenser Interference Tube Shotgun",
+      "polarPattern": "Supercardioid / Lobar",
+      "frequencyResponse": "40Hz - 20kHz",
+      "weatherResistant": "High moisture resistance for outdoor field film",
+      "connection": "3-Pin XLR (48V Phantom)"
+    },
+    "weight": "165 g",
+    "officialUrl": "https://www.sennheiser.com/mkh-416-p48u3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-sennheiser-ew-dp-me2",
+    "category": "audio",
+    "subcategory": "Digital Wireless System",
+    "brand": "Sennheiser",
+    "model": "EW-DP ME 2 SET",
+    "keySpecs": {
+      "type": "UHF Portable Digital Wireless System",
+      "latency": "Ultra-low 1.9 ms latency",
+      "dynamicRange": "134 dB input dynamic range",
+      "mount": "Magnetic stackable receiver mount",
+      "batteryLife": "Up to 12 hours Tx (7 hours Rx)"
+    },
+    "weight": "159 g (Receiver)",
+    "officialUrl": "https://www.sennheiser.com/ew-dp",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-shure-sm7b",
+    "category": "audio",
+    "subcategory": "Studio Vocal Dynamic",
+    "brand": "Shure",
+    "model": "SM7B",
+    "keySpecs": {
+      "type": "Dynamic Studio Vocal Microphone",
+      "polarPattern": "Cardioid",
+      "frequencyResponse": "50Hz - 20kHz",
+      "shielding": "Electromagnetic hum rejection",
+      "connection": "3-Pin XLR (requires preamp or inline booster)"
+    },
+    "weight": "765 g",
+    "officialUrl": "https://www.shure.com/en-US/products/microphones/sm7b",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-shure-sm7db",
+    "category": "audio",
+    "subcategory": "Studio Vocal Dynamic with Preamp",
+    "brand": "Shure",
+    "model": "SM7dB",
+    "keySpecs": {
+      "type": "Dynamic Microphone with Built-in Active Preamp",
+      "gainBoost": "+18dB or +28dB clean built-in preamp boost",
+      "bypassOption": "True bypass switch for traditional SM7B operation",
+      "polarPattern": "Cardioid",
+      "connection": "3-Pin XLR (48V Phantom required for preamp)"
+    },
+    "weight": "837 g",
+    "officialUrl": "https://www.shure.com/en-US/products/microphones/sm7db",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-shure-mv7-plus",
+    "category": "audio",
+    "subcategory": "Podcast Hybrid Dynamic",
+    "brand": "Shure",
+    "model": "MV7+",
+    "keySpecs": {
+      "type": "Dynamic Broadcast Microphone",
+      "connection": "XLR and USB-C simultaneous output",
+      "dsp": "Real-time Denoiser, Digital Popper Stopper, Reverb",
+      "touchStrip": "Customizable LED touch panel with tap-to-mute"
+    },
+    "weight": "573 g",
+    "officialUrl": "https://www.shure.com/en-US/products/microphones/mv7-plus",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-deity-theos-digital-wireless",
+    "category": "audio",
+    "subcategory": "Professional Wireless",
+    "brand": "Deity",
+    "model": "Theos Digital Wireless Kit",
+    "keySpecs": {
+      "type": "Dual-Channel Wideband UHF Wireless System",
+      "frequency": "550 - 960 MHz Global UHF",
+      "recording": "32-bit Float On-Board MicroSD Recording",
+      "remoteControl": "Sidewinder App Remote Control & Timecode Sync",
+      "batteryLife": "Up to 14 hours (2x AA lithium)"
+    },
+    "weight": "100 g (Transmitter)",
+    "officialUrl": "https://deitymic.com/products/theos-digital-wireless/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-deity-v-mic-d3-pro",
+    "category": "audio",
+    "subcategory": "On-Camera Shotgun",
+    "brand": "Deity",
+    "model": "V-Mic D3 Pro",
+    "keySpecs": {
+      "type": "Stepless Gain On-Camera Shotgun",
+      "polarPattern": "Supercardioid",
+      "smartOutput": "Auto-detecting 3.5mm TRRS (Camera/Phone/Laptop)",
+      "gainControl": "+20dB stepless analog dial",
+      "batteryLife": "51 hours internal rechargeable battery"
+    },
+    "weight": "143 g",
+    "officialUrl": "https://deitymic.com/products/v-mic-d3-pro/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-zoom-f3",
+    "category": "audio",
+    "subcategory": "32-Bit Float Field Recorder",
+    "brand": "Zoom",
+    "model": "F3 Field Recorder",
+    "keySpecs": {
+      "type": "2-Channel 32-Bit Float Audio Recorder",
+      "inputs": "2x Locking XLR Inputs (dual A/D converters, zero gain clipping)",
+      "preamps": "Ultra-low noise EIN -127 dBu",
+      "recordingFormat": "32-Bit Float / up to 192 kHz WAV",
+      "power": "2x AA batteries (8 hrs) or USB-C bus power"
+    },
+    "weight": "242 g (with batteries)",
+    "officialUrl": "https://zoomcorp.com/en/us/field-recorders/field-recorders/f3/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-zoom-f6",
+    "category": "audio",
+    "subcategory": "Field Audio Mixer/Recorder",
+    "brand": "Zoom",
+    "model": "F6 Multi-Track Field Recorder",
+    "keySpecs": {
+      "type": "6-Input / 14-Track 32-bit Float Audio Recorder",
+      "inputs": "6x Discrete Locking XLR Inputs",
+      "timecode": "Accurate Timecode I/O (0.2 ppm accuracy)",
+      "power": "4x AA, Sony L-Series (NP-F) or USB-C"
+    },
+    "weight": "520 g",
+    "officialUrl": "https://zoomcorp.com/en/us/field-recorders/field-recorders/f6/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-zoom-h6-essential",
+    "category": "audio",
+    "subcategory": "Handy Recorder",
+    "brand": "Zoom",
+    "model": "H6 Essential",
+    "keySpecs": {
+      "type": "6-Track 32-Bit Float Handy Recorder",
+      "inputs": "4x XLR/TRS combo + X/Y mic capsule 32-bit float",
+      "display": "Color LCD with accessibility voice guidance",
+      "sdCard": "Up to 1TB MicroSDXC"
+    },
+    "weight": "382 g",
+    "officialUrl": "https://zoomcorp.com/en/us/handheld-recorders/handheld-recorders/h6essential/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-tascam-dr-10l-pro",
+    "category": "audio",
+    "subcategory": "Bodypack Micro Recorder",
+    "brand": "Tascam",
+    "model": "DR-10L Pro",
+    "keySpecs": {
+      "type": "Ultra-Compact 32-Bit Float Lavalier Recorder",
+      "recording": "32-bit float dual A/D converters",
+      "timecode": "Wireless Timecode Sync via optional AK-BT1",
+      "batteryLife": "Up to 24.5 hours on 2x AAA batteries",
+      "microphone": "Screw-lock 3.5mm lavalier included"
+    },
+    "weight": "65 g (with batteries)",
+    "officialUrl": "https://tascam.com/us/product/dr-10l_pro/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-atomos-ninja-v",
+    "category": "monitor",
+    "subcategory": "5\" HDR Monitor-Recorder",
+    "brand": "Atomos",
+    "model": "Ninja V",
+    "keySpecs": {
+      "screenSize": "5.2\" IPS Touchscreen",
+      "resolution": "1920 x 1080",
+      "brightness": "1000 nits (Daylight Viewable)",
+      "inputs": "HDMI 2.0 In / Out",
+      "recordingCodec": "Apple ProRes, Avid DNxHD, ProRes RAW (up to 4Kp60)",
+      "power": "Sony NP-F Battery / DC in"
+    },
+    "weight": "360 g",
+    "officialUrl": "https://www.atomos.com/products/ninja-v",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-atomos-ninja-v-plus",
+    "category": "monitor",
+    "subcategory": "5\" 8K HDR Monitor-Recorder",
+    "brand": "Atomos",
+    "model": "Ninja V+",
+    "keySpecs": {
+      "screenSize": "5.2\" IPS Touchscreen",
+      "resolution": "1920 x 1080",
+      "brightness": "1000 nits",
+      "recordingCodec": "ProRes RAW up to 8Kp30 & 4Kp120",
+      "inputs": "HDMI 2.0 (expandable to SDI with AtomX module)",
+      "power": "Sony NP-F battery"
+    },
+    "weight": "360 g",
+    "officialUrl": "https://www.atomos.com/products/ninja-v-plus",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-atomos-ninja-2023",
+    "category": "monitor",
+    "subcategory": "5\" HDR Monitor-Recorder",
+    "brand": "Atomos",
+    "model": "Ninja (2023)",
+    "keySpecs": {
+      "screenSize": "5.2\" AtomOS 11 HDR Display",
+      "resolution": "1920 x 1080",
+      "brightness": "1000 nits",
+      "os": "AtomOS 11 with EL Zone & ARRI False Color",
+      "recordingCodec": "ProRes, DNxHD, H.265 (included)"
+    },
+    "weight": "360 g",
+    "officialUrl": "https://www.atomos.com/products/ninja",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-atomos-shinobi",
+    "category": "monitor",
+    "subcategory": "5\" On-Camera Monitor",
+    "brand": "Atomos",
+    "model": "Shinobi",
+    "keySpecs": {
+      "screenSize": "5.2\" IPS Touchscreen",
+      "resolution": "1920 x 1080",
+      "brightness": "1000 nits",
+      "inputs": "HDMI In (Monitor Only, No Recording)",
+      "batteryLife": "All-day run time on a single NP-F battery (low 4W draw)"
+    },
+    "weight": "196 g",
+    "officialUrl": "https://www.atomos.com/products/shinobi",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-atomos-shinobi-7",
+    "category": "monitor",
+    "subcategory": "7\" High-Bright Monitor",
+    "brand": "Atomos",
+    "model": "Shinobi 7",
+    "keySpecs": {
+      "screenSize": "7.0\" IPS Touchscreen",
+      "resolution": "1920 x 1200",
+      "brightness": "2200 nits (Sunlight Viewable)",
+      "inputs": "3G-SDI & HDMI 2.0 In/Out",
+      "power": "Dual NP-F battery slots"
+    },
+    "weight": "577 g",
+    "officialUrl": "https://www.atomos.com/products/shinobi-7",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-atomos-shogun-ultra",
+    "category": "monitor",
+    "subcategory": "7\" 12G-SDI / HDMI Recorder",
+    "brand": "Atomos",
+    "model": "Shogun Ultra",
+    "keySpecs": {
+      "screenSize": "7.0\" AtomOS 11 SuperAtom IPS",
+      "resolution": "1920 x 1200",
+      "brightness": "2000 nits",
+      "inputs": "12G-SDI & HDMI 2.0 In/Out",
+      "recordingCodec": "ProRes RAW up to 8Kp30, 4Kp60, 4K 12G-SDI dual record",
+      "cloud": "Wi-Fi 6E & 1GbE Ethernet for Camera to Cloud"
+    },
+    "weight": "709 g",
+    "officialUrl": "https://www.atomos.com/products/shogun-ultra",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-smallhd-indie-5",
+    "category": "monitor",
+    "subcategory": "5\" Touchscreen Monitor",
+    "brand": "SmallHD",
+    "model": "Indie 5",
+    "keySpecs": {
+      "screenSize": "5.0\" Rec.709 Touchscreen",
+      "resolution": "1920 x 1080",
+      "brightness": "1000 nits",
+      "os": "PageOS 5 Tools (EL Zone, Vectorscope, 3D LUT)",
+      "inputs": "HDMI 2.0 & 3G-SDI In/Out",
+      "cameraControl": "Optional Camera Control for RED, Sony, Canon"
+    },
+    "weight": "400 g",
+    "officialUrl": "https://link.smallhd.com/indie5",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-smallhd-indie-7",
+    "category": "monitor",
+    "subcategory": "7\" Touchscreen Monitor",
+    "brand": "SmallHD",
+    "model": "Indie 7",
+    "keySpecs": {
+      "screenSize": "7.0\" IPS Touchscreen",
+      "resolution": "1920 x 1200",
+      "brightness": "1000 nits",
+      "os": "PageOS 5",
+      "inputs": "3G-SDI & HDMI In/Out",
+      "cameraControl": "Optional RED & Sony FX6/FX9 Camera Control"
+    },
+    "weight": "530 g",
+    "officialUrl": "https://link.smallhd.com/indie7",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-smallhd-ultra-7",
+    "category": "monitor",
+    "subcategory": "7\" Ultra-Bright Production Monitor",
+    "brand": "SmallHD",
+    "model": "Ultra 7",
+    "keySpecs": {
+      "screenSize": "7.0\" Sealed Aluminum Touchscreen",
+      "resolution": "1920 x 1200",
+      "brightness": "2300 nits (Sunlight Ultra-Bright)",
+      "weatherproof": "IP53 Water & Dust Resistant",
+      "inputs": "6G-SDI & HDMI 2.0 In/Out"
+    },
+    "weight": "900 g",
+    "officialUrl": "https://link.smallhd.com/ultra7",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-smallhd-cine-7",
+    "category": "monitor",
+    "subcategory": "7\" Professional Cine Monitor",
+    "brand": "SmallHD",
+    "model": "Cine 7",
+    "keySpecs": {
+      "screenSize": "7.0\" DCI-P3 Color Gamut Touchscreen",
+      "resolution": "1920 x 1200",
+      "brightness": "1800 nits",
+      "inputs": "3G-SDI & HDMI In/Out with Cross-Conversion",
+      "chassis": "Milled Aluminum"
+    },
+    "weight": "570 g",
+    "officialUrl": "https://link.smallhd.com/cine7",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-blackmagic-video-assist-5-12g",
+    "category": "monitor",
+    "subcategory": "5\" 12G-SDI / HDMI HDR Recorder",
+    "brand": "Blackmagic Design",
+    "model": "Video Assist 5\" 12G HDR",
+    "keySpecs": {
+      "screenSize": "5.0\" Capacitive Touchscreen",
+      "resolution": "1920 x 1080",
+      "brightness": "2500 nits",
+      "inputs": "12G-SDI & HDMI 2.0",
+      "recordingCodec": "Blackmagic RAW, Apple ProRes, Avid DNxHR to SD or USB-C SSD"
+    },
+    "weight": "410 g",
+    "officialUrl": "https://www.blackmagicdesign.com/products/blackmagicvideoassist",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-portkeys-pt6",
+    "category": "monitor",
+    "subcategory": "5.2\" Budget Wide Color Monitor",
+    "brand": "Portkeys",
+    "model": "PT6",
+    "keySpecs": {
+      "screenSize": "5.2\" 10-bit IPS Display",
+      "resolution": "1920 x 1080",
+      "brightness": "600 nits",
+      "colorGamut": "100% DCI-P3 Coverage",
+      "inputs": "4K HDMI In & 1080p HDMI Out with 3D LUT output"
+    },
+    "weight": "170 g",
+    "officialUrl": "https://www.portkeys.com/pt6/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-feelworld-lut7",
+    "category": "monitor",
+    "subcategory": "7\" Ultra-Bright Monitor",
+    "brand": "Feelworld",
+    "model": "LUT7",
+    "keySpecs": {
+      "screenSize": "7.0\" IPS Touchscreen",
+      "resolution": "1920 x 1200",
+      "brightness": "2200 nits (Auto Light Sensor)",
+      "inputs": "4K HDMI In / Out",
+      "powerSlot": "Sony F970 install/power slot on rear for transmitters"
+    },
+    "weight": "460 g",
+    "officialUrl": "https://feelworld.ltd/products/feelworld-lut7",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-accsoon-seemo",
+    "category": "monitor",
+    "subcategory": "iOS Monitor Adapter",
+    "brand": "Accsoon",
+    "model": "SeeMo HDMI to iOS Video Adapter",
+    "keySpecs": {
+      "type": "Turns iPhone / iPad into Professional Camera Monitor",
+      "input": "HDMI 1080p60",
+      "power": "NP-F Battery slot powers both SeeMo and iPhone",
+      "appFeatures": "Accsoon SEE App (LUTs, False Color, Zebra, Livestreaming)"
+    },
+    "weight": "75 g",
+    "officialUrl": "https://accsoon.com/seemo/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-hollyland-pyro-s",
+    "category": "monitor",
+    "subcategory": "Wireless Video System",
+    "brand": "Hollyland",
+    "model": "Pyro S 4K Wireless Transmitter & Receiver",
+    "keySpecs": {
+      "type": "Wireless HDMI & SDI Video Transmission System",
+      "frequency": "Dual-Band 2.4 GHz & 5 GHz Auto Frequency Hopping",
+      "range": "Up to 400m (1,300 ft)",
+      "latency": "Ultra-low 50 ms latency",
+      "inputs": "HDMI & 3G-SDI In/Out"
+    },
+    "weight": "207 g (Transmitter)",
+    "officialUrl": "https://www.hollyland.com/product/pyro-s",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-peak-design-travel-carbon",
+    "category": "tripod",
+    "subcategory": "Travel Tripod",
+    "brand": "Peak Design",
+    "model": "Travel Tripod (Carbon Fiber)",
+    "keySpecs": {
+      "material": "Carbon Fiber",
+      "maxHeight": "152.4 cm (60 in)",
+      "foldedLength": "39.1 cm (15.4 in)",
+      "diameter": "7.9 cm (3.125 in compact diameter)",
+      "maxLoad": "9.1 kg (20 lbs)",
+      "sections": "5 Leg Sections",
+      "head": "Integrated Ergonomic Ball Head (Arca-Swiss compatible)"
+    },
+    "weight": "1.27 kg (2.81 lbs)",
+    "officialUrl": "https://www.peakdesign.com/products/travel-tripod",
+    "imageUrl": "https://images.unsplash.com/photo-1495745966610-2a67f2297e5e?auto=format&fit=crop&w=600&q=80",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-peak-design-travel-aluminum",
+    "category": "tripod",
+    "subcategory": "Travel Tripod",
+    "brand": "Peak Design",
+    "model": "Travel Tripod (Aluminum)",
+    "keySpecs": {
+      "material": "Aluminum Alloy",
+      "maxHeight": "152.4 cm (60 in)",
+      "foldedLength": "39.1 cm (15.4 in)",
+      "maxLoad": "9.1 kg (20 lbs)",
+      "sections": "5 Leg Sections",
+      "head": "Integrated Ball Head"
+    },
+    "weight": "1.56 kg (3.44 lbs)",
+    "officialUrl": "https://www.peakdesign.com/products/travel-tripod",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-manfrotto-befree-advanced-carbon",
+    "category": "tripod",
+    "subcategory": "Travel Photo Tripod",
+    "brand": "Manfrotto",
+    "model": "Befree Advanced Carbon Fiber",
+    "keySpecs": {
+      "material": "Carbon Fiber",
+      "maxHeight": "150 cm",
+      "foldedLength": "41 cm",
+      "maxLoad": "9.0 kg",
+      "head": "494 Center Ball Head with independent pan lock",
+      "locking": "M-Lock Twist Leg Locks"
+    },
+    "weight": "1.25 kg",
+    "officialUrl": "https://www.manfrotto.com/global-en/befree-advanced-carbon-travel-tripod-mkbfrtc4-bh/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-manfrotto-befree-live-carbon",
+    "category": "tripod",
+    "subcategory": "Travel Video Tripod",
+    "brand": "Manfrotto",
+    "model": "Befree Live Carbon Fiber Video Kit",
+    "keySpecs": {
+      "material": "Carbon Fiber",
+      "maxHeight": "150 cm",
+      "foldedLength": "41 cm",
+      "maxLoad": "4.0 kg",
+      "head": "Befree Live Fluid Video Head (pan & tilt drag)",
+      "leveling": "Leveling column for rapid horizon leveling"
+    },
+    "weight": "1.38 kg",
+    "officialUrl": "https://www.manfrotto.com/global-en/befree-live-carbon-travel-video-tripod-mvkbfrtc-live/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-manfrotto-055-carbon-3-section",
+    "category": "tripod",
+    "subcategory": "Studio / Field Tripod",
+    "brand": "Manfrotto",
+    "model": "055 Carbon Fiber 3-Section Tripod",
+    "keySpecs": {
+      "material": "100% Carbon Fiber Tubes",
+      "maxHeight": "170 cm",
+      "foldedLength": "63 cm",
+      "maxLoad": "20 kg (Legs only)",
+      "centerColumn": "90° Horizontal Center Column Mechanism",
+      "attachment": "Easy Link 3/8\" connector for arms and lights"
+    },
+    "weight": "2.00 kg",
+    "officialUrl": "https://www.manfrotto.com/global-en/055-carbon-fibre-3-section-photo-tripod-mt055cxpro3/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-manfrotto-504x-645-fast",
+    "category": "tripod",
+    "subcategory": "Professional Video System",
+    "brand": "Manfrotto",
+    "model": "504X Fluid Head & 645 FAST Carbon Fiber Legs",
+    "keySpecs": {
+      "material": "Twin Leg Carbon Fiber FAST Lever Lock",
+      "maxHeight": "173 cm",
+      "maxLoad": "12 kg",
+      "head": "504X Flat Base Fluid Video Head with 4-step counterbalance",
+      "bowl": "100mm half bowl with 75mm adapter"
+    },
+    "weight": "5.8 kg",
+    "officialUrl": "https://www.manfrotto.com/global-en/504x-fluid-video-head-with-645-fast-twin-carbon-tripod-mvk504xctfi/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-sachtler-flowtech-75-ms",
+    "category": "tripod",
+    "subcategory": "Cinema Carbon Tripod",
+    "brand": "Sachtler",
+    "model": "Flowtech 75 MS Carbon Fiber",
+    "keySpecs": {
+      "material": "Carbon Fiber with Quick-Release Brakes at the top",
+      "maxHeight": "157 cm",
+      "minHeight": "26 cm (ground-level spreader-less capability)",
+      "foldedLength": "68 cm",
+      "maxLoad": "20 kg",
+      "bowl": "75mm Bowl"
+    },
+    "weight": "3.5 kg",
+    "officialUrl": "https://www.sachtler.com/en/products/flowtech-75/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-sachtler-aktiv6-flowtech75",
+    "category": "tripod",
+    "subcategory": "Cinema System with SpeedLevel",
+    "brand": "Sachtler",
+    "model": "Aktiv6 & Flowtech75 System",
+    "keySpecs": {
+      "head": "Aktiv6 Fluid Head with SpeedLevel Release lever",
+      "counterbalance": "15 Steps of counterbalance",
+      "maxLoad": "0 - 8 kg",
+      "illuminatedLevel": "PrismBubble illuminated level",
+      "legs": "Flowtech75 carbon fiber with mid-level spreader"
+    },
+    "weight": "6.2 kg (System)",
+    "officialUrl": "https://www.sachtler.com/en/products/system-aktiv6-flowtech75-ms/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-benro-tortoise-34c",
+    "category": "tripod",
+    "subcategory": "Columnless Carbon Tripod",
+    "brand": "Benro",
+    "model": "Tortoise 34C Carbon Fiber + GX35 Ball Head",
+    "keySpecs": {
+      "material": "Carbon Fiber (Columnless compact apex)",
+      "maxHeight": "143 cm",
+      "foldedLength": "54 cm",
+      "maxLoad": "18 kg",
+      "head": "GX35 Low-Profile Dual Panoramic Ball Head"
+    },
+    "weight": "1.92 kg",
+    "officialUrl": "https://benroeu.com/benro-tortoise-34c-gx35/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-leofoto-ranger-ls-284c",
+    "category": "tripod",
+    "subcategory": "Compact Carbon Tripod",
+    "brand": "Leofoto",
+    "model": "Ranger LS-284C + LH-30 Head",
+    "keySpecs": {
+      "material": "10x Layer Toray Carbon Fiber",
+      "maxHeight": "128 cm (158 cm with center column)",
+      "foldedLength": "45 cm",
+      "maxLoad": "10 kg",
+      "head": "LH-30 Low Profile Ball Head"
+    },
+    "weight": "1.42 kg",
+    "officialUrl": "https://leofoto.com/products_detail.php?id=314",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-smallrig-freeblazer-heavy-duty",
+    "category": "tripod",
+    "subcategory": "Heavy-Duty Video Tripod",
+    "brand": "SmallRig",
+    "model": "FreeBlazer Heavy-Duty Carbon Tripod Kit (AD-01 Pro)",
+    "keySpecs": {
+      "material": "Carbon Fiber with One-Button Step-less Quick Height Adjustment",
+      "maxHeight": "197 cm",
+      "foldedLength": "99 cm",
+      "maxLoad": "8.0 kg (Head) / 25 kg (Legs)",
+      "head": "Fluid damping head with adjustable counterbalance",
+      "bowl": "75mm bowl"
+    },
+    "weight": "5.0 kg",
+    "officialUrl": "https://www.smallrig.com/SmallRig-FreeBlazer-Heavy-Duty-Carbon-Fiber-Tripod-Kit-4167.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-ulanzi-zero-y-carbon",
+    "category": "tripod",
+    "subcategory": "Lightweight Travel Tripod",
+    "brand": "Ulanzi",
+    "model": "Zero Y Carbon Fiber Travel Tripod",
+    "keySpecs": {
+      "material": "Carbon Fiber with CNC Aluminum Central Axis",
+      "maxHeight": "156.7 cm",
+      "foldedLength": "42.3 cm",
+      "maxLoad": "18 kg (Center Ball Head)",
+      "head": "Panoramic CNC Ball Head with Arca plate"
+    },
+    "weight": "1.1 kg",
+    "officialUrl": "https://www.ulanzi.com/products/ulanzi-coman-lightweight-travel-tripod",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-rs-4",
+    "category": "gimbal",
+    "subcategory": "Commercial 3-Axis Gimbal",
+    "brand": "DJI",
+    "model": "DJI RS 4",
+    "keySpecs": {
+      "testedPayload": "3.0 kg (6.6 lbs)",
+      "axisLocks": "2nd-Gen Automated Axis Locks",
+      "nativeVertical": "2nd-Gen Native Vertical Shooting (no accessories needed)",
+      "algorithm": "4th-Gen RS Stabilization Algorithm",
+      "batteryLife": "Up to 12 hours (High-Capacity Battery Grip up to 29.5 hrs)",
+      "wirelessControl": "Bluetooth Shutter Control"
+    },
+    "weight": "1.07 kg (Gimbal only)",
+    "officialUrl": "https://www.dji.com/rs-4",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-rs-4-pro",
+    "category": "gimbal",
+    "subcategory": "Flagship Cinema Gimbal",
+    "brand": "DJI",
+    "model": "DJI RS 4 Pro",
+    "keySpecs": {
+      "testedPayload": "4.5 kg (10 lbs) Carbon Fiber Arms",
+      "motorTorque": "20% Motor Torque Increase for cine zooms",
+      "lidarSupport": "Supports DJI Focus Pro LiDAR & Motor (76,800 ranging points)",
+      "carMount": "Car Mount Mode for vehicle mounting stability",
+      "batteryLife": "Up to 13 hours"
+    },
+    "weight": "1.24 kg (Gimbal only)",
+    "officialUrl": "https://www.dji.com/rs-4-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-rs-3-mini",
+    "category": "gimbal",
+    "subcategory": "Ultra-Lightweight Mirrorless Gimbal",
+    "brand": "DJI",
+    "model": "DJI RS 3 Mini",
+    "keySpecs": {
+      "testedPayload": "2.0 kg (4.4 lbs)",
+      "nativeVertical": "Native Vertical Video Mounting",
+      "screen": "1.4\" Full-Color Touchscreen",
+      "weight": "795 g (Vertical mode) / 850 g (Horizontal)",
+      "batteryLife": "Up to 10 hours"
+    },
+    "weight": "795 g",
+    "officialUrl": "https://www.dji.com/rs-3-mini",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-osmo-mobile-6",
+    "category": "gimbal",
+    "subcategory": "Smartphone Stabilizer",
+    "brand": "DJI",
+    "model": "Osmo Mobile 6",
+    "keySpecs": {
+      "compatibility": "iOS and Android Smartphones",
+      "extensionRod": "Built-in 215mm Telescoping Extension Rod",
+      "tracking": "ActiveTrack 6.0 with subject priority",
+      "sideWheel": "Side wheel for smooth zoom and manual focus",
+      "clamp": "Quick-Release Magnetic Phone Clamp"
+    },
+    "weight": "309 g",
+    "officialUrl": "https://www.dji.com/osmo-mobile-6",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-osmo-pocket-3",
+    "category": "gimbal",
+    "subcategory": "Integrated Gimbal Camera",
+    "brand": "DJI",
+    "model": "Osmo Pocket 3",
+    "keySpecs": {
+      "sensor": "1-Inch CMOS Sensor",
+      "resolution": "4K/120fps & 10-Bit D-Log M / HLG",
+      "screen": "2.0\" Rotatable OLED Touchscreen",
+      "stabilization": "3-Axis Mechanical Gimbal",
+      "audio": "3-Mic Array with DJI Mic 2 Direct Transmitter Link"
+    },
+    "weight": "179 g",
+    "officialUrl": "https://www.dji.com/osmo-pocket-3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-zhiyun-crane-4",
+    "category": "gimbal",
+    "subcategory": "Heavy-Duty Camera Gimbal",
+    "brand": "Zhiyun",
+    "model": "CRANE 4",
+    "keySpecs": {
+      "testedPayload": "6.0 kg (Supports RED Komodo, BMPCC 6K, FX6)",
+      "indicator": "Balance Indicator Lights on motors",
+      "fillLight": "Built-in 10W Bi-Color Fill Light (3200 Lux)",
+      "slingGrip": "Adjustable Sling Grip with wrist rest",
+      "batteryLife": "Up to 12 hours (Supports PD Fast Charging)"
+    },
+    "weight": "1.67 kg",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/717",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-zhiyun-weebill-3s",
+    "category": "gimbal",
+    "subcategory": "Ergonomic Sling Gimbal",
+    "brand": "Zhiyun",
+    "model": "WEEBILL 3S",
+    "keySpecs": {
+      "testedPayload": "Supports most full-frame DSLRs and mirrorless",
+      "switchMode": "Portrait / Landscape Quick Switch without disassembly",
+      "fillLight": "Built-in 1000 Lux Fill Light",
+      "wristRest": "Sling Mode 2.5 with extendable wrist rest",
+      "batteryLife": "Up to 11.5 hours"
+    },
+    "weight": "1.05 kg",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/716",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-zhiyun-crane-m3s",
+    "category": "gimbal",
+    "subcategory": "Compact All-in-One Gimbal",
+    "brand": "Zhiyun",
+    "model": "CRANE-M3 S",
+    "keySpecs": {
+      "compatibility": "Phones, Action Cams & Mirrorless Cameras",
+      "shutterControl": "Bluetooth Shutter Control",
+      "fillLight": "Built-in Bi-Color 1000 Lux Light",
+      "batteryLife": "Up to 7.5 hours"
+    },
+    "weight": "705 g",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/715",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-feiyutech-scorp-pro",
+    "category": "gimbal",
+    "subcategory": "Modular Dual-Handle Gimbal",
+    "brand": "FeiyuTech",
+    "model": "SCORP Pro",
+    "keySpecs": {
+      "testedPayload": "4.8 kg",
+      "detachableHandle": "Detachable Remote Control Handgrip with touchscreen",
+      "memoryPoints": "A/B Point Trajectory Memory buttons",
+      "batteryLife": "Up to 12 hours"
+    },
+    "weight": "2.1 kg",
+    "officialUrl": "https://www.feiyu-tech.com/feiyu-scorp-pro/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-mini-4-pro",
+    "category": "drone",
+    "subcategory": "Sub-249g Flagship Drone",
+    "brand": "DJI",
+    "model": "DJI Mini 4 Pro",
+    "keySpecs": {
+      "takeoffWeight": "< 249 g (C0 Certified in EU)",
+      "sensor": "1/1.3-inch CMOS Sensor (48 MP)",
+      "videoResolution": "4K/60fps HDR, 4K/100fps Slow Motion, 10-bit D-Log M & HLG",
+      "obstacleSensing": "Omnidirectional Obstacle Sensing",
+      "flightTime": "Up to 34 minutes (Standard) / 45 mins (Intelligent Battery Plus)",
+      "transmission": "DJI O4 HD Video Transmission (20 km range)",
+      "trueVertical": "True Vertical Shooting mode (Camera rotates 90°)"
+    },
+    "weight": "249 g",
+    "officialUrl": "https://www.dji.com/mini-4-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-air-3s",
+    "category": "drone",
+    "subcategory": "Dual-Camera Travel Drone",
+    "brand": "DJI",
+    "model": "DJI Air 3S",
+    "keySpecs": {
+      "sensor": "1-inch Primary Wide (24mm) + 1/1.3-inch Medium Tele (70mm)",
+      "videoResolution": "4K/60fps HDR, 4K/120fps, 10-bit D-Log M",
+      "nightscapeObstacle": "Forward-facing LiDAR Nightscape Omnidirectional Sensing",
+      "flightTime": "Up to 45 minutes",
+      "transmission": "DJI O4 Transmission (20 km)",
+      "internalStorage": "42 GB built-in storage"
+    },
+    "weight": "724 g",
+    "officialUrl": "https://www.dji.com/air-3s",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-air-3",
+    "category": "drone",
+    "subcategory": "Dual-Camera Drone",
+    "brand": "DJI",
+    "model": "DJI Air 3",
+    "keySpecs": {
+      "sensor": "Dual 1/1.3-inch CMOS Cameras (24mm & 70mm)",
+      "videoResolution": "4K/60fps HDR & 4K/100fps",
+      "obstacleSensing": "Omnidirectional Obstacle Sensing",
+      "flightTime": "Up to 46 minutes",
+      "transmission": "DJI O4 (20 km)"
+    },
+    "weight": "720 g",
+    "officialUrl": "https://www.dji.com/air-3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-mavic-3-pro",
+    "category": "drone",
+    "subcategory": "Triple-Camera Cine Drone",
+    "brand": "DJI",
+    "model": "DJI Mavic 3 Pro",
+    "keySpecs": {
+      "sensor": "4/3 Hasselblad (24mm) + 1/1.3\" Medium Tele (70mm) + 1/2\" Tele (166mm)",
+      "videoResolution": "5.1K/50fps, 4K/120fps, 10-bit D-Log, Apple ProRes (Cine version)",
+      "flightTime": "Up to 43 minutes",
+      "obstacleSensing": "Omnidirectional Obstacle Sensing with APAS 5.0",
+      "transmission": "DJI O3+ Transmission (15 km)"
+    },
+    "weight": "958 g",
+    "officialUrl": "https://www.dji.com/mavic-3-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-mavic-3-classic",
+    "category": "drone",
+    "subcategory": "Hasselblad Camera Drone",
+    "brand": "DJI",
+    "model": "DJI Mavic 3 Classic",
+    "keySpecs": {
+      "sensor": "4/3 CMOS Hasselblad Camera (24mm f/2.8-f/11)",
+      "videoResolution": "5.1K/50fps, 4K/120fps, 10-bit D-Log",
+      "flightTime": "Up to 46 minutes",
+      "obstacleSensing": "Omnidirectional Obstacle Sensing",
+      "transmission": "DJI O3+ Transmission (15 km)"
+    },
+    "weight": "895 g",
+    "officialUrl": "https://www.dji.com/mavic-3-classic",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-avata-2",
+    "category": "drone",
+    "subcategory": "FPV Cinewhoop Drone",
+    "brand": "DJI",
+    "model": "DJI Avata 2",
+    "keySpecs": {
+      "sensor": "1/1.3-inch CMOS Sensor (155° Ultra-Wide FOV)",
+      "videoResolution": "4K/60fps HDR, 10-bit D-Log M",
+      "propellerGuards": "Integrated Propeller Guards (crash-resistant)",
+      "easyAcro": "One-Push Flip, Roll, 180° Drift with RC Motion 3",
+      "flightTime": "Up to 23 minutes",
+      "transmission": "DJI O4 Transmission with Goggles 3"
+    },
+    "weight": "377 g",
+    "officialUrl": "https://www.dji.com/avata-2",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-neo",
+    "category": "drone",
+    "subcategory": "Palm Takeoff Vlog Drone",
+    "brand": "DJI",
+    "model": "DJI Neo",
+    "keySpecs": {
+      "takeoffWeight": "135 g (Palm Takeoff & Landing)",
+      "camera": "4K Ultra HD Video / AI Subject Tracking",
+      "controlModes": "Controller-Free Palm Control, Mobile App, RC-N3, or FPV Goggles",
+      "propellerGuards": "Full-Coverage Propeller Guards",
+      "flightTime": "Up to 18 minutes"
+    },
+    "weight": "135 g",
+    "officialUrl": "https://www.dji.com/neo",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-inspire-3",
+    "category": "drone",
+    "subcategory": "Cinema 8K Drone System",
+    "brand": "DJI",
+    "model": "DJI Inspire 3",
+    "keySpecs": {
+      "sensor": "Full-Frame 8K/75fps ProRes RAW & CinemaDNG (Zenmuse X9-8K Air)",
+      "lensMount": "DL Mount (18mm, 24mm, 35mm, 50mm cine primes)",
+      "dualNativeIso": "Dual Native ISO 800 / 4000",
+      "rtk": "Centimeter-Level RTK Positioning & Waypoint Pro 3D Flight paths",
+      "speed": "Up to 94 km/h (58 mph)",
+      "flightTime": "Up to 28 minutes (Hot-swappable dual TB51 batteries)"
+    },
+    "weight": "3.99 kg",
+    "officialUrl": "https://www.dji.com/inspire-3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-hoverair-x1",
+    "category": "drone",
+    "subcategory": "Pocket Self-Flying Camera",
+    "brand": "HoverAir",
+    "model": "HoverAir X1",
+    "keySpecs": {
+      "weight": "125 g (No license required)",
+      "flightModes": "Hover, Follow, Zoom Out, Orbit, Bird’s Eye (One-touch buttons)",
+      "video": "2.7K/30fps Video with Electronic Image Stabilization",
+      "takeoff": "3-second Palm Launch & Return",
+      "enclosure": "Enclosed safety cage"
+    },
+    "weight": "125 g",
+    "officialUrl": "https://hoverair.com/products/hoverair-x1",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-hoverair-x1-pro",
+    "category": "drone",
+    "subcategory": "4K Action Self-Flying Drone",
+    "brand": "HoverAir",
+    "model": "HoverAir X1 PRO",
+    "keySpecs": {
+      "weight": "192 g",
+      "video": "4K/60fps & 1080p/120fps with HDR",
+      "followSpeed": "Up to 42 km/h (26 mph) tracking for sports",
+      "sensing": "Rear Active Proximity Sensor for obstacle avoidance",
+      "flightTime": "Up to 16 minutes"
+    },
+    "weight": "192 g",
+    "officialUrl": "https://hoverair.com/products/hoverair-x1-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-autel-evo-lite-plus",
+    "category": "drone",
+    "subcategory": "1-Inch Sensor Drone",
+    "brand": "Autel Robotics",
+    "model": "EVO Lite+",
+    "keySpecs": {
+      "sensor": "1-inch CMOS Sensor (20 MP, f/2.8 - f/11 adjustable aperture)",
+      "videoResolution": "6K/30fps & 4K/60fps",
+      "nightMode": "Moonlight Algorithm for low-light noise reduction",
+      "flightTime": "Up to 40 minutes",
+      "transmission": "Autel SkyLink 12 km transmission"
+    },
+    "weight": "835 g",
+    "officialUrl": "https://www.autelrobotics.com/productdetail/24.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-wireless-me",
+    "category": "audio",
+    "subcategory": "Wireless Microphone",
+    "brand": "Rode",
+    "model": "Wireless ME",
+    "keySpecs": {
+      "type": "Compact Digital Wireless System",
+      "gainAssist": "Intelligent GainAssist technology",
+      "dualMics": "Built-in microphones in transmitter and receiver",
+      "range": "Over 100m range",
+      "connectivity": "USB-C and 3.5mm analog out"
+    },
+    "weight": "32 g",
+    "officialUrl": "https://rode.com/microphones/wireless/wireless-me",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-videomic-go-ii",
+    "category": "audio",
+    "subcategory": "On-Camera Shotgun",
+    "brand": "Rode",
+    "model": "VideoMic GO II",
+    "keySpecs": {
+      "type": "Lightweight Directional Shotgun",
+      "polarPattern": "Supercardioid",
+      "powerOption": "Plug-in power or USB-C bus power",
+      "usbAudio": "USB-C audio output for phones and laptops"
+    },
+    "weight": "89 g",
+    "officialUrl": "https://rode.com/microphones/on-camera/videomic-go-ii",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-videomic-pro-plus",
+    "category": "audio",
+    "subcategory": "On-Camera Shotgun",
+    "brand": "Rode",
+    "model": "VideoMic Pro+",
+    "keySpecs": {
+      "type": "Premium On-Camera Shotgun",
+      "powerAuto": "Automatic Power function with plug-in power",
+      "safetyChannel": "Built-in safety channel",
+      "highPassFilter": "2-stage high pass filter (75Hz / 150Hz)"
+    },
+    "weight": "122 g",
+    "officialUrl": "https://rode.com/microphones/on-camera/videomic-pro-plus",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-rodecaster-pro-ii",
+    "category": "audio",
+    "subcategory": "Audio Production Studio",
+    "brand": "Rode",
+    "model": "RODECaster Pro II",
+    "keySpecs": {
+      "inputs": "4x Neutrik Combo XLR/TRS inputs with Revolution Preamps",
+      "dsp": "Studio-grade APHEX audio processing",
+      "smartPads": "8x programmable SMART pads with bank switching",
+      "interfaces": "Dual USB-C audio interfaces + Wi-Fi / Ethernet"
+    },
+    "weight": "1.96 kg",
+    "officialUrl": "https://rode.com/interfaces-and-mixers/rodecaster-series/rodecaster-pro-ii",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-rode-rodecaster-duo",
+    "category": "audio",
+    "subcategory": "Compact Audio Production Studio",
+    "brand": "Rode",
+    "model": "RODECaster Duo",
+    "keySpecs": {
+      "inputs": "2x Neutrik Combo XLR/TRS inputs with Revolution Preamps",
+      "dsp": "APHEX audio processing",
+      "smartPads": "6x programmable SMART pads",
+      "usb": "Dual USB-C interfaces"
+    },
+    "weight": "1.13 kg",
+    "officialUrl": "https://rode.com/interfaces-and-mixers/rodecaster-series/rodecaster-duo",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-sennheiser-mke-400",
+    "category": "audio",
+    "subcategory": "On-Camera Shotgun",
+    "brand": "Sennheiser",
+    "model": "MKE 400",
+    "keySpecs": {
+      "polarPattern": "Supercardioid directional",
+      "windProtection": "Integrated acoustic foam windscreen and internal shockmount",
+      "batteryLife": "Over 100 hours on 2x AAA batteries",
+      "monitoring": "Headphone monitoring output with volume control"
+    },
+    "weight": "93.5 g",
+    "officialUrl": "https://www.sennheiser.com/mke-400",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-sennheiser-avx-me2",
+    "category": "audio",
+    "subcategory": "Wireless Lavalier System",
+    "brand": "Sennheiser",
+    "model": "AVX-ME2 SET",
+    "keySpecs": {
+      "frequency": "1.9 GHz License-Free DECT frequency range",
+      "autoConfig": "Automated frequency management & dynamic range setting",
+      "plugInXLR": "Ultra-compact receiver plugs directly into camera XLR",
+      "battery": "Rechargeable Li-Ion battery pack"
+    },
+    "weight": "87 g (Receiver)",
+    "officialUrl": "https://www.sennheiser.com/avx-me2-set",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-sennheiser-hd-280-pro",
+    "category": "audio",
+    "subcategory": "Monitoring Headphones",
+    "brand": "Sennheiser",
+    "model": "HD 280 Pro",
+    "keySpecs": {
+      "type": "Closed-Back Circumaural Studio Monitor Headphones",
+      "attenuation": "High ambient noise attenuation up to 32 dB",
+      "frequencyResponse": "8 Hz - 25,000 Hz",
+      "impedance": "64 Ohms"
+    },
+    "weight": "285 g",
+    "officialUrl": "https://www.sennheiser.com/hd-280-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-zoom-h1n",
+    "category": "audio",
+    "subcategory": "Handy Audio Recorder",
+    "brand": "Zoom",
+    "model": "H1n Handy Recorder",
+    "keySpecs": {
+      "mics": "X/Y 90° Stereo Condenser Microphones",
+      "recording": "24-bit / 96 kHz WAV and MP3",
+      "batteryLife": "Up to 10 hours on 2x AAA batteries",
+      "oneTouch": "One-touch button controls and Limiter"
+    },
+    "weight": "60 g",
+    "officialUrl": "https://zoomcorp.com/en/us/handheld-recorders/handheld-recorders/h1n/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-zoom-h5",
+    "category": "audio",
+    "subcategory": "Handy Audio Recorder",
+    "brand": "Zoom",
+    "model": "H5 Handy Recorder",
+    "keySpecs": {
+      "inputs": "2x XLR/TRS combo inputs with analog gain knobs + interchangeable capsules",
+      "recording": "4-Track simultaneous recording",
+      "preamps": "EIN -120 dBu low-noise preamps"
+    },
+    "weight": "269 g",
+    "officialUrl": "https://zoomcorp.com/en/us/handheld-recorders/handheld-recorders/h5/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-zoom-f8n-pro",
+    "category": "audio",
+    "subcategory": "Multi-Track Field Recorder",
+    "brand": "Zoom",
+    "model": "F8n Pro",
+    "keySpecs": {
+      "inputs": "8x Locking XLR/TRS Combo Inputs with 32-Bit Float dual A/D",
+      "tracks": "8 Inputs / 10 Tracks simultaneous recording",
+      "timecode": "Accurate Timecode I/O with BNC connectors (0.2 ppm)"
+    },
+    "weight": "1.2 kg",
+    "officialUrl": "https://zoomcorp.com/en/us/field-recorders/field-recorders/f8n-pro/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-tascam-dr-10l",
+    "category": "audio",
+    "subcategory": "Digital Lavalier Recorder",
+    "brand": "Tascam",
+    "model": "DR-10L",
+    "keySpecs": {
+      "recording": "24-bit / 48 kHz Linear PCM with dual recording safety track",
+      "batteryLife": "Up to 10 hours on a single AAA battery",
+      "connector": "Screw-lock 3.5mm mic jack"
+    },
+    "weight": "63 g",
+    "officialUrl": "https://tascam.com/us/product/dr-10l/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-tascam-dr-40x",
+    "category": "audio",
+    "subcategory": "Handheld 4-Track Recorder",
+    "brand": "Tascam",
+    "model": "DR-40X",
+    "keySpecs": {
+      "mics": "Adjustable Unidirectional Condenser Mics (A-B and X-Y)",
+      "inputs": "Dual Locking Neutrik XLR/TRS Combo Inputs (48V Phantom)",
+      "audioInterface": "USB audio interface for Mac/PC"
+    },
+    "weight": "213 g",
+    "officialUrl": "https://tascam.com/us/product/dr-40x/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-audio-saramonic-blink-500-pro-b2",
+    "category": "audio",
+    "subcategory": "Wireless Lavalier System",
+    "brand": "Saramonic",
+    "model": "Blink 500 Pro B2",
+    "keySpecs": {
+      "type": "Dual-Channel 2.4GHz Wireless System",
+      "oledDisplay": "OLED display on transmitters and receiver",
+      "batteryLife": "8 hours per charge (Charging carry case included)",
+      "range": "Up to 100m range"
+    },
+    "weight": "32 g (Transmitter)",
+    "officialUrl": "https://www.saramonic.com/product/blink500-pro-b2/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-atomos-shogun-connect",
+    "category": "monitor",
+    "subcategory": "7\" HDR Cloud Monitor-Recorder",
+    "brand": "Atomos",
+    "model": "Shogun Connect",
+    "keySpecs": {
+      "screenSize": "7.0\" 2000 nits HDR SuperAtom IPS",
+      "inputs": "12G-SDI & HDMI In/Out",
+      "cloud": "Integrated Wi-Fi 6, Gigabit Ethernet, Frame.io Camera to Cloud",
+      "recordingCodec": "Apple ProRes, Avid DNxHR, ProRes RAW up to 4Kp60"
+    },
+    "weight": "730 g",
+    "officialUrl": "https://www.atomos.com/products/shogun-connect",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-smallhd-ultra-5",
+    "category": "monitor",
+    "subcategory": "5\" Ultra-Bright Production Monitor",
+    "brand": "SmallHD",
+    "model": "Ultra 5",
+    "keySpecs": {
+      "screenSize": "5.0\" Daylight Viewable Touchscreen",
+      "resolution": "1920 x 1080",
+      "brightness": "3000 nits",
+      "inputs": "3G-SDI & HDMI 2.0 In/Out",
+      "weatherproof": "IP54 Weather Resistant Housing"
+    },
+    "weight": "490 g",
+    "officialUrl": "https://link.smallhd.com/ultra5",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-smallhd-cine-5",
+    "category": "monitor",
+    "subcategory": "5\" Cine Touchscreen Monitor",
+    "brand": "SmallHD",
+    "model": "Cine 5",
+    "keySpecs": {
+      "screenSize": "5.0\" DCI-P3 Color Gamut Display",
+      "resolution": "1920 x 1080",
+      "brightness": "2000 nits",
+      "inputs": "3G-SDI & HDMI In/Out",
+      "chassis": "Milled Unibody Aluminum"
+    },
+    "weight": "440 g",
+    "officialUrl": "https://link.smallhd.com/cine5",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-smallhd-action-5",
+    "category": "monitor",
+    "subcategory": "5\" Compact Lightweight Monitor",
+    "brand": "SmallHD",
+    "model": "Action 5",
+    "keySpecs": {
+      "screenSize": "5.2\" LCD Touchscreen",
+      "resolution": "1920 x 1080",
+      "brightness": "2000 nits",
+      "inputs": "HDMI In/Out (No SDI)",
+      "weight": "240 g ultra-lightweight"
+    },
+    "weight": "240 g",
+    "officialUrl": "https://link.smallhd.com/action5",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-blackmagic-video-assist-7-12g",
+    "category": "monitor",
+    "subcategory": "7\" 12G-SDI / HDMI HDR Recorder",
+    "brand": "Blackmagic Design",
+    "model": "Video Assist 7\" 12G HDR",
+    "keySpecs": {
+      "screenSize": "7.0\" 2500 nits HDR Touchscreen",
+      "resolution": "1920 x 1200",
+      "inputs": "12G-SDI & HDMI 2.0 + Mini XLR analog audio with phantom power",
+      "recordingCodec": "Blackmagic RAW, ProRes, DNxHD to dual SD card slots & USB-C"
+    },
+    "weight": "825 g",
+    "officialUrl": "https://www.blackmagicdesign.com/products/blackmagicvideoassist",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-portkeys-bm5-iii-wr",
+    "category": "monitor",
+    "subcategory": "5.5\" Camera Control Monitor",
+    "brand": "Portkeys",
+    "model": "BM5 III WR",
+    "keySpecs": {
+      "screenSize": "5.5\" 2200 nits High Bright Display",
+      "cameraControl": "Wireless Camera Control for RED Komodo/V-Raptor and Sony FX3/A7M4",
+      "inputs": "SDI & HDMI In/Out with Cross Conversion"
+    },
+    "weight": "376 g",
+    "officialUrl": "https://www.portkeys.com/bm5-iii-wr/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-feelworld-f6-plus-v2",
+    "category": "monitor",
+    "subcategory": "6\" 3D LUT Field Monitor",
+    "brand": "Feelworld",
+    "model": "F6 Plus V2",
+    "keySpecs": {
+      "screenSize": "6.0\" IPS Touchscreen",
+      "resolution": "1920 x 1080",
+      "brightness": "500 nits",
+      "inputs": "4K HDMI In/Out, Type-C 5V DC In & 3D LUT support"
+    },
+    "weight": "235 g",
+    "officialUrl": "https://feelworld.ltd/products/feelworld-f6-plus-v2",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-accsoon-seemo-pro",
+    "category": "monitor",
+    "subcategory": "SDI / HDMI iOS Video Adapter",
+    "brand": "Accsoon",
+    "model": "SeeMo Pro SDI/HDMI",
+    "keySpecs": {
+      "type": "Broadcast SDI/HDMI to iOS Camera Monitor Adapter",
+      "inputs": "HD-SDI In/Out Loop & HDMI In",
+      "power": "NP-F Battery or 2-Pin LEMO DC",
+      "audio": "3.5mm Headphone Jack"
+    },
+    "weight": "220 g",
+    "officialUrl": "https://accsoon.com/seemo-pro/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-monitor-hollyland-mars-4k",
+    "category": "monitor",
+    "subcategory": "4K Wireless Video Transmitter",
+    "brand": "Hollyland",
+    "model": "Mars 4K Wireless Video System",
+    "keySpecs": {
+      "resolution": "4K/30fps Video Transmission",
+      "range": "Up to 150m (450 ft) Line of Sight",
+      "latency": "Ultra-low 66 ms latency",
+      "inputs": "HDMI & SDI In/Out"
+    },
+    "weight": "223 g",
+    "officialUrl": "https://www.hollyland.com/product/mars-4k",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-manfrotto-190xpro4",
+    "category": "tripod",
+    "subcategory": "Photo Tripod Legs",
+    "brand": "Manfrotto",
+    "model": "190XPRO4 Aluminum 4-Section Tripod",
+    "keySpecs": {
+      "material": "Aluminum",
+      "maxHeight": "160 cm",
+      "foldedLength": "49 cm",
+      "maxLoad": "7.0 kg",
+      "column": "90° Center Column for macro/ground shots"
+    },
+    "weight": "2.05 kg",
+    "officialUrl": "https://www.manfrotto.com/global-en/190xpro4-aluminium-4-section-photo-tripod-mt190xpro4/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-sachtler-ace-xl",
+    "category": "tripod",
+    "subcategory": "Video Fluid Head Tripod",
+    "brand": "Sachtler",
+    "model": "Ace XL Carbon Fiber System",
+    "keySpecs": {
+      "maxLoad": "2 - 8 kg",
+      "head": "Ace XL 75mm Fluid Head with 8-step counterbalance",
+      "maxHeight": "173 cm",
+      "foldedLength": "86 cm"
+    },
+    "weight": "4.1 kg",
+    "officialUrl": "https://www.sachtler.com/en/products/system-ace-xl-ft-75/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-benro-rhino-24c",
+    "category": "tripod",
+    "subcategory": "Carbon Fiber Travel Tripod",
+    "brand": "Benro",
+    "model": "Rhino 24C + VX25 Ball Head",
+    "keySpecs": {
+      "material": "Carbon Fiber",
+      "maxHeight": "168.5 cm",
+      "foldedLength": "49 cm",
+      "maxLoad": "18 kg",
+      "monopodConvertible": "Leg detaches to convert to full-size monopod"
+    },
+    "weight": "1.74 kg",
+    "officialUrl": "https://benroeu.com/benro-rhino-series-tripods/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-gitzo-traveler-series-1",
+    "category": "tripod",
+    "subcategory": "Luxury Carbon Travel Tripod",
+    "brand": "Gitzo",
+    "model": "Traveler Series 1 Carbon eXact (GT1545T)",
+    "keySpecs": {
+      "material": "Carbon eXact Tubing",
+      "maxHeight": "153 cm",
+      "foldedLength": "42.5 cm (180° leg folding)",
+      "maxLoad": "10 kg",
+      "locking": "G-Lock Ultra Twist Locks"
+    },
+    "weight": "1.06 kg",
+    "officialUrl": "https://www.gitzo.com/global-en/traveler-tripod-series-1-carbon-4-sections-gt1545t/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-smallrig-ad-01-heavy-duty",
+    "category": "tripod",
+    "subcategory": "Heavy-Duty Video Tripod",
+    "brand": "SmallRig",
+    "model": "Heavy-Duty Aluminum Video Tripod AD-01",
+    "keySpecs": {
+      "material": "Aluminum Dual-Tube",
+      "maxHeight": "186 cm",
+      "foldedLength": "89 cm",
+      "maxLoad": "8.0 kg",
+      "head": "Fluid damping head with quick-release plate for DJI RS 2 / RS 3 / RS 4"
+    },
+    "weight": "4.0 kg",
+    "officialUrl": "https://www.smallrig.com/SmallRig-Heavy-Duty-Fluid-Head-Tripod-AD-01-3751.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-rs-3-pro",
+    "category": "gimbal",
+    "subcategory": "Cinema Camera Gimbal",
+    "brand": "DJI",
+    "model": "DJI RS 3 Pro",
+    "keySpecs": {
+      "testedPayload": "4.5 kg (10 lbs) Carbon Fiber Arms",
+      "automatedAxisLocks": "Automated 1st-Gen Axis Locks",
+      "lidarFocus": "Supports DJI LiDAR Range Finder (RS)",
+      "batteryLife": "Up to 12 hours"
+    },
+    "weight": "1.5 kg",
+    "officialUrl": "https://www.dji.com/rs-3-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-rs-3",
+    "category": "gimbal",
+    "subcategory": "3-Axis Camera Gimbal",
+    "brand": "DJI",
+    "model": "DJI RS 3",
+    "keySpecs": {
+      "testedPayload": "3.0 kg (6.6 lbs)",
+      "automatedAxisLocks": "Automated Axis Locks",
+      "screen": "1.8\" OLED Full-Color Touchscreen",
+      "batteryLife": "Up to 12 hours"
+    },
+    "weight": "990 g",
+    "officialUrl": "https://www.dji.com/rs-3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-zhiyun-crane-m2s",
+    "category": "gimbal",
+    "subcategory": "Compact Multi-Device Gimbal",
+    "brand": "Zhiyun",
+    "model": "CRANE-M2 S",
+    "keySpecs": {
+      "compatibility": "Action cams, smartphones, light mirrorless",
+      "fillLight": "Built-in 1000 Lumens Fill Light",
+      "batteryLife": "Up to 10.5 hours with quick charge"
+    },
+    "weight": "549 g",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/553",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-moza-aircross-3",
+    "category": "gimbal",
+    "subcategory": "Transformable 3-Axis Gimbal",
+    "brand": "Moza",
+    "model": "AirCross 3",
+    "keySpecs": {
+      "testedPayload": "3.2 kg (7 lbs)",
+      "foldableDesign": "4 Transformable Configurations (Classic, Sling, Dual-Hand, Vertical)",
+      "batteryLife": "Up to 19 hours"
+    },
+    "weight": "1.3 kg",
+    "officialUrl": "https://www.gudsen.com/moza-aircross-3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-mini-3-pro",
+    "category": "drone",
+    "subcategory": "Sub-249g Camera Drone",
+    "brand": "DJI",
+    "model": "DJI Mini 3 Pro",
+    "keySpecs": {
+      "takeoffWeight": "< 249 g",
+      "sensor": "1/1.3-inch CMOS Sensor (48 MP, f/1.7)",
+      "videoResolution": "4K/60fps HDR, 10-bit D-Cinelike",
+      "obstacleSensing": "Tri-Directional Obstacle Sensing (Forward/Backward/Downward)",
+      "flightTime": "Up to 34 minutes (47 mins with Plus battery)",
+      "trueVertical": "True Vertical Shooting (rotatable camera)"
+    },
+    "weight": "249 g",
+    "officialUrl": "https://www.dji.com/mini-3-pro",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-mavic-3-cine",
+    "category": "drone",
+    "subcategory": "Apple ProRes Cine Drone",
+    "brand": "DJI",
+    "model": "DJI Mavic 3 Cine",
+    "keySpecs": {
+      "sensor": "4/3 Hasselblad + 1/2 Tele Camera",
+      "videoResolution": "5.1K Apple ProRes 422 HQ / 4K 120fps",
+      "internalStorage": "Built-in 1TB High-Speed SSD",
+      "flightTime": "Up to 46 minutes"
+    },
+    "weight": "899 g",
+    "officialUrl": "https://www.dji.com/mavic-3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-fpv",
+    "category": "drone",
+    "subcategory": "First-Person View Drone",
+    "brand": "DJI",
+    "model": "DJI FPV",
+    "keySpecs": {
+      "speed": "Up to 140 km/h (87 mph) in Manual Mode (0-100 km/h in 2.0s)",
+      "camera": "4K/60fps 150° Super-Wide Angle Camera",
+      "transmission": "DJI O3 HD Low-Latency Video Transmission with Goggles V2",
+      "emergencyBrake": "Emergency Brake and Hover button"
+    },
+    "weight": "795 g",
+    "officialUrl": "https://www.dji.com/dji-fpv",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-hoverair-x1-promax",
+    "category": "drone",
+    "subcategory": "8K Flying Action Camera",
+    "brand": "HoverAir",
+    "model": "HoverAir X1 PROMAX",
+    "keySpecs": {
+      "weight": "192 g",
+      "videoResolution": "8K/30fps & 4K/120fps with 10-bit HLG",
+      "sensor": "1/1.3-inch Custom CMOS Sensor",
+      "followSpeed": "Up to 42 km/h (26 mph) tracking on snow and water",
+      "flightTime": "Up to 16 minutes"
+    },
+    "weight": "192 g",
+    "officialUrl": "https://hoverair.com/products/hoverair-x1-promax",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-manfrotto-element-mii",
+    "category": "tripod",
+    "subcategory": "Compact Aluminum Tripod",
+    "brand": "Manfrotto",
+    "model": "Element MII Aluminum",
+    "keySpecs": {
+      "material": "Aluminum",
+      "maxHeight": "160 cm",
+      "foldedLength": "42.5 cm",
+      "maxLoad": "8 kg",
+      "head": "Aluminum Center Ball Head with independent pan lock"
+    },
+    "weight": "1.55 kg",
+    "officialUrl": "https://www.manfrotto.com/global-en/element-mii-aluminum-black-tripod-mkeltmii4bk-bh/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-manfrotto-pixi-mini",
+    "category": "tripod",
+    "subcategory": "Mini Tabletop Tripod",
+    "brand": "Manfrotto",
+    "model": "PIXI Mini Tripod",
+    "keySpecs": {
+      "material": "Adapto Polymer & Stainless Steel",
+      "maxHeight": "13.5 cm",
+      "foldedLength": "18.5 cm",
+      "maxLoad": "1 kg",
+      "locking": "Push-button ball head lock mechanism"
+    },
+    "weight": "190 g",
+    "officialUrl": "https://www.manfrotto.com/global-en/pixi-mini-tripod-black-mtpixi-b/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-manfrotto-xpro-carbon-monopod",
+    "category": "tripod",
+    "subcategory": "Carbon Fiber Monopod",
+    "brand": "Manfrotto",
+    "model": "XPRO 4-Section Carbon Monopod",
+    "keySpecs": {
+      "material": "100% Carbon Fiber Tubes",
+      "maxHeight": "164 cm",
+      "foldedLength": "52 cm",
+      "maxLoad": "20 kg",
+      "locking": "Quick Power Lock (QPL) levers"
+    },
+    "weight": "600 g",
+    "officialUrl": "https://www.manfrotto.com/global-en/xpro-monopod-carbon-fibre-4-sections-mpmxproc4/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-benro-mach3-9x-carbon",
+    "category": "tripod",
+    "subcategory": "Studio Carbon Tripod",
+    "brand": "Benro",
+    "model": "Mach3 9X Carbon Fiber (TMA37C)",
+    "keySpecs": {
+      "material": "9x Carbon Fiber Weave",
+      "maxHeight": "161.5 cm",
+      "foldedLength": "62.5 cm",
+      "maxLoad": "16 kg",
+      "locking": "Dust-resistant twist leg locks"
+    },
+    "weight": "2.06 kg",
+    "officialUrl": "https://benroeu.com/benro-mach3-tripods/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-benro-bv6-video-kit",
+    "category": "tripod",
+    "subcategory": "Video Fluid Head Tripod",
+    "brand": "Benro",
+    "model": "BV6 Video Tripod Kit",
+    "keySpecs": {
+      "material": "Aluminum Dual-Tube with 75mm Bowl",
+      "maxHeight": "160 cm",
+      "maxLoad": "6 kg",
+      "counterbalance": "8-Step Counterbalance system",
+      "spreader": "Mid-level spreader with rubber feet"
+    },
+    "weight": "5.6 kg",
+    "officialUrl": "https://benroeu.com/benro-bv-video-tripod-kits/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-leofoto-ranger-ls-324c",
+    "category": "tripod",
+    "subcategory": "Professional Carbon Tripod",
+    "brand": "Leofoto",
+    "model": "Ranger LS-324C + LH-40 Ball Head",
+    "keySpecs": {
+      "material": "10x Toray Carbon Fiber",
+      "maxHeight": "139 cm (170 cm with column)",
+      "foldedLength": "48 cm",
+      "maxLoad": "15 kg",
+      "head": "LH-40 Low Profile Center Ball Head (40mm ball)"
+    },
+    "weight": "1.93 kg",
+    "officialUrl": "https://leofoto.com/products_detail.php?id=324",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-smallrig-ct180-video",
+    "category": "tripod",
+    "subcategory": "Lightweight Video Tripod",
+    "brand": "SmallRig",
+    "model": "CT180 Lightweight Video Tripod",
+    "keySpecs": {
+      "material": "Aluminum Alloy",
+      "maxHeight": "180 cm",
+      "foldedLength": "42 cm",
+      "maxLoad": "3 kg (Head) / 15 kg (Legs)",
+      "head": "Mini Fluid Head with 360° pan and +90°/-55° tilt"
+    },
+    "weight": "1.68 kg",
+    "officialUrl": "https://www.smallrig.com/SmallRig-CT180-Video-Tripod-3930.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-gitzo-mountaineer-series-2",
+    "category": "tripod",
+    "subcategory": "All-Round Carbon Tripod",
+    "brand": "Gitzo",
+    "model": "Mountaineer Series 2 Carbon (GT2542)",
+    "keySpecs": {
+      "material": "Carbon eXact Tubing",
+      "maxHeight": "167 cm",
+      "foldedLength": "54 cm",
+      "maxLoad": "18 kg",
+      "centerColumn": "G-Lock Ultra & Ground Level Set mechanism"
+    },
+    "weight": "1.68 kg",
+    "officialUrl": "https://www.gitzo.com/global-en/mountaineer-tripod-series-2-carbon-4-sections-gt2542/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-tripod-ulanzi-tt09-video-fast-lock",
+    "category": "tripod",
+    "subcategory": "Fast Lock Video Tripod",
+    "brand": "Ulanzi",
+    "model": "TT09 Video Fast Lock Carbon Tripod",
+    "keySpecs": {
+      "material": "Carbon Fiber with Quick-Deployment Lever",
+      "maxHeight": "142 cm",
+      "foldedLength": "45 cm",
+      "maxLoad": "5 kg (Ball Head)",
+      "head": "Integrated Panoramic Leveling Bowl Head with Arca & F38 mount"
+    },
+    "weight": "1.5 kg",
+    "officialUrl": "https://www.ulanzi.com/products/ulanzi-tt09-video-fast-lock-tripod",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-rsc-2",
+    "category": "gimbal",
+    "subcategory": "Foldable 3-Axis Gimbal",
+    "brand": "DJI",
+    "model": "DJI RSC 2",
+    "keySpecs": {
+      "testedPayload": "3.0 kg (6.6 lbs)",
+      "foldingDesign": "Foldable design with 6 configurations",
+      "screen": "1.0\" Built-in OLED Screen",
+      "batteryLife": "Up to 14 hours"
+    },
+    "weight": "1.2 kg",
+    "officialUrl": "https://www.dji.com/rsc-2",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-ronin-4d-6k",
+    "category": "gimbal",
+    "subcategory": "4-Axis Cinema Camera System",
+    "brand": "DJI",
+    "model": "DJI Ronin 4D 6K",
+    "keySpecs": {
+      "stabilization": "4-Axis Active Stabilization (Z-Axis vertical damping)",
+      "sensor": "Full-Frame Zenmuse X9-6K (ProRes RAW, 6K/60fps, 4K/120fps)",
+      "lidar": "LiDAR Waveform Focus System (43,200 ranging points)",
+      "transmission": "Integrated 20,000 ft O3 Pro Video Transmission"
+    },
+    "weight": "4.67 kg (Combination)",
+    "officialUrl": "https://www.dji.com/ronin-4d",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-dji-osmo-mobile-se",
+    "category": "gimbal",
+    "subcategory": "Foldable Phone Gimbal",
+    "brand": "DJI",
+    "model": "DJI Osmo Mobile SE",
+    "keySpecs": {
+      "compatibility": "Magnetic Phone Clamp for iPhone / Android",
+      "tracking": "ActiveTrack 5.0 subject tracking",
+      "statusPanel": "Status Panel for battery level & gimbal mode",
+      "batteryLife": "Up to 8 hours"
+    },
+    "weight": "352 g",
+    "officialUrl": "https://www.dji.com/osmo-mobile-se",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-zhiyun-crane-3s",
+    "category": "gimbal",
+    "subcategory": "Heavy Cinema Camera Gimbal",
+    "brand": "Zhiyun",
+    "model": "CRANE 3S",
+    "keySpecs": {
+      "testedPayload": "6.5 kg (Supports Canon C300, Sony FX9, RED, ARRI)",
+      "extendableAxis": "Detachable extension module on roll axis for cine rigs",
+      "handleOptions": "TransMount SmartSling & EasySling handles",
+      "dcIn": "DC-in port for TransMount PowerPlus battery pack"
+    },
+    "weight": "2.47 kg",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/103",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-zhiyun-weebill-2",
+    "category": "gimbal",
+    "subcategory": "Touchscreen Camera Gimbal",
+    "brand": "Zhiyun",
+    "model": "WEEBILL 2",
+    "keySpecs": {
+      "screen": "2.88\" Flip-out Full-Color Touchscreen",
+      "chipset": "Infineon sensor vector-splitting chip",
+      "testedPayload": "3.3 kg",
+      "batteryLife": "Up to 9 hours (Supports 24W PD fast charge in 1.6 hrs)"
+    },
+    "weight": "1.47 kg",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/412",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-zhiyun-smooth-5s",
+    "category": "gimbal",
+    "subcategory": "Professional Mobile Gimbal",
+    "brand": "Zhiyun",
+    "model": "SMOOTH 5S",
+    "keySpecs": {
+      "structure": "Professional 3-Axis Orthogonal Structure (360° unrestricted pan)",
+      "fillLight": "Built-in 650 Lux Fill Light + 2 magnetic add-on lights",
+      "controlPanel": "Round joystick, wheel adjustment, and direct phone settings"
+    },
+    "weight": "625 g",
+    "officialUrl": "https://www.zhiyun-tech.com/en/product/detail/646",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-moza-air-2s",
+    "category": "gimbal",
+    "subcategory": "Professional DSLR Gimbal",
+    "brand": "Moza",
+    "model": "Air 2S",
+    "keySpecs": {
+      "testedPayload": "4.2 kg (9.3 lbs)",
+      "smartWheel": "Micro handwheel for precise focus, zoom, and axis control",
+      "batteryLife": "Up to 20 hours (Built-in 3200mAh high capacity)",
+      "powerSupply": "Supports external power bank charging"
+    },
+    "weight": "1.75 kg",
+    "officialUrl": "https://www.gudsen.com/moza-air-2s",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-gimbal-feiyutech-scorp-c",
+    "category": "gimbal",
+    "subcategory": "Integrated Handle Camera Gimbal",
+    "brand": "FeiyuTech",
+    "model": "SCORP-C",
+    "keySpecs": {
+      "testedPayload": "2.5 kg",
+      "dualHandle": "Integrated T-shaped and sling handle design",
+      "memoryTrajectory": "A/B point button memory for automated tracking shots",
+      "batteryLife": "Up to 13 hours"
+    },
+    "weight": "1.2 kg",
+    "officialUrl": "https://www.feiyu-tech.com/feiyu-scorp-c/",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-mini-3",
+    "category": "drone",
+    "subcategory": "Sub-249g Ultralight Drone",
+    "brand": "DJI",
+    "model": "DJI Mini 3",
+    "keySpecs": {
+      "takeoffWeight": "< 249 g",
+      "sensor": "1/1.3-inch CMOS Sensor (4K HDR)",
+      "flightTime": "Up to 38 minutes (51 mins with Plus battery)",
+      "trueVertical": "True Vertical Camera Tilt for vertical video",
+      "windResistance": "Level 5 (38 km/h)"
+    },
+    "weight": "248 g",
+    "officialUrl": "https://www.dji.com/mini-3",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-air-2s",
+    "category": "drone",
+    "subcategory": "1-Inch Camera Drone",
+    "brand": "DJI",
+    "model": "DJI Air 2S",
+    "keySpecs": {
+      "sensor": "1-inch CMOS Sensor (20 MP, 2.4μm pixels)",
+      "videoResolution": "5.4K/30fps & 4K/60fps, 10-bit D-Log",
+      "obstacleSensing": "4-Directional Obstacle Sensing with APAS 4.0",
+      "flightTime": "Up to 31 minutes",
+      "transmission": "DJI O3 (12 km range)"
+    },
+    "weight": "595 g",
+    "officialUrl": "https://www.dji.com/air-2s",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-dji-matrice-350-rtk",
+    "category": "drone",
+    "subcategory": "Enterprise Inspection Drone",
+    "brand": "DJI",
+    "model": "Matrice 350 RTK",
+    "keySpecs": {
+      "flightTime": "Up to 55 minutes",
+      "payloadCapacity": "Max 2.7 kg payload (Zenmuse H20N, P1, L2 lidar)",
+      "weatherRating": "IP55 Weather Resistance (-20°C to 50°C)",
+      "transmission": "DJI O3 Enterprise 20 km transmission"
+    },
+    "weight": "6.47 kg",
+    "officialUrl": "https://enterprise.dji.com/matrice-350-rtk",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-drone-autel-evo-ii-pro-v3",
+    "category": "drone",
+    "subcategory": "6K Foldable Drone",
+    "brand": "Autel Robotics",
+    "model": "EVO II Pro V3",
+    "keySpecs": {
+      "sensor": "1-inch Sony CMOS (20 MP, f/2.8 - f/11 adjustable)",
+      "videoResolution": "6K/30fps & 4K/60fps 10-bit HDR",
+      "flightTime": "Up to 40 minutes",
+      "obstacleAvoidance": "360° Omnidirectional Obstacle Avoidance (19 sensor groups)",
+      "transmission": "SkyLink 2.0 (15 km range)"
+    },
+    "weight": "1.19 kg",
+    "officialUrl": "https://www.autelrobotics.com/productdetail/26.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-amaran-cob-60d-s",
+    "category": "light",
+    "subcategory": "Ultra-Compact COB",
+    "brand": "Aputure",
+    "model": "Amaran COB 60d S",
+    "keySpecs": {
+      "type": "Ultra-Compact Daylight Point-Source LED",
+      "power": "65W",
+      "cct": "5600K",
+      "cri": "96+",
+      "tlci": "99+",
+      "mount": "Bowens Mount",
+      "powerOptions": "AC Adapter, Dual NP-F970 Battery Plate, or D-Tap"
+    },
+    "weight": "675 g",
+    "officialUrl": "https://www.aputure.com/products/amaran-cob-60d-s",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-aputure-amaran-cob-60x-s",
+    "category": "light",
+    "subcategory": "Ultra-Compact Bi-Color COB",
+    "brand": "Aputure",
+    "model": "Amaran COB 60x S",
+    "keySpecs": {
+      "type": "Ultra-Compact Bi-Color Point-Source LED",
+      "power": "65W",
+      "cct": "2700K - 6500K",
+      "cri": "96+",
+      "tlci": "97+",
+      "mount": "Bowens Mount",
+      "powerOptions": "AC Adapter, Dual NP-F plate, D-Tap"
+    },
+    "weight": "675 g",
+    "officialUrl": "https://www.aputure.com/products/amaran-cob-60x-s",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-nanlite-forza-150b",
+    "category": "light",
+    "subcategory": "Compact Bi-Color COB",
+    "brand": "Nanlite",
+    "model": "Forza 150B",
+    "keySpecs": {
+      "type": "Compact Bi-Color Monolight",
+      "power": "170W",
+      "cct": "2700K - 6500K",
+      "cri": "96",
+      "tlci": "98",
+      "mount": "FM Mount (Bowens Adapter included)",
+      "batteryOption": "Optional V-Mount Battery Handgrip"
+    },
+    "weight": "1.56 kg",
+    "officialUrl": "https://nanliteus.com/products/forza-150b",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-ad300-pro",
+    "category": "light",
+    "subcategory": "Battery Studio Strobe",
+    "brand": "Godox",
+    "model": "AD300 Pro",
+    "keySpecs": {
+      "type": "Outdoor Monolight Strobe",
+      "power": "300Ws",
+      "recycleTime": "0.01 - 1.5s",
+      "cct": "5600K (±200K)",
+      "batteryLife": "320 Full Power Flashes (14.4V 2600mAh)",
+      "syncSpeed": "HSS up to 1/8000s",
+      "modelingLight": "12W Bi-Color LED (3000K-6000K)"
+    },
+    "weight": "1.25 kg (with battery)",
+    "officialUrl": "https://www.godox.com/product-d/AD300Pro.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-ad400-pro",
+    "category": "light",
+    "subcategory": "Battery Studio Strobe",
+    "brand": "Godox",
+    "model": "AD400 Pro",
+    "keySpecs": {
+      "type": "Outdoor Monolight Strobe",
+      "power": "400Ws",
+      "recycleTime": "0.01 - 0.9s",
+      "batteryLife": "390 Full Power Flashes (21.6V 2600mAh)",
+      "syncSpeed": "HSS up to 1/8000s",
+      "mount": "Bowens Mount adapter included",
+      "modelingLight": "30W LED (4800K)"
+    },
+    "weight": "2.1 kg",
+    "officialUrl": "https://www.godox.com/product-d/AD400Pro.html",
+    "source": "lightbag-db"
+  },
+  {
+    "id": "lb-light-godox-v860iii",
+    "category": "light",
+    "subcategory": "Camera Flash Speedlight",
+    "brand": "Godox",
+    "model": "V860III Speedlight",
+    "keySpecs": {
+      "type": "TTL Li-Ion On-Camera Flash",
+      "power": "76Ws",
+      "recycleTime": "1.5s",
+      "batteryLife": "480 Full Power Flashes (7.2V 2600mAh)",
+      "modelingLight": "2W Built-in front LED modeling light (10 levels)",
+      "quickSwitch": "Quick switch TCM button between TTL and Manual"
+    },
+    "weight": "530 g (with battery)",
+    "officialUrl": "https://www.godox.com/product-d/V860III.html",
+    "source": "lightbag-db"
+  }
+]

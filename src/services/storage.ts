@@ -12,10 +12,12 @@ import {
   INITIAL_PACKING,
   INITIAL_MOODBOARDS,
   INITIAL_SETTINGS,
-  SEED_GEAR_IDS,
-  SEED_SHOOT_IDS,
-  SEED_PACKING_IDS,
-  SEED_MOODBOARD_IDS,
+  sanitizeGearList,
+  sanitizeShootsList,
+  sanitizePackingList,
+  sanitizeMoodboardsList,
+  sanitizeNotificationsList,
+  sanitizeSettings,
 } from '../data/initialData';
 
 const STORAGE_KEYS = {
@@ -26,27 +28,25 @@ const STORAGE_KEYS = {
   SETTINGS: 'shutterhub_settings',
   NOTIFICATIONS: 'shutterhub_notifications',
   AUTH_USER: 'shutterhub_auth_user',
-  CLEANUP_DONE: 'shutterhub_seed_cleanup_done_v2',
+  CLEANUP_DONE: 'lightbag_permanent_seed_cleanup_v3',
 };
 
-// One-time cleanup that removes demo/seed data matching seed IDs without touching user items (Requirement 4)
+// Complete cleanup that removes demo/seed data matching seed IDs or model names permanently
 export function runSeedDataCleanup(): void {
   try {
-    if (localStorage.getItem(STORAGE_KEYS.CLEANUP_DONE)) return;
-
-    // Clean gear: keep only user items
+    // Clean gear: remove all demo items, preserve user items like fujifil and X-T3
     const rawGear = localStorage.getItem(STORAGE_KEYS.GEAR);
     if (rawGear) {
       const parsed = JSON.parse(rawGear) as GearItem[];
-      const cleaned = parsed.filter((g) => !SEED_GEAR_IDS.has(g.id));
+      const cleaned = sanitizeGearList(parsed);
       localStorage.setItem(STORAGE_KEYS.GEAR, JSON.stringify(cleaned));
     }
 
-    // Clean shoots: keep only user shoots
+    // Clean shoots: remove demo shoots
     const rawShoots = localStorage.getItem(STORAGE_KEYS.SHOOTS);
     if (rawShoots) {
       const parsed = JSON.parse(rawShoots) as Shoot[];
-      const cleaned = parsed.filter((s) => !SEED_SHOOT_IDS.has(s.id));
+      const cleaned = sanitizeShootsList(parsed);
       localStorage.setItem(STORAGE_KEYS.SHOOTS, JSON.stringify(cleaned));
     }
 
@@ -54,9 +54,7 @@ export function runSeedDataCleanup(): void {
     const rawPacking = localStorage.getItem(STORAGE_KEYS.PACKING);
     if (rawPacking) {
       const parsed = JSON.parse(rawPacking) as PackingItem[];
-      const cleaned = parsed.filter(
-        (p) => !SEED_PACKING_IDS.has(p.id) && !SEED_SHOOT_IDS.has(p.shootId) && !SEED_GEAR_IDS.has(p.gearId)
-      );
+      const cleaned = sanitizePackingList(parsed);
       localStorage.setItem(STORAGE_KEYS.PACKING, JSON.stringify(cleaned));
     }
 
@@ -64,31 +62,29 @@ export function runSeedDataCleanup(): void {
     const rawMb = localStorage.getItem(STORAGE_KEYS.MOODBOARDS);
     if (rawMb) {
       const parsed = JSON.parse(rawMb) as MoodboardItem[];
-      const cleaned = parsed.filter((m) => !SEED_MOODBOARD_IDS.has(m.id));
+      const cleaned = sanitizeMoodboardsList(parsed);
       localStorage.setItem(STORAGE_KEYS.MOODBOARDS, JSON.stringify(cleaned));
+    }
+
+    // Clean notifications: filter out demo notifications
+    const rawNotifs = localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS);
+    if (rawNotifs) {
+      const parsed = JSON.parse(rawNotifs) as AlertNotification[];
+      const cleaned = sanitizeNotificationsList(parsed);
+      localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(cleaned));
     }
 
     // Clean settings: reset demo studio name or photographer name
     const rawSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
     if (rawSettings) {
       const parsed = JSON.parse(rawSettings) as AppSettings;
-      let changed = false;
-      if (parsed.studioName === 'Lumina Studio SF' || parsed.studioName === 'Photo Studio Vault') {
-        parsed.studioName = '';
-        changed = true;
-      }
-      if (parsed.photographerName === 'Alex Rivera') {
-        parsed.photographerName = '';
-        changed = true;
-      }
-      if (changed) {
-        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(parsed));
-      }
+      const cleaned = sanitizeSettings(parsed);
+      localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(cleaned));
     }
 
     localStorage.setItem(STORAGE_KEYS.CLEANUP_DONE, 'true');
   } catch (err) {
-    console.warn('Silent seed cleanup error:', err);
+    console.warn('Seed cleanup info:', err);
   }
 }
 
@@ -112,63 +108,75 @@ function saveToStorage<T>(key: string, value: T): void {
   }
 }
 
-// Storage API
+// Storage API - always enforces demo sanitization
 export const StorageService = {
   getGear(): GearItem[] {
-    return loadFromStorage<GearItem[]>(STORAGE_KEYS.GEAR, INITIAL_GEAR);
+    const loaded = loadFromStorage<GearItem[]>(STORAGE_KEYS.GEAR, INITIAL_GEAR);
+    return sanitizeGearList(loaded);
   },
   saveGear(items: GearItem[]): void {
-    saveToStorage(STORAGE_KEYS.GEAR, items);
+    const cleaned = sanitizeGearList(items);
+    saveToStorage(STORAGE_KEYS.GEAR, cleaned);
   },
 
   getShoots(): Shoot[] {
-    return loadFromStorage<Shoot[]>(STORAGE_KEYS.SHOOTS, INITIAL_SHOOTS);
+    const loaded = loadFromStorage<Shoot[]>(STORAGE_KEYS.SHOOTS, INITIAL_SHOOTS);
+    return sanitizeShootsList(loaded);
   },
   saveShoots(shoots: Shoot[]): void {
-    saveToStorage(STORAGE_KEYS.SHOOTS, shoots);
+    const cleaned = sanitizeShootsList(shoots);
+    saveToStorage(STORAGE_KEYS.SHOOTS, cleaned);
   },
 
   getPacking(): PackingItem[] {
-    return loadFromStorage<PackingItem[]>(STORAGE_KEYS.PACKING, INITIAL_PACKING);
+    const loaded = loadFromStorage<PackingItem[]>(STORAGE_KEYS.PACKING, INITIAL_PACKING);
+    return sanitizePackingList(loaded);
   },
   savePacking(items: PackingItem[]): void {
-    saveToStorage(STORAGE_KEYS.PACKING, items);
+    const cleaned = sanitizePackingList(items);
+    saveToStorage(STORAGE_KEYS.PACKING, cleaned);
   },
 
   getMoodboards(): MoodboardItem[] {
-    return loadFromStorage<MoodboardItem[]>(STORAGE_KEYS.MOODBOARDS, INITIAL_MOODBOARDS);
+    const loaded = loadFromStorage<MoodboardItem[]>(STORAGE_KEYS.MOODBOARDS, INITIAL_MOODBOARDS);
+    return sanitizeMoodboardsList(loaded);
   },
   saveMoodboards(items: MoodboardItem[]): void {
-    saveToStorage(STORAGE_KEYS.MOODBOARDS, items);
+    const cleaned = sanitizeMoodboardsList(items);
+    saveToStorage(STORAGE_KEYS.MOODBOARDS, cleaned);
   },
 
   getSettings(): AppSettings {
     const saved = loadFromStorage<AppSettings>(STORAGE_KEYS.SETTINGS, INITIAL_SETTINGS);
+    const cleaned = sanitizeSettings(saved);
     return {
       ...INITIAL_SETTINGS,
-      ...saved,
-      tempUnit: saved.tempUnit || 'C',
-      timeFormat: saved.timeFormat || '24h',
-      dateFormat: saved.dateFormat || 'dd/mm/yyyy',
-      theme: saved.theme || 'system',
+      ...cleaned,
+      tempUnit: cleaned.tempUnit || 'C',
+      timeFormat: cleaned.timeFormat || '24h',
+      dateFormat: cleaned.dateFormat || 'dd/mm/yyyy',
+      theme: cleaned.theme || 'system',
     };
   },
   saveSettings(settings: AppSettings): void {
-    saveToStorage(STORAGE_KEYS.SETTINGS, settings);
+    const cleaned = sanitizeSettings(settings);
+    saveToStorage(STORAGE_KEYS.SETTINGS, cleaned);
   },
 
   getNotifications(): AlertNotification[] {
-    return loadFromStorage<AlertNotification[]>(STORAGE_KEYS.NOTIFICATIONS, []);
+    const loaded = loadFromStorage<AlertNotification[]>(STORAGE_KEYS.NOTIFICATIONS, []);
+    return sanitizeNotificationsList(loaded);
   },
   saveNotifications(notifs: AlertNotification[]): void {
-    saveToStorage(STORAGE_KEYS.NOTIFICATIONS, notifs);
+    const cleaned = sanitizeNotificationsList(notifs);
+    saveToStorage(STORAGE_KEYS.NOTIFICATIONS, cleaned);
   },
 
   resetAll(): void {
-    saveToStorage(STORAGE_KEYS.GEAR, INITIAL_GEAR);
-    saveToStorage(STORAGE_KEYS.SHOOTS, INITIAL_SHOOTS);
-    saveToStorage(STORAGE_KEYS.PACKING, INITIAL_PACKING);
-    saveToStorage(STORAGE_KEYS.MOODBOARDS, INITIAL_MOODBOARDS);
+    saveToStorage(STORAGE_KEYS.GEAR, []);
+    saveToStorage(STORAGE_KEYS.SHOOTS, []);
+    saveToStorage(STORAGE_KEYS.PACKING, []);
+    saveToStorage(STORAGE_KEYS.MOODBOARDS, []);
     saveToStorage(STORAGE_KEYS.SETTINGS, INITIAL_SETTINGS);
     saveToStorage(STORAGE_KEYS.NOTIFICATIONS, []);
   },
@@ -196,7 +204,6 @@ export function playAlertChime(type: 'shutter' | 'critical' | 'success' | 'morni
     const ctx = new AudioContextClass();
     
     if (type === 'shutter') {
-      // Crisp mechanical click
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'triangle';
@@ -209,7 +216,6 @@ export function playAlertChime(type: 'shutter' | 'critical' | 'success' | 'morni
       osc.start();
       osc.stop(ctx.currentTime + 0.06);
     } else if (type === 'critical') {
-      // Dual high tone alert
       const now = ctx.currentTime;
       [0, 0.12].forEach((offset) => {
         const osc = ctx.createOscillator();
@@ -224,7 +230,6 @@ export function playAlertChime(type: 'shutter' | 'critical' | 'success' | 'morni
         osc.stop(now + offset + 0.09);
       });
     } else {
-      // Soft pleasant chime
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';

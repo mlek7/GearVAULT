@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { AccountDb } from './server/accountDb';
+import { cinedService } from './server/cinedService';
+import { lightbagGearDb } from './server/lightbagGearDb';
 
 async function startServer() {
   const app = express();
@@ -331,6 +333,158 @@ async function startServer() {
         success: false,
         error: err.message || 'No image found at this link',
       });
+    }
+  });
+
+  // ==========================================
+  // UNIFIED GEAR DATABASE API (CineD + Lightbag DB)
+  // ==========================================
+
+  // Search cameras, lenses, lights, audio, monitors, tripods, gimbals, drones
+  app.get('/api/gear-db/search', async (req, res) => {
+    try {
+      const q = typeof req.query.q === 'string' ? req.query.q : '';
+      const rawCategory = typeof req.query.category === 'string' ? req.query.category.toLowerCase() : '';
+      const rawType = typeof req.query.type === 'string' ? req.query.type.toLowerCase() : '';
+      const filterKey = (rawCategory || rawType || 'all').replace(/s$/, ''); // e.g. 'camera', 'lens', 'light', 'audio', 'monitor', 'tripod', 'gimbal', 'drone', or 'all'
+      const brand = typeof req.query.brand === 'string' ? req.query.brand : '';
+      const limit = Math.min(Math.max(parseInt(String(req.query.limit || '20'), 10) || 20, 1), 100);
+
+      const categoryMap: Record<string, string> = {
+        camera: 'Camera Body',
+        lens: 'Lens',
+        light: 'Lighting',
+        audio: 'Audio',
+        monitor: 'Monitor',
+        tripod: 'Tripod',
+        gimbal: 'Gimbal',
+        drone: 'Drone',
+      };
+
+      let results: any[] = [];
+
+      if (filterKey === 'camera' || filterKey === 'lens') {
+        // Search CineD exclusively
+        const cinedItems = await cinedService.search(q, filterKey, brand, limit);
+        results = cinedItems.map((item) => ({
+          ...item,
+          category: item.type === 'camera' ? 'Camera Body' : 'Lens',
+          source: 'cined',
+        }));
+      } else if (['light', 'audio', 'monitor', 'tripod', 'gimbal', 'drone'].includes(filterKey)) {
+        // Search Lightbag DB exclusively
+        const lbItems = lightbagGearDb.search(q, filterKey, limit);
+        results = lbItems.map((item) => ({
+          ...item,
+          type: item.category,
+          category: categoryMap[item.category] || 'Accessories',
+          sourceUrl: item.officialUrl,
+          source: 'lightbag-db',
+        }));
+      } else {
+        // 'all': Search both CineD and Lightbag DB
+        const [cinedItems, lbItems] = await Promise.all([
+          cinedService.search(q, 'all', brand, limit),
+          Promise.resolve(lightbagGearDb.search(q, 'all', limit)),
+        ]);
+
+        const normalizedCined = cinedItems.map((item) => ({
+          ...item,
+          category: item.type === 'camera' ? 'Camera Body' : 'Lens',
+          source: 'cined',
+        }));
+
+        const normalizedLb = lbItems.map((item) => ({
+          ...item,
+          type: item.category,
+          category: categoryMap[item.category] || 'Accessories',
+          sourceUrl: item.officialUrl,
+          source: 'lightbag-db',
+        }));
+
+        const cleanQ = q.trim().toLowerCase();
+        const combined = [...normalizedCined, ...normalizedLb];
+
+        if (cleanQ) {
+          combined.sort((a, b) => {
+            const aModel = a.model.toLowerCase();
+            const bModel = b.model.toLowerCase();
+            const aFull = `${a.brand} ${a.model}`.toLowerCase();
+            const bFull = `${b.brand} ${b.model}`.toLowerCase();
+            const aExact = aModel === cleanQ || aFull === cleanQ;
+            const bExact = bModel === cleanQ || bFull === cleanQ;
+            if (aExact && !bExact) return -1;
+            if (bExact && !aExact) return 1;
+            const aContains = aModel.includes(cleanQ) || aFull.includes(cleanQ);
+            const bContains = bModel.includes(cleanQ) || bFull.includes(cleanQ);
+            if (aContains && !bContains) return -1;
+            if (bContains && !aContains) return 1;
+            return a.model.localeCompare(b.model);
+          });
+        }
+
+        results = combined.slice(0, limit);
+      }
+
+      return res.json({ success: true, count: results.length, items: results });
+    } catch (err: any) {
+      console.error('Error in /api/gear-db/search:', err);
+      return res.status(500).json({ success: false, error: err.message || 'Search failed', items: [] });
+    }
+  });
+
+  // Get brands per type
+  app.get('/api/gear-db/brands', async (req, res) => {
+    try {
+      const brands = await cinedService.getBrands();
+      return res.json({ success: true, brands });
+    } catch (err: any) {
+      console.error('Error in /api/gear-db/brands:', err);
+      return res.status(500).json({ success: false, error: err.message || 'Failed to get brands' });
+    }
+  });
+
+  // Proxy CineD images (only databases.cined.com or cined.com)
+  app.get('/api/gear-db/image', async (req, res) => {
+    try {
+      const imageUrl = typeof req.query.url === 'string' ? req.query.url.trim() : '';
+      if (!imageUrl) {
+        return res.status(400).send('Image URL required');
+      }
+
+      let parsed: URL;
+      try {
+        parsed = new URL(imageUrl);
+      } catch {
+        return res.status(400).send('Invalid URL format');
+      }
+
+      const allowedHosts = ['databases.cined.com', 'www.cined.com', 'cined.com'];
+      if (!allowedHosts.includes(parsed.hostname.toLowerCase())) {
+        return res.status(403).send('Forbidden: host not permitted');
+      }
+
+      const fetchRes = await fetch(imageUrl, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        },
+      });
+
+      if (!fetchRes.ok) {
+        return res.status(fetchRes.status).send('Failed to fetch image');
+      }
+
+      const contentType = fetchRes.headers.get('content-type') || 'image/jpeg';
+      const arrayBuffer = await fetchRes.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Cache-Control', 'public, max-age=604800');
+      return res.send(buffer);
+    } catch (err: any) {
+      console.error('Error proxying CineD image:', err);
+      return res.status(500).send('Image proxy error');
     }
   });
 

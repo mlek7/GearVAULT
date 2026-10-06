@@ -15,6 +15,7 @@ import {
   Cpu,
   Layers,
   Sparkles,
+  ExternalLink,
 } from 'lucide-react';
 import { GearItem, GearCategory, GEAR_CATEGORIES } from '../../types';
 import { GearModal } from './GearModal';
@@ -155,19 +156,6 @@ export const GearVaultView: React.FC<GearVaultViewProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            id="btn-exiftool-scanner"
-            onClick={() => {
-              setInspectedExifData(null);
-              setIsExifScannerOpen(true);
-            }}
-            className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-[0.97] transition-all cursor-pointer"
-            title="Import metadata from image"
-            aria-label="Scan image metadata"
-          >
-            <Cpu className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-          </button>
-
           {/* Primary Action Button */}
           <button
             id="btn-add-gear"
@@ -522,11 +510,121 @@ export const GearVaultView: React.FC<GearVaultViewProps> = ({
                     <ShieldCheck className="w-3.5 h-3.5" />
                     <span>EXIF Verified</span>
                   </span>
+                ) : detailItem.source === 'cined' ? (
+                  <span className="text-slate-700 dark:text-slate-300 font-medium text-xs">CineD Database</span>
+                ) : detailItem.source === 'lightbag-db' ? (
+                  <span className="text-slate-700 dark:text-slate-300 font-medium text-xs">Lightbag Gear Database</span>
                 ) : (
                   <span className="text-slate-400">Manual Entry</span>
                 )}
               </div>
+
+              {/* CineD Source / Attribution */}
+              {detailItem.source === 'cined' && (
+                <div className="p-3.5 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400">Database</span>
+                  {detailItem.sourceUrl ? (
+                    <a
+                      href={detailItem.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-mono text-[11px] text-[#FF2D20] hover:underline"
+                    >
+                      <span>Specs from CineD Database</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : (
+                    <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+                      Specs from CineD Database
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Lightbag DB Source / Attribution */}
+              {detailItem.source === 'lightbag-db' && (
+                <div className="p-3.5 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400">Database</span>
+                  {detailItem.officialUrl || detailItem.sourceUrl ? (
+                    <a
+                      href={detailItem.officialUrl || detailItem.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-mono text-[11px] text-[#FF2D20] hover:underline"
+                    >
+                      <span>Lightbag Gear Database</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : (
+                    <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+                      Lightbag Gear Database
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
+
+            {/* Equipment Specifications Grid */}
+            {(detailItem.keySpecs || detailItem.specs) && (
+              <div className="mb-4">
+                <span className="text-xs font-medium text-slate-500 dark:text-slate-400 block mb-1.5">
+                  Technical Specifications
+                </span>
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2">
+                  {detailItem.keySpecs ? (
+                    Object.entries(detailItem.keySpecs).map(([key, val]) => (
+                      <div key={key} className="flex items-center justify-between text-xs">
+                        <span className="text-slate-500 dark:text-slate-400 capitalize font-mono text-[11px]">
+                          {key.replace(/([A-Z])/g, ' $1').trim()}
+                        </span>
+                        <span className="font-medium text-slate-800 dark:text-slate-200 text-right">
+                          {String(val)}
+                        </span>
+                      </div>
+                    ))
+                  ) : detailItem.specs ? (
+                    <>
+                      {detailItem.specs.sensor && (
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">Sensor</span>
+                          <span className="font-medium text-slate-800 dark:text-slate-200">{detailItem.specs.sensor}</span>
+                        </div>
+                      )}
+                      {detailItem.specs.mounts?.length ? (
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">Mounts</span>
+                          <span className="font-medium text-slate-800 dark:text-slate-200">{detailItem.specs.mounts.join(', ')}</span>
+                        </div>
+                      ) : null}
+                      {detailItem.specs.focalLength && (
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">Focal Length</span>
+                          <span className="font-medium text-slate-800 dark:text-slate-200">{detailItem.specs.focalLength}</span>
+                        </div>
+                      )}
+                      {detailItem.specs.aperture && (
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">Aperture</span>
+                          <span className="font-medium text-slate-800 dark:text-slate-200">{detailItem.specs.aperture}</span>
+                        </div>
+                      )}
+                      {detailItem.specs.weightG && (
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">Weight</span>
+                          <span className="font-medium text-slate-800 dark:text-slate-200">{detailItem.specs.weightG}g</span>
+                        </div>
+                      )}
+                      {detailItem.specs.filterThread && (
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">Filter Thread</span>
+                          <span className="font-medium text-slate-800 dark:text-slate-200">{detailItem.specs.filterThread}</span>
+                        </div>
+                      )}
+                    </>
+                  ) : null}
+                </div>
+              </div>
+            )}
 
             {/* Notes */}
             {detailItem.notes && (
@@ -628,10 +726,6 @@ export const GearVaultView: React.FC<GearVaultViewProps> = ({
         onClose={() => {
           setIsExifScannerOpen(false);
           setInspectedExifData(null);
-        }}
-        onImportGear={(newGear) => {
-          onAddGear(newGear);
-          setIsExifScannerOpen(false);
         }}
         initialData={inspectedExifData}
       />

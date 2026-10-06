@@ -3,6 +3,10 @@ export type GearCategory =
   | 'Lens'
   | 'Lighting'
   | 'Audio'
+  | 'Monitor'
+  | 'Tripod'
+  | 'Gimbal'
+  | 'Drone'
   | 'Batteries/Memory Cards'
   | 'Accessories';
 
@@ -11,6 +15,10 @@ export const GEAR_CATEGORIES: GearCategory[] = [
   'Lens',
   'Lighting',
   'Audio',
+  'Monitor',
+  'Tripod',
+  'Gimbal',
+  'Drone',
   'Batteries/Memory Cards',
   'Accessories',
 ];
@@ -31,16 +39,80 @@ export interface GearExifMetadata {
   rawTags?: Record<string, any>;
 }
 
+export interface CineDGearItem {
+  id: string;
+  type: 'camera' | 'lens';
+  brand: string;
+  model: string;
+  sensor?: string | null;
+  sensorWidth?: string | null;
+  sensorHeight?: string | null;
+  mounts: string[];
+  focalLength?: string | null;
+  aperture?: string | null;
+  weightG?: number | null;
+  dimensions?: string | null;
+  filterThread?: string | null;
+  releaseDate?: string | null;
+  imageUrl?: string | null;
+  sourceUrl: string;
+}
+
+export interface GearSpecs {
+  sensor?: string | null;
+  sensorWidth?: string | null;
+  sensorHeight?: string | null;
+  mounts?: string[];
+  focalLength?: string | null;
+  aperture?: string | null;
+  weightG?: number | null;
+  dimensions?: string | null;
+  filterThread?: string | null;
+  releaseDate?: string | null;
+  [key: string]: any;
+}
+
 export interface GearItem {
   id: string;
   name: string;
   category: GearCategory;
+  subcategory?: string;
   serialNumber: string;
   image: string;
   notes: string;
   brand?: string;
   createdAt: string;
   exifMetadata?: GearExifMetadata;
+  specs?: GearSpecs;
+  keySpecs?: Record<string, any>;
+  source?: 'cined' | 'lightbag-db' | 'manual' | 'exif';
+  sourceId?: string;
+  sourceUrl?: string;
+  officialUrl?: string;
+}
+
+export interface GearDbSearchResult {
+  id: string;
+  type: string;
+  category: GearCategory;
+  subcategory?: string;
+  brand: string;
+  model: string;
+  keySpecs?: Record<string, any>;
+  specs?: GearSpecs;
+  sensor?: string | null;
+  mounts?: string[];
+  focalLength?: string | null;
+  aperture?: string | null;
+  weightG?: number | null;
+  weight?: string | number | null;
+  dimensions?: string | null;
+  filterThread?: string | null;
+  releaseDate?: string | null;
+  imageUrl?: string | null;
+  sourceUrl?: string;
+  officialUrl?: string;
+  source: 'cined' | 'lightbag-db';
 }
 
 export type ShootType =

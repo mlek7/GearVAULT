@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { sanitizeVaultData, sanitizeAllVaultFilesOnDisk } from './demoCleanup';
 
 export interface ServerUserProfile {
   id: string;
@@ -38,6 +39,8 @@ function ensureDataDirectories() {
     // Initialize with empty array
     fs.writeFileSync(ACCOUNTS_FILE, JSON.stringify([], null, 2), 'utf-8');
   }
+  // Sanitize any existing vaults on startup
+  sanitizeAllVaultFilesOnDisk(VAULTS_DIR);
 }
 
 export const AccountDb = {
@@ -246,7 +249,8 @@ export const AccountDb = {
     ensureDataDirectories();
     const safeKey = encodeURIComponent(userIdOrEmail.toLowerCase().trim());
     const filePath = path.join(VAULTS_DIR, `${safeKey}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(vaultData, null, 2), 'utf-8');
+    const cleaned = sanitizeVaultData(vaultData);
+    fs.writeFileSync(filePath, JSON.stringify(cleaned, null, 2), 'utf-8');
   },
 
   getVault(userIdOrEmail: string): any | null {
@@ -256,7 +260,8 @@ export const AccountDb = {
       const filePath = path.join(VAULTS_DIR, `${safeKey}.json`);
       if (!fs.existsSync(filePath)) return null;
       const content = fs.readFileSync(filePath, 'utf-8');
-      return JSON.parse(content);
+      const parsed = JSON.parse(content);
+      return sanitizeVaultData(parsed);
     } catch {
       return null;
     }

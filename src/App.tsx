@@ -11,6 +11,13 @@ import {
   ThemeMode,
 } from './types';
 import { StorageService, playAlertChime } from './services/storage';
+import {
+  sanitizeGearList,
+  sanitizeShootsList,
+  sanitizePackingList,
+  sanitizeMoodboardsList,
+  sanitizeSettings,
+} from './utils/demoCleanup';
 import { AuthService } from './services/authService';
 import { evaluateShootAlerts, formatShootTime } from './utils/dateUtils';
 import { Navigation } from './components/Navigation';
@@ -163,12 +170,30 @@ export default function App() {
         if (!isMounted || !json.vaultData) return;
 
         const data = json.vaultData;
-        if (Array.isArray(data.gear) && data.gear.length > 0) setGear(data.gear);
-        if (Array.isArray(data.shoots) && data.shoots.length > 0) setShoots(data.shoots);
-        if (Array.isArray(data.packing) && data.packing.length > 0) setPacking(data.packing);
-        if (Array.isArray(data.moodboards) && data.moodboards.length > 0) setMoodboards(data.moodboards);
+        const cleanedGear = sanitizeGearList(data.gear || []);
+        const cleanedShoots = sanitizeShootsList(data.shoots || []);
+        const cleanedPacking = sanitizePackingList(data.packing || []);
+        const cleanedMoodboards = sanitizeMoodboardsList(data.moodboards || []);
+        const cleanedSettings = sanitizeSettings(data.settings);
+
+        if (Array.isArray(data.gear)) {
+          setGear(cleanedGear);
+          StorageService.saveGear(cleanedGear);
+        }
+        if (Array.isArray(data.shoots)) {
+          setShoots(cleanedShoots);
+          StorageService.saveShoots(cleanedShoots);
+        }
+        if (Array.isArray(data.packing)) {
+          setPacking(cleanedPacking);
+          StorageService.savePacking(cleanedPacking);
+        }
+        if (Array.isArray(data.moodboards)) {
+          setMoodboards(cleanedMoodboards);
+          StorageService.saveMoodboards(cleanedMoodboards);
+        }
         if (data.settings && typeof data.settings === 'object') {
-          setSettings((prev) => ({ ...prev, ...data.settings }));
+          setSettings((prev) => ({ ...prev, ...cleanedSettings }));
         }
       } catch (err) {
         console.warn('Silent server vault load info:', err);
@@ -191,6 +216,12 @@ export default function App() {
     const interval = setInterval(async () => {
       if (!isDataDirtyRef.current) return;
       try {
+        const payloadGear = sanitizeGearList(gear);
+        const payloadShoots = sanitizeShootsList(shoots);
+        const payloadPacking = sanitizePackingList(packing);
+        const payloadMoodboards = sanitizeMoodboardsList(moodboards);
+        const payloadSettings = sanitizeSettings(settings);
+
         await fetch('/api/vault/save', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -198,11 +229,11 @@ export default function App() {
             userId: user.id,
             email: user.email,
             vaultData: {
-              gear,
-              shoots,
-              packing,
-              moodboards,
-              settings,
+              gear: payloadGear,
+              shoots: payloadShoots,
+              packing: payloadPacking,
+              moodboards: payloadMoodboards,
+              settings: payloadSettings,
             },
           }),
         });
