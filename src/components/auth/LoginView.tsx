@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Camera,
   Mail,
@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 import { UserProfile } from '../../types';
 import { AuthService } from '../../services/authService';
+import { GoogleCredentialModal } from './GoogleCredentialModal';
+import { AppleCredentialModal } from './AppleCredentialModal';
 
 interface LoginViewProps {
   onLoginSuccess: (user: UserProfile) => void;
@@ -36,33 +38,21 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [authenticatingProvider, setAuthenticatingProvider] = useState<'google' | 'apple' | null>(null);
+  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
+  const [isAppleModalOpen, setIsAppleModalOpen] = useState(false);
 
   // Forgot password modal
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [resetSent, setResetSent] = useState(false);
 
-  const handleDirectGoogleLogin = async () => {
+  const handleOpenGoogleLogin = () => {
     setErrorMsg(null);
-    setAuthenticatingProvider('google');
-    try {
-      const user = await AuthService.directGoogleLogin();
-      onLoginSuccess(user);
-    } catch (err: any) {
-      setErrorMsg(err?.message || 'Google automatic sign-in failed.');
-      setAuthenticatingProvider(null);
-    }
+    setIsGoogleModalOpen(true);
   };
 
-  const handleDirectAppleLogin = async () => {
+  const handleOpenAppleLogin = () => {
     setErrorMsg(null);
-    setAuthenticatingProvider('apple');
-    try {
-      const user = await AuthService.directAppleLogin();
-      onLoginSuccess(user);
-    } catch (err: any) {
-      setErrorMsg(err?.message || 'Apple ID automatic sign-in failed.');
-      setAuthenticatingProvider(null);
-    }
+    setIsAppleModalOpen(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -118,18 +108,18 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
       <div className="w-full max-w-md mx-auto space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[24px] bg-gradient-to-br from-[#F29191] to-[#F7ADAD] shadow-lg shadow-[#F29191]/30 p-1 mx-auto">
-            <div className="w-full h-full rounded-[20px] bg-white/20 backdrop-blur-xs flex items-center justify-center text-white">
-              <Camera className="w-8 h-8 drop-shadow-xs" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[24px] bg-[#1E1E1E] text-[#FF2D20] border border-white/[0.08] p-1 mx-auto">
+            <div className="w-full h-full rounded-[20px] bg-black/40 flex items-center justify-center">
+              <Camera className="w-8 h-8" />
             </div>
           </div>
 
           <div>
-            <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-[#D45B5B]">
+            <span className="text-[11px] font-mono tracking-widest uppercase text-[#FF2D20]">
               Photographer Access Portal
             </span>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-display mt-0.5">
-              Photo Gear Vault
+              Lightbag
             </h1>
             <p className="text-xs text-slate-500 max-w-xs mx-auto mt-1 leading-relaxed">
               Authenticate with your verified credentials to access your gear inventory, photoshoot checklists & weather forecast intelligence.
@@ -145,59 +135,41 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
             <button
               id="btn-login-google"
               type="button"
-              onClick={handleDirectGoogleLogin}
+              onClick={handleOpenGoogleLogin}
               disabled={isLoading || authenticatingProvider !== null}
               className="w-full py-3 px-4 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-800 text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-3 active:scale-98 disabled:opacity-70 cursor-pointer"
             >
-              {authenticatingProvider === 'google' ? (
-                <div className="flex items-center gap-2 text-slate-700">
-                  <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
-                  <span>Connecting to Google Account...</span>
-                </div>
-              ) : (
-                <>
-                  <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                    <path
-                      fill="#4285F4"
-                      d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-                    />
-                    <path
-                      fill="#EA4335"
-                      d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                    />
-                  </svg>
-                  <span>Continue with Google</span>
-                </>
-              )}
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                />
+              </svg>
+              <span>Continue with Google</span>
             </button>
 
             {/* Apple Login Button */}
             <button
               id="btn-login-apple"
               type="button"
-              onClick={handleDirectAppleLogin}
+              onClick={handleOpenAppleLogin}
               disabled={isLoading || authenticatingProvider !== null}
               className="w-full py-3 px-4 rounded-2xl bg-black hover:bg-slate-900 text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2.5 active:scale-98 disabled:opacity-70 cursor-pointer"
             >
-              {authenticatingProvider === 'apple' ? (
-                <div className="flex items-center gap-2 text-slate-200">
-                  <Loader2 className="w-4 h-4 text-white animate-spin" />
-                  <span>Authenticating with Apple ID...</span>
-                </div>
-              ) : (
-                <>
-                  <Apple className="w-4 h-4 fill-current shrink-0" />
-                  <span>Sign in with Apple</span>
-                </>
-              )}
+              <Apple className="w-4 h-4 fill-current shrink-0" />
+              <span>Sign in with Apple</span>
             </button>
           </div>
 
@@ -283,7 +255,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                       placeholder="e.g. Maya Lin"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 focus:outline-hidden focus:border-[#F29191] focus:bg-white transition-all"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 focus:outline-hidden focus:border-[#FF2D20] focus:bg-white transition-all"
                     />
                   </div>
                 </div>
@@ -297,10 +269,10 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                     <input
                       id="input-signup-studio"
                       type="text"
-                      placeholder="e.g. Lin Aperture Studios"
+                      placeholder="e.g. Lin Light Studios"
                       value={studioName}
                       onChange={(e) => setStudioName(e.target.value)}
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 focus:outline-hidden focus:border-[#F29191] focus:bg-white transition-all"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 focus:outline-hidden focus:border-[#FF2D20] focus:bg-white transition-all"
                     />
                   </div>
                 </div>
@@ -320,7 +292,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                   placeholder="photographer@studio.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 focus:outline-hidden focus:border-[#F29191] focus:bg-white transition-all"
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 focus:outline-hidden focus:border-[#FF2D20] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -334,7 +306,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                   <button
                     type="button"
                     onClick={() => setIsForgotModalOpen(true)}
-                    className="text-[11px] text-[#D45B5B] hover:underline font-medium"
+                    className="text-[11px] text-[#FF2D20] hover:underline font-medium"
                   >
                     Forgot?
                   </button>
@@ -349,7 +321,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                   placeholder="••••••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 focus:outline-hidden focus:border-[#F29191] focus:bg-white transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 focus:outline-hidden focus:border-[#FF2D20] focus:bg-white transition-all"
                 />
                 <button
                   type="button"
@@ -372,7 +344,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded-md border-slate-300 text-[#F29191] focus:ring-[#F29191]"
+                  className="w-4 h-4 rounded-md border-slate-300 text-[#FF2D20] focus:ring-[#FF2D20]"
                 />
                 <span>Remember me on this browser</span>
               </label>
@@ -383,14 +355,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
               id="btn-submit-auth"
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#F29191] to-[#F7ADAD] hover:brightness-105 active:scale-98 text-white text-xs font-bold shadow-md shadow-[#F29191]/25 transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full py-3 rounded-full bg-[#FF2D20] hover:bg-[#E02619] active:scale-[0.97] text-white text-xs font-medium transition-all flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {isLoading ? (
                 <span>Verifying Credentials...</span>
               ) : (
                 <>
                   <span>
-                    {mode === 'signin' ? 'Sign In to Gear Vault' : 'Create Photographer Account'}
+                    {mode === 'signin' ? 'Sign In to Lightbag' : 'Create Photographer Account'}
                   </span>
                   <ArrowRight className="w-4 h-4" />
                 </>
@@ -409,7 +381,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                     setMode('signup');
                     setErrorMsg(null);
                   }}
-                  className="font-bold text-[#D45B5B] hover:underline"
+                  className="font-medium text-[#FF2D20] hover:underline"
                 >
                   Create one now
                 </button>
@@ -423,7 +395,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                     setMode('signin');
                     setErrorMsg(null);
                   }}
-                  className="font-bold text-[#D45B5B] hover:underline"
+                  className="font-medium text-[#FF2D20] hover:underline"
                 >
                   Sign in here
                 </button>
@@ -439,7 +411,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
             <span>Encrypted Session</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#F29191]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#FF2D20]" />
             <span>EXIF Cloud Matcher</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -455,7 +427,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
           <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-slate-200 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-slate-900">
-                Reset Gear Vault Password
+                Reset Lightbag Password
               </h3>
               <button
                 onClick={() => {
@@ -502,7 +474,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                 <button
                   type="button"
                   onClick={() => setResetSent(true)}
-                  className="w-full py-2.5 bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white rounded-xl text-xs font-bold shadow-xs"
+                  className="w-full py-2.5 bg-[#FF2D20] hover:bg-[#E02619] text-white rounded-full text-xs font-medium active:scale-[0.97] transition-all"
                 >
                   Send Reset Link
                 </button>
@@ -511,6 +483,22 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
           </div>
         </div>
       )}
+
+      {/* Google Credential Modal */}
+      <GoogleCredentialModal
+        isOpen={isGoogleModalOpen}
+        onClose={() => setIsGoogleModalOpen(false)}
+        onSuccess={onLoginSuccess}
+        defaultEmail={email}
+      />
+
+      {/* Apple ID Credential Modal */}
+      <AppleCredentialModal
+        isOpen={isAppleModalOpen}
+        onClose={() => setIsAppleModalOpen(false)}
+        onSuccess={onLoginSuccess}
+        defaultEmail={email}
+      />
     </div>
   );
 };

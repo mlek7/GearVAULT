@@ -197,30 +197,30 @@ export const GearModal: React.FC<GearModalProps> = ({
   return (
     <div
       id="gear-modal-backdrop"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/40 backdrop-blur-xs p-0 sm:p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4"
     >
       <div
         id="gear-modal-content"
-        className="w-full max-w-lg bg-white border border-slate-200 rounded-t-[32px] sm:rounded-[32px] max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
+        className="w-full max-w-lg bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] rounded-t-[28px] sm:rounded-[28px] max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-100 bg-slate-50/70">
+        <div className="flex items-center justify-between px-6 py-4.5 border-b border-black/[0.08] dark:border-white/[0.08] bg-[#F2F2F2]/60 dark:bg-[#1E1E1E]/40">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-[#FFF0F0] text-[#D45B5B] border border-[#F7ADAD]">
+            <div className="p-2 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20]">
               <Camera className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-900 font-display">
+              <h2 className="text-base font-normal text-black dark:text-white font-sans tracking-tight">
                 {initialItem ? 'Edit Equipment' : 'Add Gear to Vault'}
               </h2>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">
                 Track serial numbers, technical notes & specifications
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="p-2 rounded-full text-[#8E8E93] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -229,16 +229,16 @@ export const GearModal: React.FC<GearModalProps> = ({
         {/* Scrollable Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto flex-1 scrollbar-none">
           {/* ExifTool Auto-Detection / Quick Launch */}
-          <div className="flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-xs">
+          <div className="flex items-center justify-between p-3.5 rounded-[20px] bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08]">
             <div className="flex items-center gap-2.5">
-              <div className="p-1.5 rounded-xl bg-gradient-to-br from-[#F29191] to-[#F7ADAD] text-white">
+              <div className="p-2 rounded-full bg-black/5 dark:bg-white/5 text-[#FF2D20]">
                 <Cpu className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[#CCFBFA] font-mono block">
+                <span className="pulsar-section-label block">
                   ExifTool Metadata Engine
                 </span>
-                <p className="text-xs font-medium text-slate-200">
+                <p className="text-xs font-medium text-black dark:text-white mt-0.5">
                   Auto-fill specs from photo EXIF tags
                 </p>
               </div>
@@ -246,23 +246,23 @@ export const GearModal: React.FC<GearModalProps> = ({
             <button
               type="button"
               onClick={() => setIsExifModalOpen(true)}
-              className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF3E1] text-[11px] font-bold transition-colors inline-flex items-center gap-1 border border-white/10"
+              className="pulsar-bracket-btn"
             >
-              <Sparkles className="w-3 h-3 text-[#F29191]" />
-              <span>Scan & Auto-Fill</span>
+              <Sparkles className="w-3 h-3 text-[#FF2D20]" />
+              <span>SCAN PHOTO</span>
             </button>
           </div>
 
           {/* Detected EXIF Notification Banner */}
           {exifDetectedBanner && (
-            <div className="p-3 bg-[#CCFBFA]/40 border border-[#B1E5E6] rounded-2xl flex items-center justify-between gap-3 animate-in fade-in">
+            <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-[18px] flex items-center justify-between gap-3 animate-in fade-in">
               <div className="flex items-center gap-2 min-w-0">
-                <Zap className="w-4 h-4 text-[#0F4E50] shrink-0" />
+                <Zap className="w-4 h-4 text-[#30D158] shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-xs font-bold text-[#0F4E50] truncate">
+                  <p className="text-xs font-medium text-black dark:text-white truncate">
                     Detected: {exifDetectedBanner.summary}
                   </p>
-                  <p className="text-[10px] text-[#0F4E50]/80">
+                  <p className="text-[10px] text-[#8E8E93] font-mono">
                     ExifTool found camera specs in uploaded photo
                   </p>
                 </div>
@@ -270,7 +270,7 @@ export const GearModal: React.FC<GearModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleAutoFillFromExif(exifDetectedBanner.data)}
-                className="px-3 py-1 rounded-full bg-[#0F4E50] text-[#CCFBFA] text-xs font-bold shrink-0 hover:bg-[#0F4E50]/90 transition-colors"
+                className="px-3 py-1 rounded-full bg-[#30D158] text-white text-xs font-medium shrink-0 hover:brightness-105 transition-colors"
               >
                 Apply
               </button>
@@ -279,14 +279,14 @@ export const GearModal: React.FC<GearModalProps> = ({
 
           {/* ExifTool Verified Indicator if present */}
           {exifMetadata && (
-            <div className="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-800">
-              <span className="inline-flex items-center gap-1.5 font-bold font-mono text-[11px]">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>ExifTool Verified Metadata Attached</span>
+            <div className="px-3.5 py-2.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-between text-xs text-[#30D158]">
+              <span className="inline-flex items-center gap-1.5 font-mono text-[11px]">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#30D158]" />
+                <span>EXIFTOOL VERIFIED METADATA</span>
               </span>
               {exifMetadata.shutterCount && (
-                <span className="text-[10px] font-mono text-emerald-700">
-                  {exifMetadata.shutterCount.toLocaleString()} actuations
+                <span className="text-[10px] font-mono">
+                  {exifMetadata.shutterCount.toLocaleString()} ACTUATIONS
                 </span>
               )}
             </div>
@@ -294,7 +294,7 @@ export const GearModal: React.FC<GearModalProps> = ({
 
           {/* Equipment Name */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 font-mono">
+            <label className="pulsar-section-label block mb-1.5">
               Item Name *
             </label>
             <input
@@ -304,13 +304,13 @@ export const GearModal: React.FC<GearModalProps> = ({
               placeholder="e.g., Sony Alpha 1, FE 24-70mm f/2.8 GM II..."
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#F29191]"
+              className="w-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-[18px] px-4 py-3 text-sm text-black dark:text-white placeholder:text-[#8E8E93] focus:outline-none focus:border-[#FF2D20]"
             />
           </div>
 
           {/* Category Select Pills */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 font-mono">
+            <label className="pulsar-section-label block mb-2">
               Category *
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -319,10 +319,10 @@ export const GearModal: React.FC<GearModalProps> = ({
                   key={cat}
                   type="button"
                   onClick={() => setCategory(cat)}
-                  className={`px-3 py-2 rounded-2xl text-xs font-bold transition-all text-left truncate ${
+                  className={`px-3 py-2 rounded-full text-xs font-medium transition-all text-center truncate ${
                     category === cat
-                      ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-                      : 'bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200'
+                      ? 'bg-[#FF2D20] text-white shadow-xs'
+                      : 'bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white border border-transparent'
                   }`}
                 >
                   {cat}
@@ -334,7 +334,7 @@ export const GearModal: React.FC<GearModalProps> = ({
           {/* Brand & Serial Number Grid */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 font-mono">
+              <label className="pulsar-section-label block mb-1.5">
                 Brand / Make
               </label>
               <input
@@ -343,11 +343,11 @@ export const GearModal: React.FC<GearModalProps> = ({
                 placeholder="e.g., Sony, Profoto, Rode"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#F29191]"
+                className="w-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-[18px] px-3.5 py-2.5 text-xs text-black dark:text-white placeholder:text-[#8E8E93] focus:outline-none focus:border-[#FF2D20]"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 font-mono">
+              <label className="pulsar-section-label block mb-1.5">
                 Serial Number
               </label>
               <input
@@ -356,7 +356,7 @@ export const GearModal: React.FC<GearModalProps> = ({
                 placeholder="e.g., SN-8823901"
                 value={serialNumber}
                 onChange={(e) => setSerialNumber(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 font-mono placeholder:text-slate-400 focus:outline-none focus:border-[#F29191]"
+                className="w-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-[18px] px-3.5 py-2.5 text-xs text-black dark:text-white font-mono placeholder:text-[#8E8E93] focus:outline-none focus:border-[#FF2D20]"
               />
             </div>
           </div>
@@ -364,21 +364,21 @@ export const GearModal: React.FC<GearModalProps> = ({
           {/* Image Upload & Presets */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 font-mono">
+              <label className="pulsar-section-label">
                 Photo Thumbnail
               </label>
               <button
                 type="button"
                 onClick={() => setShowPresets(!showPresets)}
-                className="inline-flex items-center gap-1 text-[11px] text-[#D45B5B] hover:underline font-bold"
+                className="pulsar-bracket-btn"
               >
-                <Sparkles className="w-3 h-3" />
-                <span>{showPresets ? 'Hide presets' : 'Preset gallery'}</span>
+                <Sparkles className="w-3 h-3 text-[#FF2D20]" />
+                <span>{showPresets ? 'HIDE PRESETS' : 'PRESET GALLERY'}</span>
               </button>
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 shadow-xs">
+              <div className="w-16 h-16 rounded-[14px] bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] overflow-hidden shrink-0">
                 {image ? (
                   <img
                     src={image}
@@ -387,7 +387,7 @@ export const GearModal: React.FC<GearModalProps> = ({
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-400">
+                  <div className="w-full h-full flex items-center justify-center text-[#8E8E93]">
                     <ImageIcon className="w-6 h-6" />
                   </div>
                 )}
@@ -400,11 +400,11 @@ export const GearModal: React.FC<GearModalProps> = ({
                   placeholder="Image URL (https://...)"
                   value={image}
                   onChange={(e) => setImage(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#F29191]"
+                  className="w-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-full px-4 py-2 text-xs text-black dark:text-white placeholder:text-[#8E8E93] focus:outline-none focus:border-[#FF2D20]"
                 />
 
-                <label className="flex items-center justify-center gap-2 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold cursor-pointer transition-colors border border-slate-200">
-                  <Upload className="w-3.5 h-3.5 text-[#D45B5B]" />
+                <label className="flex items-center justify-center gap-2 px-3 py-2 bg-[#EBEBEB] dark:bg-[#1E1E1E] hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white rounded-full text-xs font-medium cursor-pointer transition-colors border border-black/[0.08] dark:border-white/[0.08]">
+                  <Upload className="w-3.5 h-3.5 text-[#FF2D20]" />
                   <span>Upload Photo from Device</span>
                   <input
                     type="file"
@@ -418,8 +418,8 @@ export const GearModal: React.FC<GearModalProps> = ({
 
             {/* Presets Gallery */}
             {showPresets && (
-              <div className="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
-                <p className="text-[11px] text-slate-600 mb-2 font-medium">
+              <div className="mt-3 p-3 bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-[20px]">
+                <p className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93] mb-2 font-mono">
                   Tap to use high-res photography asset:
                 </p>
                 <div className="grid grid-cols-5 gap-2">
@@ -431,7 +431,7 @@ export const GearModal: React.FC<GearModalProps> = ({
                         setImage(preset.url);
                         setShowPresets(false);
                       }}
-                      className="group relative aspect-square rounded-xl overflow-hidden border border-slate-200 hover:border-[#F29191] focus:outline-none transition-all"
+                      className="group relative aspect-square rounded-[12px] overflow-hidden border border-black/[0.08] dark:border-white/[0.08] hover:border-[#FF2D20] focus:outline-none transition-all"
                       title={preset.label}
                     >
                       <img
@@ -449,7 +449,7 @@ export const GearModal: React.FC<GearModalProps> = ({
 
           {/* Notes */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 font-mono">
+            <label className="pulsar-section-label block mb-1.5">
               Notes & Technical Details
             </label>
             <textarea
@@ -458,23 +458,23 @@ export const GearModal: React.FC<GearModalProps> = ({
               placeholder="e.g., Dual slot CFexpress/SD, recently serviced shutter, 82mm filter thread..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#F29191] resize-none"
+              className="w-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-[18px] px-3.5 py-2.5 text-xs text-black dark:text-white placeholder:text-[#8E8E93] focus:outline-none focus:border-[#FF2D20] resize-none"
             />
           </div>
 
           {/* Actions */}
-          <div className="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
+          <div className="pt-3 flex items-center justify-end gap-3 border-t border-black/[0.08] dark:border-white/[0.08]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-full text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="px-5 py-2.5 rounded-full text-xs font-medium text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
             >
               Cancel
             </button>
             <button
               id="gear-submit-btn"
               type="submit"
-              className="px-5 py-2.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-md shadow-[#F29191]/30 hover:brightness-105 active:scale-95 transition-all"
+              className="px-6 py-2.5 rounded-full text-xs font-medium bg-[#FF2D20] hover:bg-[#E02619] text-white transition-all"
             >
               {initialItem ? 'Save Changes' : 'Add to Vault'}
             </button>

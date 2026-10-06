@@ -205,19 +205,19 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
         <button
           id="btn-shoot-hub-back"
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white border border-slate-200 text-slate-800 hover:bg-slate-50 text-xs font-bold transition-all active:scale-95 shadow-xs"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] text-black dark:text-white text-xs font-medium transition-all active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back</span>
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="text-[10px] uppercase font-extrabold tracking-wider px-3 py-1 rounded-full bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs">
+          <span className="pulsar-tag">
             {shoot.shootType}
           </span>
           <button
             onClick={() => setIsEditShootModalOpen(true)}
-            className="p-2 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-xs"
+            className="p-2 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] text-[#8E8E93] hover:text-black dark:hover:text-white transition-colors"
             title="Edit shoot details"
           >
             <Edit2 className="w-3.5 h-3.5" />
@@ -225,62 +225,58 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
         </div>
       </div>
 
-      {/* Shoot Hero Header with Bright Styling */}
-      <div className="rounded-[28px] p-5 mb-4 relative overflow-hidden bright-card-hero">
-        {/* Background ambient lighting */}
-        <div className="absolute top-0 right-0 w-36 h-36 bg-[#CCFBFA]/45 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-28 h-28 bg-[#F7ADAD]/25 rounded-full blur-2xl pointer-events-none" />
-
+      {/* Shoot Hero Header */}
+      <div className="pulsar-card mb-4 relative overflow-hidden">
         <div className="relative z-10">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <h1 className="text-xl font-black text-slate-900 tracking-tight leading-tight font-display">
+              <h1 className="text-xl font-medium text-black dark:text-white tracking-tight leading-tight font-sans">
                 {shoot.title}
               </h1>
-              <p className="text-xs text-slate-600 mt-1 font-medium">
-                Client: <strong className="text-slate-900">{shoot.clientName}</strong>
+              <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] mt-1 font-medium">
+                Client: <strong className="text-black dark:text-white">{shoot.clientName}</strong>
               </p>
             </div>
 
             <div className="text-right shrink-0">
               <span
-                className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${
+                className={`text-[10px] font-mono uppercase px-2.5 py-1 rounded-full ${
                   relTime.isPast
-                    ? 'bg-slate-100 text-slate-500'
+                    ? 'bg-black/5 dark:bg-white/5 text-[#8E8E93]'
                     : isWithinTwoHours
-                    ? 'bg-rose-100 text-rose-700 border border-rose-300 animate-pulse'
-                    : 'bg-[#CCFBFA] text-[#0F4E50] border border-[#B1E5E6]'
+                    ? 'pulsar-badge-status'
+                    : 'bg-[#FF2D20]/10 text-[#FF2D20] border border-[#FF2D20]/30'
                 }`}
               >
-                {relTime.isPast ? relTime.text : `Starts ${relTime.text}`}
+                {relTime.isPast ? relTime.text : `STARTS ${relTime.text.toUpperCase()}`}
               </span>
             </div>
           </div>
 
           {/* Date, Time & Location Quick Chips */}
-          <div className="grid grid-cols-2 gap-2 mt-4 pt-3.5 border-t border-[#F7ADAD]/40 text-xs">
-            <div className="flex items-center gap-1.5 truncate text-slate-700">
-              <div className="p-1 rounded-lg bg-[#FFF0F0] text-[#D45B5B] shadow-xs">
+          <div className="grid grid-cols-2 gap-2 mt-4 pt-3.5 border-t border-black/[0.08] dark:border-white/[0.08] text-xs">
+            <div className="flex items-center gap-1.5 truncate text-[#6E6E73] dark:text-[#8E8E93]">
+              <div className="p-1 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20]">
                 <Calendar className="w-3.5 h-3.5" />
               </div>
-              <span className="truncate text-[11px] font-medium">
-                {formatShootDate(shoot.dateTime)} • {formatShootTime(shoot.dateTime)}
+              <span className="truncate text-[11px] font-mono">
+                {formatShootDate(shoot.dateTime, settings.dateFormat)} • {formatShootTime(shoot.dateTime, settings.timeFormat)}
               </span>
             </div>
 
             <div
               onClick={handleCopyLocation}
-              className="flex items-center gap-1.5 truncate cursor-pointer text-slate-700 hover:text-[#D45B5B] transition-colors"
+              className="flex items-center gap-1.5 truncate cursor-pointer text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white transition-colors"
               title="Click to copy address"
             >
-              <div className="p-1 rounded-lg bg-[#FFF0F0] text-[#D45B5B] shadow-xs">
+              <div className="p-1 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20]">
                 <MapPin className="w-3.5 h-3.5" />
               </div>
-              <span className="truncate text-[11px] font-medium">{shoot.location}</span>
+              <span className="truncate text-[11px] font-mono">{shoot.location}</span>
               {copiedLocation ? (
-                <Check className="w-3 h-3 text-emerald-600 shrink-0" />
+                <Check className="w-3 h-3 text-[#30D158] shrink-0" />
               ) : (
-                <Copy className="w-3 h-3 text-slate-400 shrink-0" />
+                <Copy className="w-3 h-3 text-[#8E8E93] shrink-0" />
               )}
             </div>
           </div>
@@ -289,19 +285,19 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
           {weatherData && (
             <div
               onClick={() => setActiveTab('weather')}
-              className="mt-3.5 pt-3 border-t border-[#F7ADAD]/40 flex items-center justify-between cursor-pointer group"
+              className="mt-3.5 pt-3 border-t border-black/[0.08] dark:border-white/[0.08] flex items-center justify-between cursor-pointer group"
             >
               <div className="flex items-center gap-2">
-                <Sun className="w-4 h-4 text-[#D45B5B]" />
-                <span className="text-xs font-black text-slate-900 font-mono">
+                <Sun className="w-4 h-4 text-[#FF2D20]" />
+                <span className="text-xs font-medium text-black dark:text-white font-mono">
                   {weatherData.temperatureF}°F
                 </span>
-                <span className="text-xs text-slate-600 truncate font-medium">
+                <span className="text-xs text-[#6E6E73] dark:text-[#8E8E93] truncate font-medium">
                   {weatherData.conditionText}
                 </span>
               </div>
-              <span className="text-[11px] font-bold text-[#D45B5B] group-hover:underline flex items-center gap-1 font-mono">
-                Golden Hr: {weatherData.goldenHourEvening.split('-')[0]} →
+              <span className="pulsar-bracket-btn">
+                GOLDEN HR: {weatherData.goldenHourEvening.split('-')[0]}
               </span>
             </div>
           )}
@@ -355,23 +351,23 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
       )}
 
       {/* Shoot Hub Floating Segmented Control: Packing | Weather | Moodboard | Details */}
-      <div className="flex items-center p-1 bg-white rounded-full border border-slate-200 mb-4 shadow-xs">
+      <div className="flex items-center p-1 bg-[#EBEBEB] dark:bg-[#1E1E1E] rounded-full border border-black/[0.08] dark:border-white/[0.08] mb-4 gap-1">
         <button
           id="tab-shoot-packing"
           onClick={() => setActiveTab('packing')}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-1 rounded-full text-xs font-bold transition-all ${
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-1 rounded-full text-xs font-medium transition-all ${
             activeTab === 'packing'
-              ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-              : 'text-slate-500 hover:text-slate-900'
+              ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+              : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
           }`}
         >
           <Package className="w-3.5 h-3.5" />
           <span>Packing</span>
           <span
-            className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+            className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
               activeTab === 'packing'
-                ? 'bg-white/25 text-white font-extrabold'
-                : 'bg-slate-100 text-slate-500'
+                ? 'bg-black/10 dark:bg-white/20 text-black dark:text-white'
+                : 'bg-black/5 dark:bg-white/5 text-[#8E8E93]'
             }`}
           >
             {packingStats.packed}/{packingStats.total}
@@ -381,10 +377,10 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
         <button
           id="tab-shoot-weather"
           onClick={() => setActiveTab('weather')}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-1 rounded-full text-xs font-bold transition-all ${
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-1 rounded-full text-xs font-medium transition-all ${
             activeTab === 'weather'
-              ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-              : 'text-slate-500 hover:text-slate-900'
+              ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+              : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
           }`}
         >
           <CloudSun className="w-3.5 h-3.5" />
@@ -394,19 +390,19 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
         <button
           id="tab-shoot-moodboard"
           onClick={() => setActiveTab('moodboard')}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-1 rounded-full text-xs font-bold transition-all ${
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-1 rounded-full text-xs font-medium transition-all ${
             activeTab === 'moodboard'
-              ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-              : 'text-slate-500 hover:text-slate-900'
+              ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+              : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
           }`}
         >
           <Palette className="w-3.5 h-3.5" />
           <span>Mood</span>
           <span
-            className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+            className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
               activeTab === 'moodboard'
-                ? 'bg-white/25 text-white font-extrabold'
-                : 'bg-slate-100 text-slate-500'
+                ? 'bg-black/10 dark:bg-white/20 text-black dark:text-white'
+                : 'bg-black/5 dark:bg-white/5 text-[#8E8E93]'
             }`}
           >
             {shootMoodboard.length}
@@ -416,10 +412,10 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
         <button
           id="tab-shoot-details"
           onClick={() => setActiveTab('details')}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-1 rounded-full text-xs font-bold transition-all ${
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-1 rounded-full text-xs font-medium transition-all ${
             activeTab === 'details'
-              ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-              : 'text-slate-500 hover:text-slate-900'
+              ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+              : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
           }`}
         >
           <FileText className="w-3.5 h-3.5" />
@@ -433,51 +429,35 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
       {activeTab === 'packing' && (
         <div className="space-y-4 animate-in fade-in duration-150">
           {/* Progress & Controls Card */}
-          <div className="rounded-3xl bright-card p-4">
+          <div className="pulsar-card">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                <span className="pulsar-section-label">
                   Packing Progress
                 </span>
-                <span className="text-xs font-extrabold text-slate-900">
+                <span className="text-xs font-mono font-medium text-black dark:text-white">
                   {packingStats.packed} of {packingStats.total} Packed
                 </span>
               </div>
-              <span
-                className={`text-xs font-black ${
-                  packingStats.percent === 100
-                    ? 'text-teal-700'
-                    : packingStats.missing > 0
-                    ? 'text-[#D45B5B]'
-                    : 'text-[#D45B5B]'
-                }`}
-              >
+              <span className="text-xs font-mono font-medium text-[#FF2D20]">
                 {packingStats.percent}%
               </span>
             </div>
 
-            {/* Progress Bar with Color Hunt palette */}
-            <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex p-0.5 mb-3.5">
+            {/* Progress Bar: Thin red line */}
+            <div className="h-1.5 w-full bg-black/10 dark:bg-white/10 rounded-full overflow-hidden flex mb-3.5">
               <div
-                className="h-full bg-gradient-to-r from-[#B1E5E6] to-[#167D80] rounded-full transition-all duration-300"
+                className="h-full bg-[#FF2D20] rounded-full transition-all duration-300"
                 style={{ width: `${packingStats.percent}%` }}
               />
-              {packingStats.missing > 0 && (
-                <div
-                  className="h-full bg-[#F29191] rounded-full ml-0.5 transition-all duration-300"
-                  style={{
-                    width: `${Math.round((packingStats.missing / packingStats.total) * 100)}%`,
-                  }}
-                />
-              )}
             </div>
 
             {/* Action buttons */}
-            <div className="flex items-center gap-2 pt-2.5 border-t border-slate-100">
+            <div className="flex items-center gap-2 pt-2.5 border-t border-black/[0.08] dark:border-white/[0.08]">
               <button
                 id="btn-open-gear-selector"
                 onClick={() => setIsGearSelectorOpen(true)}
-                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full bg-gradient-to-r from-[#F29191] to-[#F7ADAD] hover:brightness-105 text-white font-extrabold text-xs shadow-md shadow-[#F29191]/30 active:scale-95 transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full bg-[#FF2D20] hover:bg-[#E02619] text-white font-medium text-xs active:scale-95 transition-all"
               >
                 <Plus className="w-4 h-4 stroke-[2.5]" />
                 <span>Select from Gear Vault</span>
@@ -487,10 +467,10 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                 <button
                   id="btn-mark-all-packed"
                   onClick={markAllPacked}
-                  className="inline-flex items-center gap-1.5 py-2.5 px-4 rounded-full bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold border border-slate-200 active:scale-95 transition-all shadow-xs"
+                  className="inline-flex items-center gap-1.5 py-2.5 px-4 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white text-xs font-medium border border-black/[0.08] dark:border-white/[0.08] active:scale-95 transition-all"
                   title="Mark all items as Packed"
                 >
-                  <CheckCheck className="w-4 h-4 text-teal-600" />
+                  <CheckCheck className="w-4 h-4 text-[#30D158]" />
                   <span>Pack All</span>
                 </button>
               )}
@@ -501,40 +481,40 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             <button
               onClick={() => setPackingFilter('all')}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 packingFilter === 'all'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-black dark:bg-white text-white dark:text-black'
+                  : 'bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
               }`}
             >
               All ({packingStats.total})
             </button>
             <button
               onClick={() => setPackingFilter('Needed')}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 packingFilter === 'Needed'
-                  ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-[#FF2D20] text-white'
+                  : 'bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
               }`}
             >
               Needed ({packingStats.needed})
             </button>
             <button
               onClick={() => setPackingFilter('Packed')}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 packingFilter === 'Packed'
-                  ? 'bg-teal-700 text-white shadow-xs'
-                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-[#30D158] text-white'
+                  : 'bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
               }`}
             >
               Packed ({packingStats.packed})
             </button>
             <button
               onClick={() => setPackingFilter('Missing')}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 packingFilter === 'Missing'
-                  ? 'bg-rose-600 text-white shadow-xs'
-                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-[#FFD60A] text-black'
+                  : 'bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
               }`}
             >
               Missing ({packingStats.missing})
@@ -552,12 +532,12 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                 <div
                   key={item.id}
                   id={`packing-item-${item.id}`}
-                  className={`rounded-2xl border p-4 transition-all duration-200 ${
+                  className={`rounded-[20px] border p-4 transition-all duration-200 ${
                     isPacked
-                      ? 'bg-teal-50/40 border-teal-200/80 text-slate-600'
+                      ? 'bg-[#EBEBEB]/40 dark:bg-[#1E1E1E]/40 border-black/[0.08] dark:border-white/[0.08] text-[#8E8E93]'
                       : isMissing
-                      ? 'bg-rose-50/80 border-rose-300 text-slate-900 shadow-sm'
-                      : 'bright-card text-slate-900'
+                      ? 'bg-[#EBEBEB] dark:bg-[#1E1E1E] border-[#FF2D20]/40 text-black dark:text-white'
+                      : 'bg-[#EBEBEB] dark:bg-[#1E1E1E] border-black/[0.08] dark:border-white/[0.08] text-black dark:text-white'
                   }`}
                 >
                   <div className="flex items-start gap-3.5">
@@ -566,12 +546,12 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                       id={`btn-cycle-status-${item.id}`}
                       onClick={() => cycleStatus(item)}
                       title={`Current status: ${item.status}. Click to cycle status.`}
-                      className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border transition-all active:scale-90 shadow-xs ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border transition-all active:scale-90 ${
                         isPacked
-                          ? 'bg-teal-100 border-teal-300 text-teal-800'
+                          ? 'bg-[#30D158]/15 border-[#30D158]/40 text-[#30D158]'
                           : isMissing
-                          ? 'bg-rose-100 border-rose-400 text-rose-700 animate-pulse'
-                          : 'bg-[#FFF0F0] border-[#F7ADAD] text-[#D45B5B]'
+                          ? 'bg-[#FFD60A]/15 border-[#FFD60A]/40 text-[#FFD60A]'
+                          : 'bg-black/5 dark:bg-white/5 border-black/[0.08] dark:border-white/[0.08] text-[#8E8E93]'
                       }`}
                     >
                       {isPacked ? (
@@ -587,12 +567,12 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-1">
                         <div>
-                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#D45B5B] block font-mono">
+                          <span className="pulsar-tag text-[9px] mb-1">
                             {gear?.category || 'Custom Gear'}
                           </span>
                           <h4
-                            className={`text-sm font-bold tracking-tight leading-snug font-display ${
-                              isPacked ? 'line-through text-slate-400' : 'text-slate-900'
+                            className={`text-sm font-medium tracking-tight leading-snug ${
+                              isPacked ? 'line-through text-[#8E8E93]' : 'text-black dark:text-white'
                             }`}
                           >
                             {gear?.name || 'Unknown Gear Item'}
@@ -602,7 +582,7 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                         {/* Remove from shoot */}
                         <button
                           onClick={() => onDeletePackingItem(item.id)}
-                          className="p-1.5 rounded-full text-slate-400 hover:text-rose-600 hover:bg-black/5 transition-colors"
+                          className="p-1.5 rounded-full text-[#8E8E93] hover:text-[#FF2D20] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                           title="Remove item from shoot packing list"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -611,21 +591,21 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
 
                       {/* Serial Number & Notes */}
                       {gear?.serialNumber && (
-                        <span className="text-[10px] font-mono text-slate-400 block mt-0.5">
+                        <span className="text-[10px] font-mono text-[#8E8E93] block mt-0.5">
                           S/N: {gear.serialNumber}
                         </span>
                       )}
 
                       {/* Custom Packing Notes */}
                       {item.customNotes && (
-                        <p className="text-xs text-slate-600 mt-1 italic">
+                        <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] mt-1 italic">
                           Note: {item.customNotes}
                         </p>
                       )}
 
                       {/* Explicit Tri-State Selector Pills */}
-                      <div className="flex items-center gap-1.5 mt-3 pt-2.5 border-t border-slate-100">
-                        <span className="text-[10px] font-semibold text-slate-400 mr-1">
+                      <div className="flex items-center gap-1.5 mt-3 pt-2.5 border-t border-black/[0.08] dark:border-white/[0.08]">
+                        <span className="text-[10px] font-mono text-[#8E8E93] mr-1 uppercase">
                           Status:
                         </span>
                         {(['Needed', 'Packed', 'Missing'] as PackingStatus[]).map((status) => {
@@ -634,14 +614,14 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                             <button
                               key={status}
                               onClick={() => setExplicitStatus(item, status)}
-                              className={`px-3 py-1 rounded-full text-[11px] font-extrabold transition-all active:scale-95 ${
+                              className={`px-3 py-1 rounded-full text-[11px] font-medium transition-all active:scale-95 ${
                                 isActive
                                   ? status === 'Packed'
-                                    ? 'bg-teal-700 text-white shadow-xs'
+                                    ? 'bg-[#30D158] text-white'
                                     : status === 'Missing'
-                                    ? 'bg-rose-600 text-white shadow-xs'
-                                    : 'bg-[#F29191] text-white shadow-xs'
-                                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+                                    ? 'bg-[#FFD60A] text-black'
+                                    : 'bg-[#FF2D20] text-white'
+                                  : 'bg-black/5 dark:bg-white/5 text-[#8E8E93] hover:text-black dark:hover:text-white'
                               }`}
                             >
                               {status}
@@ -656,20 +636,20 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
             })}
 
             {shootPacking.length === 0 && (
-              <div className="text-center py-12 px-4 rounded-3xl bright-card">
-                <div className="w-14 h-14 rounded-3xl bg-[#FFF0F0] text-[#D45B5B] border border-[#F7ADAD]/60 flex items-center justify-center mx-auto mb-3">
+              <div className="text-center py-12 px-4 rounded-[28px] pulsar-card">
+                <div className="w-14 h-14 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20] flex items-center justify-center mx-auto mb-3">
                   <Package className="w-7 h-7" />
                 </div>
-                <h3 className="text-base font-bold text-slate-900 font-display">
+                <h3 className="text-base font-normal text-black dark:text-white font-sans">
                   No gear added to this shoot yet
                 </h3>
-                <p className="text-xs text-slate-500 max-w-xs mx-auto mt-1 mb-4 leading-relaxed">
+                <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] max-w-xs mx-auto mt-1 mb-4 leading-relaxed">
                   Select camera bodies, lenses, and lighting from your Gear Vault to create a
                   foolproof packing checklist.
                 </p>
                 <button
                   onClick={() => setIsGearSelectorOpen(true)}
-                  className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white font-extrabold text-xs shadow-md shadow-[#F29191]/30"
+                  className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-[#FF2D20] hover:bg-[#E02619] text-white font-medium text-xs"
                 >
                   <Plus className="w-4 h-4 stroke-[2.5]" />
                   <span>Select Gear from Vault</span>
@@ -688,7 +668,7 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
           <div className="bright-card-hero rounded-[28px] p-5">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#D45B5B] font-mono">
+                <span className="text-[10px] uppercase tracking-wider text-[#FF2D20] font-mono">
                   Location Meteorology
                 </span>
                 <h3 className="text-base font-extrabold text-slate-900 font-display">
@@ -697,10 +677,10 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
               </div>
               <button
                 onClick={loadShootWeather}
-                className="p-2 rounded-full hover:bg-[#FFF0F0] text-slate-600 transition-colors"
+                className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-slate-600 transition-colors"
                 title="Refresh weather"
               >
-                <RefreshCw className={`w-4 h-4 ${loadingWeather ? 'animate-spin text-[#D45B5B]' : ''}`} />
+                <RefreshCw className={`w-4 h-4 ${loadingWeather ? 'animate-spin text-[#FF2D20]' : ''}`} />
               </button>
             </div>
 
@@ -716,7 +696,7 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                     </p>
                   </div>
                   <div className="p-3 rounded-2xl bg-white/85 border border-[#B1E5E6] text-center shadow-xs">
-                    <Sun className="w-7 h-7 text-[#D45B5B] mx-auto mb-1" />
+                    <Sun className="w-7 h-7 text-[#FF2D20] mx-auto mb-1" />
                     <span className="text-[10px] font-extrabold uppercase text-[#0F4E50] font-mono">
                       {weatherData.lightingQuality}
                     </span>
@@ -724,16 +704,16 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                 </div>
 
                 {/* Golden Hour Ribbon */}
-                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#F7ADAD]/40">
-                  <div className="p-2.5 rounded-xl bg-white/85 border border-[#F7ADAD]/60">
-                    <span className="text-[10px] font-bold text-[#D45B5B] block">Evening Golden Hour</span>
-                    <span className="text-xs font-black text-slate-900 font-mono">
+                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-black/[0.08] dark:border-white/[0.08]">
+                  <div className="p-2.5 rounded-[18px] bg-white dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08]">
+                    <span className="text-[10px] font-mono text-[#FF2D20] block">Evening Golden Hour</span>
+                    <span className="text-xs font-mono font-medium text-black dark:text-white">
                       {weatherData.goldenHourEvening}
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white/85 border border-[#B1E5E6]">
-                    <span className="text-[10px] font-bold text-[#0F4E50] block">Morning Golden Hour</span>
-                    <span className="text-xs font-black text-slate-900 font-mono">
+                  <div className="p-2.5 rounded-[18px] bg-white dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08]">
+                    <span className="text-[10px] font-mono text-[#30D158] block">Morning Golden Hour</span>
+                    <span className="text-xs font-mono font-medium text-black dark:text-white">
                       {weatherData.goldenHourMorning}
                     </span>
                   </div>
@@ -741,20 +721,20 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
 
                 {/* Quick Environmental Grid */}
                 <div className="grid grid-cols-3 gap-2">
-                  <div className="p-2.5 rounded-xl bg-white/85 border border-[#B1E5E6] text-center">
-                    <Wind className="w-3.5 h-3.5 text-[#167D80] mx-auto mb-1" />
-                    <span className="text-[9px] text-slate-500 uppercase font-bold block">Wind</span>
-                    <span className="text-xs font-black text-slate-900 font-mono">{weatherData.windSpeedMph} mph</span>
+                  <div className="p-2.5 rounded-[18px] bg-white dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] text-center">
+                    <Wind className="w-3.5 h-3.5 text-[#8E8E93] mx-auto mb-1" />
+                    <span className="text-[9px] text-[#8E8E93] uppercase font-mono block">Wind</span>
+                    <span className="text-xs font-mono font-medium text-black dark:text-white">{weatherData.windSpeedMph} mph</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white/85 border border-[#B1E5E6] text-center">
-                    <Droplets className="w-3.5 h-3.5 text-sky-600 mx-auto mb-1" />
-                    <span className="text-[9px] text-slate-500 uppercase font-bold block">Rain</span>
-                    <span className="text-xs font-black text-slate-900 font-mono">{weatherData.precipitationProb}%</span>
+                  <div className="p-2.5 rounded-[18px] bg-white dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] text-center">
+                    <Droplets className="w-3.5 h-3.5 text-[#30D158] mx-auto mb-1" />
+                    <span className="text-[9px] text-[#8E8E93] uppercase font-mono block">Rain</span>
+                    <span className="text-xs font-mono font-medium text-black dark:text-white">{weatherData.precipitationProb}%</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white/85 border border-[#F7ADAD]/60 text-center">
-                    <Sun className="w-3.5 h-3.5 text-[#D45B5B] mx-auto mb-1" />
-                    <span className="text-[9px] text-slate-500 uppercase font-bold block">UV</span>
-                    <span className="text-xs font-black text-slate-900 font-mono">{weatherData.uvIndex}/10</span>
+                  <div className="p-2.5 rounded-[18px] bg-white dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] text-center">
+                    <Sun className="w-3.5 h-3.5 text-[#FFD60A] mx-auto mb-1" />
+                    <span className="text-[9px] text-[#8E8E93] uppercase font-mono block">UV</span>
+                    <span className="text-xs font-mono font-medium text-black dark:text-white">{weatherData.uvIndex}/10</span>
                   </div>
                 </div>
               </div>
@@ -767,7 +747,7 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
           {weatherData && (
             <div className="bright-card rounded-2xl p-4 space-y-2.5">
               <div className="flex items-center gap-2">
-                <Camera className="w-4 h-4 text-[#D45B5B]" />
+                <Camera className="w-4 h-4 text-[#FF2D20]" />
                 <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
                   Recommended Weather Gear for this Shoot
                 </h4>
@@ -792,7 +772,7 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
           {/* Header & Add Button */}
           <div className="flex items-center justify-between px-1">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-widest text-[#D45B5B] font-mono">
+              <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#FF2D20]">
                 Creative Vision
               </span>
               <h3 className="text-base font-bold text-slate-900 mt-0.5 font-display">
@@ -802,9 +782,9 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
             <button
               id="btn-add-moodboard-item"
               onClick={() => setIsMoodboardModalOpen(true)}
-              className="inline-flex items-center gap-1.5 py-2 px-4 rounded-full bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white font-extrabold text-xs shadow-md shadow-[#F29191]/30 active:scale-95 transition-all"
+              className="inline-flex items-center gap-1.5 py-2 px-4 rounded-full bg-[#FF2D20] hover:bg-[#E02619] text-white font-medium text-xs active:scale-[0.97] transition-all"
             >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
+              <Plus className="w-4 h-4" />
               <span>Add Inspiration</span>
             </button>
           </div>
@@ -816,7 +796,7 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                 <div
                   key={item.id}
                   id={`moodboard-item-${item.id}`}
-                  className="group relative rounded-2xl bright-card overflow-hidden shadow-xs hover:border-[#F7ADAD] transition-all cursor-pointer flex flex-col"
+                  className="group relative rounded-[20px] bg-white dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] overflow-hidden shadow-xs hover:border-[#FF2D20] transition-all cursor-pointer flex flex-col"
                   onClick={() => setFullscreenImageIndex(index)}
                 >
                   <div className="relative aspect-[3/4] overflow-hidden bg-slate-100">
@@ -863,7 +843,7 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 text-[11px] text-[#D45B5B] font-bold hover:underline"
+                          className="inline-flex items-center gap-1 text-[11px] text-[#FF2D20] font-mono uppercase tracking-wider hover:underline"
                         >
                           <ExternalLink className="w-3 h-3" />
                           <span>Link</span>
@@ -903,9 +883,9 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
               </p>
               <button
                 onClick={() => setIsMoodboardModalOpen(true)}
-                className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white font-extrabold text-xs shadow-md shadow-[#F29191]/30"
+                className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-[#FF2D20] hover:bg-[#E02619] text-white font-medium text-xs active:scale-[0.97] transition-all"
               >
-                <Plus className="w-4 h-4 stroke-[2.5]" />
+                <Plus className="w-4 h-4" />
                 <span>Add First Inspiration</span>
               </button>
             </div>
@@ -938,10 +918,10 @@ export const ShootHubView: React.FC<ShootHubViewProps> = ({
                 <p className="text-sm text-slate-900 font-medium mt-0.5">{shoot.clientName}</p>
               </div>
               <div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block font-mono">
+                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
                   Shoot Type
                 </span>
-                <p className="text-sm text-[#D45B5B] font-bold mt-0.5">{shoot.shootType}</p>
+                <p className="text-sm text-[#FF2D20] font-mono mt-0.5">{shoot.shootType}</p>
               </div>
             </div>
 

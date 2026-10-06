@@ -271,42 +271,42 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
   return (
     <div
       id="exiftool-modal-backdrop"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-xs p-0 sm:p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4"
     >
       <div
         id="exiftool-modal-content"
-        className="w-full max-w-xl bg-white border border-slate-200 rounded-t-[32px] sm:rounded-[32px] max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
+        className="w-full max-w-xl bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] rounded-t-[28px] sm:rounded-[28px] max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-100 bg-gradient-to-r from-slate-900 via-[#1E293B] to-slate-900 text-white">
+        <div className="flex items-center justify-between px-6 py-4.5 border-b border-black/[0.08] dark:border-white/[0.08] bg-[#F2F2F2]/60 dark:bg-[#1E1E1E]/40">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-2xl bg-gradient-to-br from-[#F29191] to-[#F7ADAD] text-white shadow-md shadow-[#F29191]/30">
+            <div className="p-2 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20]">
               <Cpu className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-sm font-extrabold tracking-tight font-display">
+                <h2 className="text-sm font-normal tracking-[-0.03em] text-black dark:text-white">
                   ExifTool Equipment Engine
                 </h2>
                 <a
                   href="https://exiftool.org/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-white/10 hover:bg-white/20 text-[#CCFBFA] font-mono transition-colors"
+                  className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white font-mono transition-colors"
                   title="Official ExifTool by Phil Harvey"
                 >
                   <span>exiftool.org</span>
                   <ExternalLink className="w-2.5 h-2.5" />
                 </a>
               </div>
-              <p className="text-[11px] text-slate-300">
+              <p className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">
                 Extract camera body, lens optics, serial numbers & shutter actuations
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-2 rounded-full text-[#8E8E93] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -314,50 +314,50 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
 
         {/* Status banner if imported */}
         {importSuccess && (
-          <div className="bg-emerald-500 text-white px-5 py-2.5 text-xs font-bold flex items-center gap-2 animate-in fade-in">
+          <div className="bg-[#30D158] text-white px-5 py-2.5 text-xs font-medium flex items-center gap-2 animate-in fade-in">
             <Check className="w-4 h-4" />
             <span>{importSuccess}</span>
           </div>
         )}
 
-        {/* Tab Controls */}
-        <div className="flex items-center justify-between px-6 py-2.5 bg-slate-50 border-b border-slate-200 text-xs">
-          <div className="flex items-center gap-2">
+        {/* Tab Controls - Pulsar OS Pill Track */}
+        <div className="flex items-center justify-between px-6 py-2.5 bg-[#F2F2F2] dark:bg-[#121212] border-b border-black/[0.08] dark:border-white/[0.08] text-xs">
+          <div className="flex items-center gap-1.5 p-1 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E]">
             <button
               onClick={() => setActiveTab('summary')}
-              className={`px-3 py-1.5 rounded-full font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-full font-medium transition-all ${
                 activeTab === 'summary'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:bg-slate-200/60'
+                  ? 'bg-white dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                  : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
               }`}
             >
-              Extracted Gear Specs
+              Specs
             </button>
             <button
               onClick={() => setActiveTab('tags')}
-              className={`px-3 py-1.5 rounded-full font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-full font-medium transition-all ${
                 activeTab === 'tags'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:bg-slate-200/60'
+                  ? 'bg-white dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                  : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
               }`}
             >
-              Raw ExifTool Tags ({rawTagEntries.length})
+              Tags ({rawTagEntries.length})
             </button>
             <button
               onClick={() => setActiveTab('presets')}
-              className={`px-3 py-1.5 rounded-full font-bold transition-all flex items-center gap-1 ${
+              className={`px-3 py-1.5 rounded-full font-medium transition-all flex items-center gap-1 ${
                 activeTab === 'presets'
-                  ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-                  : 'text-[#D45B5B] hover:bg-[#FFF0F0]'
+                  ? 'bg-white dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                  : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Sample Cameras</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#FF2D20]" />
+              <span>Samples</span>
             </button>
           </div>
 
-          <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 hover:border-[#F29191] text-slate-700 text-[11px] font-bold shadow-xs transition-colors">
-            <Upload className="w-3 h-3 text-[#D45B5B]" />
+          <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] hover:border-[#FF2D20] text-black dark:text-white text-[11px] font-medium transition-colors">
+            <Upload className="w-3 h-3 text-[#FF2D20]" />
             <span>Scan Photo</span>
             <input
               type="file"
@@ -374,13 +374,13 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
         {/* Body Content */}
         <div className="p-6 overflow-y-auto flex-1 space-y-4 scrollbar-none">
           {isProcessing ? (
-            <div className="py-16 flex flex-col items-center justify-center text-slate-500 gap-3">
-              <div className="w-10 h-10 border-3 border-[#F29191] border-t-transparent rounded-full animate-spin" />
+            <div className="py-16 flex flex-col items-center justify-center text-[#6E6E73] dark:text-[#8E8E93] gap-3">
+              <div className="w-10 h-10 border-2 border-[#FF2D20] border-t-transparent rounded-full animate-spin" />
               <div className="text-center">
-                <p className="text-xs font-bold text-slate-900">
+                <p className="text-xs font-medium text-black dark:text-white">
                   ExifTool Decoding Metadata...
                 </p>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">
                   Reading TIFF, EXIF, MakerNotes & Composite tags
                 </p>
               </div>
@@ -388,9 +388,9 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
           ) : activeTab === 'presets' ? (
             /* Presets View */
             <div className="space-y-3">
-              <div className="p-3 bg-[#CCFBFA]/40 border border-[#B1E5E6] rounded-2xl flex items-start gap-2.5">
-                <Info className="w-4 h-4 text-[#0F4E50] shrink-0 mt-0.5" />
-                <p className="text-xs text-[#0F4E50] leading-relaxed">
+              <div className="p-3 bg-[#CCFBFA]/40 dark:bg-teal-950/40 border border-[#B1E5E6] dark:border-teal-800 rounded-2xl flex items-start gap-2.5">
+                <Info className="w-4 h-4 text-[#0F4E50] dark:text-teal-300 shrink-0 mt-0.5" />
+                <p className="text-xs text-[#0F4E50] dark:text-teal-200 leading-relaxed">
                   Select a flagship camera sample below to inspect its exact ExifTool tag table, serial numbers, optical parameters, and shutter count.
                 </p>
               </div>
@@ -400,31 +400,31 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
                   <button
                     key={preset.id}
                     onClick={() => handleLoadPreset(preset)}
-                    className="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-[#F29191] text-left transition-all hover:shadow-md flex flex-col justify-between group"
+                    className="p-3.5 rounded-[18px] bg-white dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] hover:border-[#FF2D20] text-left transition-all flex flex-col justify-between group"
                   >
                     <div className="flex items-center gap-3 mb-2.5">
                       <img
                         src={preset.sampleImageUrl}
                         alt={preset.name}
-                        className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0 group-hover:scale-105 transition-transform"
+                        className="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shrink-0 group-hover:scale-105 transition-transform"
                         referrerPolicy="no-referrer"
                       />
                       <div className="min-w-0">
-                        <span className="text-[10px] font-mono uppercase font-bold text-[#D45B5B]">
+                        <span className="text-[10px] font-mono uppercase text-[#FF2D20]">
                           {preset.brand}
                         </span>
-                        <h4 className="text-xs font-bold text-slate-900 truncate">
+                        <h4 className="text-xs font-bold text-slate-900 dark:text-white truncate">
                           {preset.cameraName}
                         </h4>
-                        <p className="text-[10px] text-slate-500 truncate">
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
                           {preset.lensModel}
                         </p>
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                    <div className="pt-2 border-t border-slate-100 dark:border-slate-700/80 flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400">
                       <span>SN: {preset.bodySerialNumber}</span>
-                      <span className="text-emerald-700 font-bold">
+                      <span className="text-emerald-700 dark:text-emerald-400 font-bold">
                         {preset.shutterCount.toLocaleString()} acts
                       </span>
                     </div>
@@ -436,38 +436,38 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
             /* Raw ExifTool Tags */
             <div className="space-y-3">
               <div className="relative">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Filter ExifTool tags (e.g. Serial, Shutter, Lens, ISO)..."
                   value={tagSearch}
                   onChange={(e) => setTagSearch(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#F29191]"
+                  className="w-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-full pl-9 pr-4 py-2 text-xs text-black dark:text-white placeholder:text-[#8E8E93] focus:outline-none focus:border-[#FF2D20]"
                 />
               </div>
 
               {filteredTags.length === 0 ? (
-                <div className="p-8 text-center text-slate-400 text-xs">
+                <div className="p-8 text-center text-slate-400 dark:text-slate-500 text-xs">
                   No ExifTool tags matching "{tagSearch}".
                 </div>
               ) : (
-                <div className="border border-slate-200 rounded-2xl overflow-hidden divide-y divide-slate-100 text-xs font-mono max-h-96 overflow-y-auto">
+                <div className="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden divide-y divide-slate-100 dark:divide-slate-800 text-xs font-mono max-h-96 overflow-y-auto">
                   {filteredTags.map(([k, v]) => (
                     <div
                       key={k}
                       onClick={() => handleCopyValue(String(v), k)}
-                      className="px-3.5 py-2 flex items-center justify-between hover:bg-slate-50 cursor-pointer group"
+                      className="px-3.5 py-2 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/60 cursor-pointer group"
                       title="Click to copy tag value"
                     >
-                      <span className="font-bold text-slate-700 truncate mr-3">
+                      <span className="font-bold text-slate-700 dark:text-slate-300 truncate mr-3">
                         {k}
                       </span>
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-slate-900 font-medium truncate max-w-xs text-right">
+                        <span className="text-slate-900 dark:text-white font-medium truncate max-w-xs text-right">
                           {typeof v === 'object' ? JSON.stringify(v) : String(v)}
                         </span>
                         {copiedTag === k ? (
-                          <span className="text-[10px] text-emerald-600 font-bold">
+                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">
                             Copied!
                           </span>
                         ) : (
@@ -486,63 +486,63 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
             <div className="space-y-4">
               {/* Camera Body Card */}
               {extractedData.suggestedGear.camera && (
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+                <div className="p-4 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-xs space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="p-2 rounded-xl bg-[#FFF0F0] text-[#D45B5B] border border-[#F7ADAD]">
+                      <div className="p-2 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20] border border-black/[0.08] dark:border-white/[0.08]">
                         <Camera className="w-4 h-4" />
                       </div>
                       <div>
-                        <span className="text-[10px] uppercase font-bold tracking-wider text-[#D45B5B] font-mono">
+                        <span className="text-[10px] uppercase font-mono tracking-wider text-[#FF2D20]">
                           Camera Body Detected
                         </span>
-                        <h3 className="text-sm font-bold text-slate-900">
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                           {extractedData.suggestedGear.camera.name}
                         </h3>
                       </div>
                     </div>
 
-                    <span className="text-[10px] px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold font-mono inline-flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                    <span className="text-[10px] px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold font-mono inline-flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       <span>ExifTool Verified</span>
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                      <span className="text-[10px] text-slate-400 block">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+                      <span className="text-[10px] text-slate-400 dark:text-slate-500 block">
                         Body Serial Number
                       </span>
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">
                         {extractedData.bodySerialNumber || 'None embedded'}
                       </span>
                     </div>
 
-                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                      <span className="text-[10px] text-slate-400 block">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+                      <span className="text-[10px] text-slate-400 dark:text-slate-500 block">
                         Shutter Actuations
                       </span>
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">
                         {extractedData.shutterCount
                           ? `${extractedData.shutterCount.toLocaleString()} clicks`
                           : 'Electronic / Unlogged'}
                       </span>
                     </div>
 
-                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                      <span className="text-[10px] text-slate-400 block">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+                      <span className="text-[10px] text-slate-400 dark:text-slate-500 block">
                         Firmware / Software
                       </span>
-                      <span className="font-bold text-slate-800 truncate block">
+                      <span className="font-bold text-slate-800 dark:text-slate-200 truncate block">
                         {extractedData.software || 'Stock OS'}
                       </span>
                     </div>
 
-                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                      <span className="text-[10px] text-slate-400 block">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+                      <span className="text-[10px] text-slate-400 dark:text-slate-500 block">
                         Exposure / ISO
                       </span>
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">
                         {extractedData.exposureTime || '—'}, ISO {extractedData.iso || '—'}
                       </span>
                     </div>
@@ -551,7 +551,7 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
                   {mode === 'vault_scanner' && onImportGear && (
                     <button
                       onClick={handleImportCamera}
-                      className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs"
+                      className="w-full py-2 px-3 rounded-xl bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs font-bold transition-all shadow-xs"
                     >
                       Add Camera Body to Vault
                     </button>
@@ -561,42 +561,42 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
 
               {/* Lens Optics Card */}
               {extractedData.suggestedGear.lens && (
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+                <div className="p-4 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-xs space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="p-2 rounded-xl bg-[#CCFBFA] text-[#0F4E50] border border-[#B1E5E6]">
+                      <div className="p-2 rounded-xl bg-[#CCFBFA] dark:bg-teal-950/50 text-[#0F4E50] dark:text-teal-300 border border-[#B1E5E6] dark:border-teal-800">
                         <Disc className="w-4 h-4" />
                       </div>
                       <div>
-                        <span className="text-[10px] uppercase font-bold tracking-wider text-[#0F4E50] font-mono">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-[#0F4E50] dark:text-teal-300 font-mono">
                           Lens Optics Detected
                         </span>
-                        <h3 className="text-sm font-bold text-slate-900">
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                           {extractedData.suggestedGear.lens.name}
                         </h3>
                       </div>
                     </div>
 
-                    <span className="text-[10px] px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold font-mono">
+                    <span className="text-[10px] px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold font-mono">
                       Mounted
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                      <span className="text-[10px] text-slate-400 block">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+                      <span className="text-[10px] text-slate-400 dark:text-slate-500 block">
                         Lens Serial Number
                       </span>
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">
                         {extractedData.lensSerialNumber || 'None embedded'}
                       </span>
                     </div>
 
-                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                      <span className="text-[10px] text-slate-400 block">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+                      <span className="text-[10px] text-slate-400 dark:text-slate-500 block">
                         Aperture / Focal Length
                       </span>
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">
                         {extractedData.fNumber ? `f/${extractedData.fNumber}` : '—'} @ {extractedData.focalLength || '—'}mm
                       </span>
                     </div>
@@ -605,7 +605,7 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
                   {mode === 'vault_scanner' && onImportGear && (
                     <button
                       onClick={handleImportLens}
-                      className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs"
+                      className="w-full py-2 px-3 rounded-xl bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs font-bold transition-all shadow-xs"
                     >
                       Add Lens to Vault
                     </button>
@@ -615,16 +615,16 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
 
               {/* Sample Photo Preview info */}
               {samplePreview && (
-                <div className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
+                <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl">
                   <img
                     src={samplePreview}
                     alt="Sample test shot"
-                    className="w-14 h-14 rounded-xl object-cover border border-slate-200 shrink-0"
+                    className="w-14 h-14 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shrink-0"
                     referrerPolicy="no-referrer"
                   />
                   <div className="text-xs">
-                    <p className="font-bold text-slate-900">Sample Test Image Loaded</p>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="font-bold text-slate-900 dark:text-white">Sample Test Image Loaded</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
                       {rawTagEntries.length} ExifTool metadata tags decoded and mapped.
                     </p>
                   </div>
@@ -634,14 +634,14 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
           ) : (
             /* Empty State */
             <div className="py-12 px-4 text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-[#FFF0F0] text-[#D45B5B] border border-[#F7ADAD] mx-auto flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20] border border-black/[0.08] dark:border-white/[0.08] mx-auto flex items-center justify-center">
                 <Camera className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-900 font-display">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">
                   Scan Camera Test Shot
                 </h3>
-                <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 leading-relaxed">
+                <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1 leading-relaxed">
                   Drop a photo from your camera or choose a flagship camera preset. ExifTool will read the camera model, lens, serial numbers, and shutter count.
                 </p>
               </div>
@@ -649,13 +649,13 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
               <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
                 <button
                   onClick={() => handleLoadPreset(EXIFTOOL_PRESETS[0])}
-                  className="px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold shadow-xs hover:bg-slate-800 transition-colors"
+                  className="px-4 py-2 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold shadow-xs hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors"
                 >
                   Try Sony A7R V Preset
                 </button>
                 <button
                   onClick={() => handleLoadPreset(EXIFTOOL_PRESETS[1])}
-                  className="px-4 py-2 rounded-full bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold hover:bg-slate-200 transition-colors"
+                  className="px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                 >
                   Try Canon R5 Preset
                 </button>
@@ -665,8 +665,8 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
         </div>
 
         {/* Footer actions */}
-        <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/80 flex items-center justify-between gap-3">
-          <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1.5">
+        <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-850 dark:bg-slate-800/60 flex items-center justify-between gap-3">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span>ExifTool v13.10 Engine</span>
           </div>
@@ -675,7 +675,7 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"
+              className="px-4 py-2 rounded-full text-xs font-medium text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white transition-colors"
             >
               Close
             </button>
@@ -684,7 +684,7 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
               <button
                 type="button"
                 onClick={handleApplyToForm}
-                className="px-5 py-2.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-md shadow-[#F29191]/30 hover:brightness-105 active:scale-95 transition-all flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-full text-xs font-medium bg-[#FF2D20] hover:bg-[#E02619] text-white active:scale-[0.97] transition-all flex items-center gap-1.5"
               >
                 <Zap className="w-4 h-4" />
                 <span>Auto-Fill Gear Form</span>
@@ -697,7 +697,7 @@ export const ExifToolInspectorModal: React.FC<ExifToolInspectorModalProps> = ({
                 <button
                   type="button"
                   onClick={handleImportBoth}
-                  className="px-5 py-2.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-md shadow-[#F29191]/30 hover:brightness-105 active:scale-95 transition-all flex items-center gap-1.5"
+                  className="px-5 py-2.5 rounded-full text-xs font-medium bg-[#FF2D20] hover:bg-[#E02619] text-white active:scale-[0.97] transition-all flex items-center gap-1.5"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Import Camera & Lens (1-Click)</span>

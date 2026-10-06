@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Calendar, Camera, Settings, CloudSun } from 'lucide-react';
+import { LayoutDashboard, Calendar, Camera, Sun, Palette } from 'lucide-react';
 import { NavigationTab } from '../types';
 
 interface NavigationProps {
@@ -32,8 +32,8 @@ export const Navigation: React.FC<NavigationProps> = ({
     },
     {
       id: 'weather',
-      label: 'Weather',
-      icon: CloudSun,
+      label: 'Light',
+      icon: Sun,
     },
     {
       id: 'gear_vault',
@@ -41,20 +41,20 @@ export const Navigation: React.FC<NavigationProps> = ({
       icon: Camera,
     },
     {
-      id: 'settings',
-      label: 'Settings',
-      icon: Settings,
+      id: 'moodboards',
+      label: 'Moodboards',
+      icon: Palette,
     },
   ];
 
   return (
     <nav
       id="bottom-navigation-bar"
-      className="fixed bottom-3 left-0 right-0 z-40 px-3 pointer-events-none"
+      className="fixed bottom-0 left-0 right-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 pointer-events-none"
       role="navigation"
       aria-label="Main Navigation"
     >
-      <div className="max-w-sm mx-auto bg-white/95 backdrop-blur-2xl border border-[#B1E5E6]/70 rounded-full px-2 py-1.5 shadow-[0_12px_32px_rgba(15,23,42,0.1)] pointer-events-auto flex items-center justify-around">
+      <div className="max-w-xs sm:max-w-sm mx-auto bg-[#FFFFFF]/90 dark:bg-[#121212]/90 backdrop-blur-xl border border-black/[0.08] dark:border-white/[0.08] rounded-full px-2.5 py-1.5 shadow-2xl pointer-events-auto flex items-center justify-around">
         {navItems.map((item) => {
           const isActive = currentTab === item.id;
           const Icon = item.icon;
@@ -63,37 +63,40 @@ export const Navigation: React.FC<NavigationProps> = ({
               key={item.id}
               id={`nav-tab-${item.id}`}
               onClick={() => onTabChange(item.id)}
-              className={`relative flex flex-col items-center justify-center py-1.5 px-2.5 rounded-full transition-all duration-200 ${
-                isActive
-                  ? 'text-white font-bold'
-                  : 'text-slate-400 hover:text-slate-700'
-              }`}
+              className="relative flex flex-col items-center justify-center min-w-[52px] min-h-[44px] py-1 px-1.5 rounded-full transition-all duration-150 cursor-pointer active:scale-95 group"
             >
-              {isActive && (
-                <span className="absolute inset-0 bg-gradient-to-r from-[#F29191] to-[#F7ADAD] rounded-full shadow-[0_4px_12px_rgba(242,145,145,0.45)] -z-0" />
-              )}
-              <div className="relative z-10 flex items-center justify-center">
+              <div className="relative flex items-center justify-center">
                 <Icon
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    isActive ? 'scale-105 text-white' : 'text-slate-500'
+                  className={`w-[18px] h-[18px] transition-colors duration-150 ${
+                    isActive
+                      ? 'text-black dark:text-white'
+                      : 'text-[#8E8E93] group-hover:text-black dark:group-hover:text-white'
                   }`}
                 />
                 {item.badge && item.badge > 0 && (
                   <span
                     id={`nav-badge-${item.id}`}
-                    className="absolute -top-1.5 -right-2 flex h-3.5 min-w-3.5 px-1 items-center justify-center rounded-full bg-[#F29191] text-[9px] font-extrabold text-white shadow-md ring-2 ring-white"
+                    className="absolute -top-1 -right-2 flex h-3.5 min-w-3.5 px-1 items-center justify-center rounded-full bg-[#FF2D20] text-[9px] font-mono font-bold text-white shadow-xs"
                   >
                     {item.badge}
                   </span>
                 )}
               </div>
               <span
-                className={`text-[10px] mt-0.5 tracking-tight font-medium relative z-10 ${
-                  isActive ? 'text-white font-bold' : 'text-slate-500'
+                className={`text-[10px] mt-0.5 tracking-tight font-medium transition-colors duration-150 ${
+                  isActive
+                    ? 'text-black dark:text-white font-medium'
+                    : 'text-[#8E8E93]'
                 }`}
               >
                 {item.label}
               </span>
+              {/* Pulsar active indicator: small red dot below */}
+              {isActive ? (
+                <span className="w-1 h-1 rounded-full bg-[#FF2D20] mt-0.5 block animate-in fade-in zoom-in duration-150" />
+              ) : (
+                <span className="w-1 h-1 rounded-full bg-transparent mt-0.5 block" />
+              )}
             </button>
           );
         })}

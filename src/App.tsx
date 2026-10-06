@@ -8,6 +8,7 @@ import {
   AlertNotification,
   NavigationTab,
   UserProfile,
+  ThemeMode,
 } from './types';
 import { StorageService, playAlertChime } from './services/storage';
 import { AuthService } from './services/authService';
@@ -19,6 +20,8 @@ import { GearVaultView } from './components/gear/GearVaultView';
 import { SettingsView } from './components/settings/SettingsView';
 import { ShootHubView } from './components/shoots/ShootHubView';
 import { WeatherForecastView } from './components/weather/WeatherForecastView';
+import { MoodboardsView } from './components/moodboard/MoodboardsView';
+import { AlertsBottomSheet } from './components/alerts/AlertsBottomSheet';
 import { ShootModal } from './components/shoots/ShootModal';
 import { GearModal } from './components/gear/GearModal';
 import { LoginView } from './components/auth/LoginView';
@@ -44,10 +47,51 @@ export default function App() {
   );
   const [dismissedAlertIds, setDismissedAlertIds] = useState<Set<string>>(new Set());
   const [simulatedAlerts, setSimulatedAlerts] = useState<AlertNotification[]>([]);
+  const [isAlertsSheetOpen, setIsAlertsSheetOpen] = useState(false);
 
   // Global modals for dashboard shortcuts
   const [isGlobalShootModalOpen, setIsGlobalShootModalOpen] = useState(false);
   const [isGlobalGearModalOpen, setIsGlobalGearModalOpen] = useState(false);
+
+  // Apply theme (Light / Dark / System)
+  useEffect(() => {
+    const root = document.documentElement;
+    const theme = settings.theme || 'system';
+
+    const applyDark = (isDark: boolean) => {
+      if (isDark) {
+        root.classList.add('dark');
+        document.body.classList.add('dark');
+        root.style.colorScheme = 'dark';
+      } else {
+        root.classList.remove('dark');
+        document.body.classList.remove('dark');
+        root.style.colorScheme = 'light';
+      }
+    };
+
+    if (theme === 'dark') {
+      applyDark(true);
+    } else if (theme === 'light') {
+      applyDark(false);
+    } else {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      applyDark(mediaQuery.matches);
+      const handler = (e: MediaQueryListEvent) => applyDark(e.matches);
+      mediaQuery.addEventListener('change', handler);
+      return () => mediaQuery.removeEventListener('change', handler);
+    }
+  }, [settings.theme]);
+
+  const handleToggleTheme = () => {
+    setSettings((prev) => {
+      const isCurrentlyDark = document.documentElement.classList.contains('dark');
+      const nextTheme: ThemeMode = isCurrentlyDark ? 'light' : 'dark';
+      const updated = { ...prev, theme: nextTheme };
+      StorageService.saveSettings(updated);
+      return updated;
+    });
+  };
 
   // Sync to local storage
   useEffect(() => {
@@ -70,112 +114,131 @@ export default function App() {
     StorageService.saveSettings(settings);
   }, [settings]);
 
-  // Compute active alerts (Day-of-Shoot Morning Review & 2-Hour Critical Missing Gear)
-  const computedAlerts = useMemo(() => {
-    const raw = evaluateShootAlerts(shoots, packing, gear, settings);
-    return raw.filter((a) => !dismissedAlertIds.has(a.id));
-  }, [shoots, packing, gear, settings, dismissedAlertIds]);
+  // Sync any local accounts on this device to the central server
+  useEffect(() => {
+    AuthService.syncLocalAccountsToServer().catch(() => {});
+  }, []);
 
-  // Combine computed alerts with simulated alerts
-  const activeAlerts = useMemo(() => {
-    const combined = [...simulatedAlerts, ...computedAlerts];
-    // Deduplicate by ID
-    const seen = new Set<string>();
-    return combined.filter((a) => {
-      if (seen.has(a.id)) return false;
-      seen.add(a.id);
-      return !dismissedAlertIds.has(a.id);
-    });
-  }, [simulatedAlerts, computedAlerts, dismissedAlertIds]);
-
-  const handleDismissAlert = (alertId: string) => {
-    setDismissedAlertIds((prev) => new Set(prev).add(alertId));
-    setSimulatedAlerts((prev) => prev.filter((a) => a.id !== alertId));
-  };
-
-  // Trigger simulated alerts for immediate user demo
-  const handleTriggerSimulatedAlert = (type: 'morning_review' | 'two_hour_critical') => {
-    const targetShoot = shoots[0] || {
-      id: 'demo-shoot',
-      title: 'Commercial Fashion Editorial',
-      clientName: 'Atelier Vogue',
-      dateTime: new Date(Date.now() + 90 * 60000).toISOString(),
-      location: 'Studio 4, San Francisco',
-      shootType: 'Commercial',
-      generalNotes: '3 model looks',
-      createdAt: new Date().toISOString(),
+  // Keep profile (name, studio, photo) in sync across devices:
+  // refresh on login, when the app comes back to the foreground, and every 60s
+  useEffect(() => {
+    if (!user?.email) return;
+    let cancelled = false;
+    const refresh = async () => {
+      const fresh = await AuthService.refreshFromServer();
+      if (cancelled || !fresh) return;
+      setUser(fresh);
+      setSettings((prev) => ({
+        ...prev,
+        photographerName: fresh.name || prev.photographerName,
+        studioName: fresh.studioName ?? prev.studioName,
+      }));
     };
+    refresh();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') refresh();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    const interval = window.setInterval(refresh, 60000);
+    return () => {
+      cancelled = true;
+      document.removeEventListener('visibilitychange', onVisible);
+      window.clearInterval(interval);
+    };
+  }, [user?.email]);
 
-    if (type === 'two_hour_critical') {
-      const alert: AlertNotification = {
-        id: `sim-critical-${Date.now()}`,
-        shootId: targetShoot.id,
-        shootTitle: targetShoot.title,
-        type: 'two_hour_critical',
-        priority: 'critical',
-        title: `HIGH-PRIORITY: Shoot starts in 1h 45m!`,
-        message: `Crucial items for "${targetShoot.title}" are still marked as Needed or Missing. Check packing immediately!`,
-        missingItems: [
-          'Profoto B10X Plus 500Ws Strobe (Missing)',
-          'Sony FE 24-70mm f/2.8 GM II (Needed)',
-          'Peak Design Carbon Tripod (Needed)',
-        ],
-        timestamp: new Date().toISOString(),
-        read: false,
-      };
-      setSimulatedAlerts((prev) => [alert, ...prev]);
+  // Cross-device Server Vault Sync: Load saved vault from server on login
+  useEffect(() => {
+    if (!user) return;
+    let isMounted = true;
+    const fetchServerVault = async () => {
+      try {
+        const query = new URLSearchParams();
+        if (user.id) query.set('userId', user.id);
+        if (user.email) query.set('email', user.email);
 
-      // If browser notifications allowed
-      if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-        new Notification(alert.title, { body: alert.message });
+        const res = await fetch(`/api/vault/load?${query.toString()}`);
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!isMounted || !json.vaultData) return;
+
+        const data = json.vaultData;
+        if (Array.isArray(data.gear) && data.gear.length > 0) setGear(data.gear);
+        if (Array.isArray(data.shoots) && data.shoots.length > 0) setShoots(data.shoots);
+        if (Array.isArray(data.packing) && data.packing.length > 0) setPacking(data.packing);
+        if (Array.isArray(data.moodboards) && data.moodboards.length > 0) setMoodboards(data.moodboards);
+        if (data.settings && typeof data.settings === 'object') {
+          setSettings((prev) => ({ ...prev, ...data.settings }));
+        }
+      } catch (err) {
+        console.warn('Silent server vault load info:', err);
       }
-    } else {
-      const alert: AlertNotification = {
-        id: `sim-morning-${Date.now()}`,
-        shootId: targetShoot.id,
-        shootTitle: targetShoot.title,
-        type: 'morning_review',
-        priority: 'high',
-        title: `Morning Call (${settings.morningAlertTime || '06:00'} AM): "${targetShoot.title}"`,
-        message: `Good morning! You have a booked shoot today at ${formatShootTime(
-          targetShoot.dateTime
-        )}. Please verify and pack all camera bodies, lenses, and batteries.`,
-        missingItems: ['Sony FE 24-70mm f/2.8 GM II', 'Profoto B10X Plus'],
-        timestamp: new Date().toISOString(),
-        read: false,
-      };
-      setSimulatedAlerts((prev) => [alert, ...prev]);
+    };
+    fetchServerVault();
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
-      if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-        new Notification(alert.title, { body: alert.message });
+  // Automatic Background Server Vault Backup (Silent sync every 30 seconds when changed)
+  const isDataDirtyRef = React.useRef(false);
+  useEffect(() => {
+    isDataDirtyRef.current = true;
+  }, [gear, shoots, packing, moodboards, settings]);
+
+  useEffect(() => {
+    if (!user) return;
+    const interval = setInterval(async () => {
+      if (!isDataDirtyRef.current) return;
+      try {
+        await fetch('/api/vault/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            email: user.email,
+            vaultData: {
+              gear,
+              shoots,
+              packing,
+              moodboards,
+              settings,
+            },
+          }),
+        });
+        isDataDirtyRef.current = false;
+      } catch (e) {
+        // silent fail
       }
-    }
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [user, gear, shoots, packing, moodboards, settings]);
+
+  // Active alerts evaluation
+  const activeAlerts = useMemo(() => {
+    const evaluated = evaluateShootAlerts(shoots, packing, gear, settings);
+    const combined = [...simulatedAlerts, ...evaluated];
+    return combined.filter((a) => !dismissedAlertIds.has(a.id));
+  }, [shoots, packing, gear, settings, simulatedAlerts, dismissedAlertIds]);
+
+  // Alert dismiss
+  const handleDismissAlert = useCallback((alertId: string) => {
+    setDismissedAlertIds((prev) => new Set(prev).add(alertId));
+  }, []);
+
+  const handleClearAllAlerts = useCallback(() => {
+    setDismissedAlertIds(new Set(activeAlerts.map((a) => a.id)));
+  }, [activeAlerts]);
+
+  // Shoot management
+  const handleAddShoot = (newShoot: Shoot) => {
+    setShoots((prev) => [newShoot, ...prev]);
   };
 
-  // Gear Vault actions
-  const handleAddGear = (item: GearItem) => {
-    setGear((prev) => [item, ...prev]);
-    if (settings.soundEnabled) playAlertChime('shutter');
-  };
-
-  const handleUpdateGear = (updated: GearItem) => {
-    setGear((prev) => prev.map((g) => (g.id === updated.id ? updated : g)));
-  };
-
-  const handleDeleteGear = (gearId: string) => {
-    setGear((prev) => prev.filter((g) => g.id !== gearId));
-    // Also remove from any packing lists
-    setPacking((prev) => prev.filter((p) => p.gearId !== gearId));
-  };
-
-  // Shoot actions
-  const handleAddShoot = (shoot: Shoot) => {
-    setShoots((prev) => [shoot, ...prev]);
-    if (settings.soundEnabled) playAlertChime('shutter');
-  };
-
-  const handleUpdateShoot = (updated: Shoot) => {
-    setShoots((prev) => prev.map((s) => (s.id === updated.id ? updated : s)));
+  const handleUpdateShoot = (updatedShoot: Shoot) => {
+    setShoots((prev) =>
+      prev.map((s) => (s.id === updatedShoot.id ? updatedShoot : s))
+    );
   };
 
   const handleDeleteShoot = (shootId: string) => {
@@ -187,9 +250,27 @@ export default function App() {
     }
   };
 
-  // Packing actions
-  const handleUpdatePackingItem = (updated: PackingItem) => {
-    setPacking((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+  // Gear management
+  const handleAddGear = (newGear: GearItem) => {
+    setGear((prev) => [newGear, ...prev]);
+  };
+
+  const handleUpdateGear = (updatedGear: GearItem) => {
+    setGear((prev) =>
+      prev.map((g) => (g.id === updatedGear.id ? updatedGear : g))
+    );
+  };
+
+  const handleDeleteGear = (gearId: string) => {
+    setGear((prev) => prev.filter((g) => g.id !== gearId));
+    setPacking((prev) => prev.filter((p) => p.gearId !== gearId));
+  };
+
+  // Packing management
+  const handleUpdatePackingItem = (updatedItem: PackingItem) => {
+    setPacking((prev) =>
+      prev.map((p) => (p.id === updatedItem.id ? updatedItem : p))
+    );
   };
 
   const handleAddPackingItems = (newItems: PackingItem[]) => {
@@ -209,17 +290,42 @@ export default function App() {
     setMoodboards((prev) => prev.filter((m) => m.id !== id));
   };
 
-  // Reset demo data
-  const handleResetData = () => {
+  // Reset all data (Requirement 4)
+  const handleResetData = async () => {
     StorageService.resetAll();
-    setGear(StorageService.getGear());
-    setShoots(StorageService.getShoots());
-    setPacking(StorageService.getPacking());
-    setMoodboards(StorageService.getMoodboards());
-    setSettings(StorageService.getSettings());
+    setGear([]);
+    setShoots([]);
+    setPacking([]);
+    setMoodboards([]);
+    const resetSettings = StorageService.getSettings();
+    resetSettings.selectedCity = '';
+    setSettings(resetSettings);
     setDismissedAlertIds(new Set());
     setSimulatedAlerts([]);
     setActiveShootId(null);
+
+    // If logged in, also sync empty vault to server
+    if (user) {
+      try {
+        await fetch('/api/vault/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            email: user.email,
+            vaultData: {
+              gear: [],
+              shoots: [],
+              packing: [],
+              moodboards: [],
+              settings: resetSettings,
+            },
+          }),
+        });
+      } catch (err) {
+        console.warn('Silent server vault reset notice:', err);
+      }
+    }
   };
 
   const handleLogout = () => {
@@ -227,7 +333,9 @@ export default function App() {
     setUser(null);
   };
 
-  const handleSwitchAccount = () => {
+  const handleDeleteAccount = () => {
+    StorageService.clearAll();
+    AuthService.logout();
     setUser(null);
   };
 
@@ -256,9 +364,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFDFD] text-[#0F172A] flex flex-col selection:bg-[#CCFBFA] selection:text-[#0F4E50]">
-      {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-lg mx-auto">
+    <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#000000] text-black dark:text-white flex flex-col selection:bg-[#FF2D20] selection:text-white transition-colors duration-200">
+      {/* Main Content Area with safe area padding */}
+      <main className="flex-1 w-full max-w-lg mx-auto pt-[env(safe-area-inset-top)] pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
         {activeShoot ? (
           /* Dedicated Shoot Hub (Packing List, Moodboard & Details) */
           <ShootHubView
@@ -287,12 +395,14 @@ export default function App() {
                 settings={settings}
                 alerts={activeAlerts}
                 user={user}
-                onLogout={handleLogout}
                 onOpenShoot={(id) => setActiveShootId(id)}
                 onNavigateToTab={(tab) => setCurrentTab(tab)}
                 onOpenScheduleModal={() => setIsGlobalShootModalOpen(true)}
                 onOpenAddGearModal={() => setIsGlobalGearModalOpen(true)}
                 onDismissAlert={handleDismissAlert}
+                onOpenAlertsSheet={() => setIsAlertsSheetOpen(true)}
+                onNavigateToSettings={() => setCurrentTab('settings')}
+                onUpdateUser={(updated) => setUser(updated)}
               />
             )}
 
@@ -300,6 +410,7 @@ export default function App() {
               <ShootSchedulerView
                 shoots={shoots}
                 packing={packing}
+                settings={settings}
                 onOpenShoot={(id) => setActiveShootId(id)}
                 onAddShoot={handleAddShoot}
                 onUpdateShoot={handleUpdateShoot}
@@ -310,7 +421,8 @@ export default function App() {
             {currentTab === 'weather' && (
               <WeatherForecastView
                 shoots={shoots}
-                onOpenShoot={(id) => setActiveShootId(id)}
+                settings={settings}
+                onUpdateSettings={(newSettings) => setSettings((prev) => ({ ...prev, ...newSettings }))}
               />
             )}
 
@@ -323,25 +435,33 @@ export default function App() {
               />
             )}
 
+            {currentTab === 'moodboards' && (
+              <MoodboardsView
+                shoots={shoots}
+                moodboards={moodboards}
+                onAddMoodboardItem={handleAddMoodboardItem}
+                onDeleteMoodboardItem={handleDeleteMoodboardItem}
+                onOpenShoot={(id) => setActiveShootId(id)}
+              />
+            )}
+
             {currentTab === 'settings' && (
               <SettingsView
                 settings={settings}
-                shoots={shoots}
-                gear={gear}
-                packing={packing}
                 user={user}
                 onLogout={handleLogout}
-                onSwitchAccount={handleSwitchAccount}
+                onDeleteAccount={handleDeleteAccount}
                 onUpdateSettings={(newSettings) => setSettings(newSettings)}
+                onUpdateUser={(updated) => setUser(updated)}
                 onResetData={handleResetData}
-                onTriggerSimulatedAlert={handleTriggerSimulatedAlert}
+                onToggleTheme={handleToggleTheme}
               />
             )}
           </>
         )}
       </main>
 
-      {/* Persistent Bottom Navigation Bar (hidden inside Shoot Hub if desired, or visible for fast switching) */}
+      {/* Persistent Bottom Navigation Bar */}
       <Navigation
         currentTab={currentTab}
         onTabChange={(tab) => {
@@ -349,6 +469,22 @@ export default function App() {
           setCurrentTab(tab);
         }}
         alertCount={activeAlerts.length}
+      />
+
+      {/* Alerts Bottom Sheet (Requirement 9) */}
+      <AlertsBottomSheet
+        isOpen={isAlertsSheetOpen}
+        onClose={() => setIsAlertsSheetOpen(false)}
+        alerts={activeAlerts}
+        shoots={shoots}
+        packing={packing}
+        settings={settings}
+        onDismissAlert={handleDismissAlert}
+        onOpenShoot={(id) => {
+          setIsAlertsSheetOpen(false);
+          setActiveShootId(id);
+        }}
+        onClearAll={handleClearAllAlerts}
       />
 
       {/* Global Quick Modals */}

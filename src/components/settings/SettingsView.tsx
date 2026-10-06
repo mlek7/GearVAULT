@@ -1,556 +1,905 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Bell,
   Clock,
   AlertTriangle,
   Volume2,
   VolumeX,
-  Smartphone,
-  RotateCcw,
-  Download,
-  ShieldAlert,
-  Sparkles,
-  Camera,
   Check,
   Zap,
   LogOut,
   User,
-  Apple,
-  Mail,
-  ShieldCheck,
+  Sun,
+  Moon,
+  Monitor,
+  Thermometer,
+  Calendar,
+  Sliders,
+  ChevronRight,
+  Shield,
+  Trash2,
+  HelpCircle,
+  FileText,
+  X,
+  ExternalLink,
+  Camera,
+  Upload,
+  RotateCcw,
+  Loader2,
 } from 'lucide-react';
-import { AppSettings, Shoot, GearItem, PackingItem, UserProfile } from '../../types';
-import { playAlertChime } from '../../services/storage';
-import { IOSDownloadModal } from '../ios/IOSDownloadModal';
+import {
+  AppSettings,
+  UserProfile,
+  ThemeMode,
+  TempUnit,
+  TimeFormat,
+  DateFormat,
+} from '../../types';
+import { StorageService, playAlertChime } from '../../services/storage';
+import { processProfilePhoto } from '../../utils/imageUtils';
+import { AuthService } from '../../services/authService';
 
 interface SettingsViewProps {
   settings: AppSettings;
-  shoots: Shoot[];
-  gear: GearItem[];
-  packing: PackingItem[];
-  user?: UserProfile | null;
+  user: UserProfile | null;
+  onUpdateSettings: (newSettings: AppSettings) => void;
+  onUpdateUser?: (updatedUser: UserProfile) => void;
   onLogout?: () => void;
-  onSwitchAccount?: () => void;
-  onUpdateSettings: (settings: AppSettings) => void;
+  onDeleteAccount?: () => void;
   onResetData: () => void;
-  onTriggerSimulatedAlert: (type: 'morning_review' | 'two_hour_critical') => void;
+  onToggleTheme?: () => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
   settings,
-  shoots,
-  gear,
-  packing,
   user,
-  onLogout,
-  onSwitchAccount,
   onUpdateSettings,
+  onUpdateUser,
+  onLogout,
+  onDeleteAccount,
   onResetData,
-  onTriggerSimulatedAlert,
 }) => {
   const [morningTime, setMorningTime] = useState(settings.morningAlertTime || '06:00');
   const [photographerName, setPhotographerName] = useState(
-    user?.name || settings.photographerName || ''
+    settings.photographerName || user?.name || ''
   );
   const [studioName, setStudioName] = useState(
-    user?.studioName || settings.studioName || ''
-  );
-
-  useEffect(() => {
-    if (user?.name) {
-      setPhotographerName(user.name);
-    }
-    if (user?.studioName) {
-      setStudioName(user.studioName);
-    }
-  }, [user?.name, user?.studioName]);
-  const [browserPermState, setBrowserPermState] = useState<NotificationPermission>(
-    typeof Notification !== 'undefined' ? Notification.permission : 'default'
+    settings.studioName || user?.studioName || ''
   );
   const [showSavedToast, setShowSavedToast] = useState(false);
-  const [isIOSModalOpen, setIsIOSModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('Settings saved');
 
-  const handleSaveProfile = (e: React.FormEvent) => {
-    e.preventDefault();
-    onUpdateSettings({
-      ...settings,
-      photographerName: photographerName.trim(),
-      studioName: studioName.trim(),
-      morningAlertTime: morningTime,
-    });
+  // Photo upload states
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const [isProcessingPhoto, setIsProcessingPhoto] = useState(false);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+
+  // Dialogs
+  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
+  const [showDeleteDataConfirm, setShowDeleteDataConfirm] = useState(false);
+  const [showResetDataConfirm, setShowResetDataConfirm] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+
+  useEffect(() => {
+    setMorningTime(settings.morningAlertTime || '06:00');
+    setPhotographerName(settings.photographerName || user?.name || '');
+    setStudioName(settings.studioName || user?.studioName || '');
+  }, [settings, user]);
+
+  const triggerSavedToast = (msg: string = 'Settings saved') => {
+    setToastMessage(msg);
     setShowSavedToast(true);
     setTimeout(() => setShowSavedToast(false), 2000);
   };
 
-  const handleMorningTimeChange = (time: string) => {
-    setMorningTime(time);
-    onUpdateSettings({
-      ...settings,
-      morningAlertTime: time,
-    });
-  };
+  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsProcessingPhoto(true);
+    setPhotoError(null);
 
-  const requestNotificationPermission = async () => {
-    if (typeof Notification !== 'undefined') {
-      try {
-        const res = await Notification.requestPermission();
-        setBrowserPermState(res);
-        if (res === 'granted') {
-          new Notification('Photo Gear Vault', {
-            body: 'Push notifications activated. You will receive 6:00 AM packing alerts and 2-hour missing gear warnings.',
-          });
-        }
-      } catch (err) {
-        console.warn('Notification permission error:', err);
+    try {
+      const croppedJpegDataUrl = await processProfilePhoto(file);
+      const updatedUser = await AuthService.updateUserProfile({ avatarUrl: croppedJpegDataUrl });
+      if (updatedUser && onUpdateUser) {
+        onUpdateUser(updatedUser);
+      }
+      triggerSavedToast('Profile photo updated');
+    } catch (err: any) {
+      setPhotoError(err.message || 'Failed to process photo');
+    } finally {
+      setIsProcessingPhoto(false);
+      if (photoInputRef.current) {
+        photoInputRef.current.value = '';
       }
     }
   };
 
-  const handleExportJSON = () => {
-    const data = {
-      settings,
-      gear,
-      shoots,
-      packing,
-      exportedAt: new Date().toISOString(),
+  const handleRemovePhoto = async () => {
+    setIsProcessingPhoto(true);
+    setPhotoError(null);
+    try {
+      const updatedUser = await AuthService.updateUserProfile({ avatarUrl: undefined });
+      if (updatedUser && onUpdateUser) {
+        onUpdateUser(updatedUser);
+      }
+      triggerSavedToast('Profile photo removed');
+    } catch (err: any) {
+      setPhotoError(err.message || 'Failed to remove photo');
+    } finally {
+      setIsProcessingPhoto(false);
+    }
+  };
+
+  const handlePerformResetData = () => {
+    onResetData();
+    setShowResetDataConfirm(false);
+    triggerSavedToast('All data has been reset');
+  };
+
+  const handleThemeChange = (mode: ThemeMode) => {
+    const updated = { ...settings, theme: mode };
+    onUpdateSettings(updated);
+    triggerSavedToast();
+  };
+
+  const handleTempUnitChange = (unit: TempUnit) => {
+    const updated = { ...settings, tempUnit: unit };
+    onUpdateSettings(updated);
+    triggerSavedToast();
+  };
+
+  const handleTimeFormatChange = (fmt: TimeFormat) => {
+    const updated = { ...settings, timeFormat: fmt };
+    onUpdateSettings(updated);
+    triggerSavedToast();
+  };
+
+  const handleDateFormatChange = (fmt: DateFormat) => {
+    const updated = { ...settings, dateFormat: fmt };
+    onUpdateSettings(updated);
+    triggerSavedToast();
+  };
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanName = photographerName.trim();
+    const cleanStudio = studioName.trim();
+    const updated = {
+      ...settings,
+      photographerName: cleanName,
+      studioName: cleanStudio,
     };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `photographer-vault-backup-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    onUpdateSettings(updated);
+    // Also save to the account so the header updates now and other devices get it
+    const updatedUser = await AuthService.updateUserProfile({
+      ...(cleanName ? { name: cleanName } : {}),
+      studioName: cleanStudio,
+    });
+    if (updatedUser && onUpdateUser) {
+      onUpdateUser(updatedUser);
+    }
+    triggerSavedToast('Profile saved');
+  };
+
+  const handleMorningTimeSelect = (time24: string) => {
+    setMorningTime(time24);
+    const updated = { ...settings, morningAlertTime: time24 };
+    onUpdateSettings(updated);
+    triggerSavedToast();
+  };
+
+  // Convert "HH:mm" 24h to display string according to timeFormat
+  const formatTriggerTimeDisplay = (timeStr: string) => {
+    if (!timeStr) return '06:00';
+    const [hStr, mStr] = timeStr.split(':');
+    const h = parseInt(hStr, 10);
+    const m = mStr || '00';
+    if (settings.timeFormat === '12h') {
+      const period = h >= 12 ? 'PM' : 'AM';
+      const h12 = h % 12 || 12;
+      return `${h12}:${m} ${period}`;
+    }
+    return `${String(h).padStart(2, '0')}:${m}`;
+  };
+
+  // Time preset options formatted according to timeFormat (Requirement 3)
+  const timePresets = [
+    { value: '05:30', label: settings.timeFormat === '12h' ? '5:30 AM' : '05:30' },
+    { value: '06:00', label: settings.timeFormat === '12h' ? '6:00 AM' : '06:00' },
+    { value: '07:00', label: settings.timeFormat === '12h' ? '7:00 AM' : '07:00' },
+    { value: '08:00', label: settings.timeFormat === '12h' ? '8:00 AM' : '08:00' },
+  ];
+
+  const handlePerformDeleteAll = () => {
+    setShowDeleteDataConfirm(false);
+    StorageService.clearAll();
+    if (onDeleteAccount) {
+      onDeleteAccount();
+    } else if (onLogout) {
+      onLogout();
+    }
   };
 
   return (
-    <div id="settings-view" className="pb-28 pt-3 px-4 max-w-lg mx-auto space-y-5">
+    <div id="settings-view" className="pb-28 pt-3 px-4 max-w-lg mx-auto">
       {/* Header */}
-      <div>
-        <span className="text-[11px] font-bold uppercase tracking-widest text-[#D45B5B] font-mono">
-          Preferences & Logic
+      <div className="mb-4">
+        <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93]">
+          Preferences & Account
         </span>
-        <h1 className="text-2xl font-black tracking-tight text-slate-900 mt-0.5 font-display">
-          Settings & Automations
+        <h1 className="text-2xl font-normal tracking-[-0.03em] text-black dark:text-white mt-0.5">
+          Settings
         </h1>
-        <p className="text-xs text-slate-500 mt-1 font-medium">
-          Configure day-of-shoot alerts, packing safeguards, and studio profile.
-        </p>
       </div>
 
       {showSavedToast && (
-        <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center gap-2 animate-in fade-in shadow-xs">
+        <div className="mb-4 p-3 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[#30D158] text-xs font-medium flex items-center gap-2 shadow-xs animate-in fade-in">
           <Check className="w-4 h-4" />
-          <span>Settings saved successfully!</span>
+          <span>{toastMessage}</span>
         </div>
       )}
 
       {/* ========================================================================= */}
-      {/* SECTION 1: DAY-OF-SHOOT ALERTS & AUTOMATIONS */}
+      {/* SECTION 1: DISPLAY (Pulsar Card) */}
       {/* ========================================================================= */}
-      <div className="rounded-3xl bright-card p-5 space-y-4 shadow-xs">
-        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
-          <div className="p-2 rounded-xl bg-[#FFF0F0] text-[#D45B5B] border border-[#F7ADAD]/60">
-            <Zap className="w-4 h-4" />
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-slate-900 font-display">
-              Day-of-Shoot Alerts & Automations
-            </h3>
-            <p className="text-[11px] text-slate-500">
-              Automated reminders to prevent forgotten equipment on set
-            </p>
-          </div>
-        </div>
-
-        {/* 1. Morning Review Alert Setting */}
-        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
-                <Clock className="w-3.5 h-3.5 text-[#D45B5B]" />
-                <span>Morning-of-Shoot Packing Alert</span>
+      <div className="mb-6">
+        <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93] px-3 block mb-2">
+          Display & Regional
+        </span>
+        <div className="rounded-[28px] bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] divide-y divide-black/[0.06] dark:divide-white/[0.06] overflow-hidden text-xs">
+          {/* 1. Appearance / Dark Mode */}
+          <div className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-black dark:text-white">
+                <Sun className="w-4 h-4" />
               </div>
-              <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                Automatically alerts the photographer on the morning of a booked shoot to inspect
-                and finalize their packing list.
-              </p>
+              <div>
+                <div className="font-normal text-black dark:text-white">Appearance</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">Theme mode</div>
+              </div>
             </div>
 
-            <label className="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
+            <div className="flex items-center bg-[#EBEBEB] dark:bg-[#1E1E1E] p-1 rounded-full">
+              {(['system', 'light', 'dark'] as ThemeMode[]).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => handleThemeChange(mode)}
+                  className={`px-3 py-1 min-h-[30px] rounded-full text-xs font-medium capitalize transition-all cursor-pointer ${
+                    (settings.theme || 'system') === mode
+                      ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                      : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+                  }`}
+                >
+                  {mode}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 2. Temperature Unit */}
+          <div className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-black dark:text-white">
+                <Thermometer className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-normal text-black dark:text-white">Temperature Unit</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">Forecast units</div>
+              </div>
+            </div>
+
+            <div className="flex items-center bg-[#EBEBEB] dark:bg-[#1E1E1E] p-1 rounded-full">
+              <button
+                type="button"
+                onClick={() => handleTempUnitChange('C')}
+                className={`px-3 py-1 min-h-[30px] rounded-full text-xs font-medium transition-all cursor-pointer ${
+                  (settings.tempUnit || 'C') === 'C'
+                    ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                    : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+                }`}
+              >
+                °C
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTempUnitChange('F')}
+                className={`px-3 py-1 min-h-[30px] rounded-full text-xs font-medium transition-all cursor-pointer ${
+                  settings.tempUnit === 'F'
+                    ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                    : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+                }`}
+              >
+                °F
+              </button>
+            </div>
+          </div>
+
+          {/* 3. Time Format (Requirement 3: strictly respects 24h / 12h) */}
+          <div className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-black dark:text-white">
+                <Clock className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-normal text-black dark:text-white">Time Format</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">Golden hour & shoot time display</div>
+              </div>
+            </div>
+
+            <div className="flex items-center bg-[#EBEBEB] dark:bg-[#1E1E1E] p-1 rounded-full">
+              <button
+                type="button"
+                onClick={() => handleTimeFormatChange('24h')}
+                className={`px-3 py-1 min-h-[30px] rounded-full text-xs font-medium transition-all cursor-pointer ${
+                  (settings.timeFormat || '24h') === '24h'
+                    ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                    : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+                }`}
+              >
+                24h
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTimeFormatChange('12h')}
+                className={`px-3 py-1 min-h-[30px] rounded-full text-xs font-medium transition-all cursor-pointer ${
+                  settings.timeFormat === '12h'
+                    ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                    : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+                }`}
+              >
+                12h
+              </button>
+            </div>
+          </div>
+
+          {/* 4. Date Format */}
+          <div className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-black dark:text-white">
+                <Calendar className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-normal text-black dark:text-white">Date Format</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">Booking schedule format</div>
+              </div>
+            </div>
+
+            <div className="flex items-center bg-[#EBEBEB] dark:bg-[#1E1E1E] p-1 rounded-full">
+              {(['dd/mm/yyyy', 'mm/dd/yyyy', 'yyyy-mm-dd'] as DateFormat[]).map((fmt) => (
+                <button
+                  key={fmt}
+                  type="button"
+                  onClick={() => handleDateFormatChange(fmt)}
+                  className={`px-2.5 py-1 min-h-[30px] rounded-full text-[11px] font-mono transition-all cursor-pointer ${
+                    (settings.dateFormat || 'dd/mm/yyyy') === fmt
+                      ? 'bg-[#FFFFFF] dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                      : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+                  }`}
+                >
+                  {fmt === 'dd/mm/yyyy' ? 'dd/mm' : fmt === 'mm/dd/yyyy' ? 'mm/dd' : 'yyyy'}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* SECTION 2: ALERTS (Pulsar Card) */}
+      {/* ========================================================================= */}
+      <div className="mb-6">
+        <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93] px-3 block mb-2">
+          Alerts & Reminders
+        </span>
+        <div className="rounded-[28px] bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] divide-y divide-black/[0.06] dark:divide-white/[0.06] overflow-hidden text-xs">
+          {/* 1. Morning Packing Alert Toggle */}
+          <div className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-black dark:text-white">
+                <Bell className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-normal text-black dark:text-white">Morning-of-Shoot Alert</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">Trigger gear check on shoot day</div>
+              </div>
+            </div>
+
+            <label className="relative inline-flex items-center cursor-pointer shrink-0">
               <input
                 id="toggle-morning-alerts"
                 type="checkbox"
                 checked={settings.enableMorningAlerts}
-                onChange={(e) =>
-                  onUpdateSettings({ ...settings, enableMorningAlerts: e.target.checked })
-                }
+                onChange={(e) => {
+                  onUpdateSettings({ ...settings, enableMorningAlerts: e.target.checked });
+                  triggerSavedToast();
+                }}
                 className="sr-only peer"
               />
-              <div className="w-10 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-4.5 after:w-4.5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#F29191] peer-checked:to-[#F7ADAD]" />
+              <div className="w-11 h-6 bg-[#EBEBEB] dark:bg-[#1E1E1E] peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-black/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF2D20]" />
             </label>
           </div>
 
-          {/* Time Picker & Presets */}
-          <div className="pt-2.5 border-t border-slate-200 flex items-center justify-between gap-2">
-            <span className="text-[11px] text-slate-500 font-medium">Trigger Time:</span>
-            <div className="flex items-center gap-1.5">
-              {['05:30', '06:00', '07:00'].map((preset) => (
-                <button
-                  key={preset}
-                  type="button"
-                  onClick={() => handleMorningTimeChange(preset)}
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-mono font-bold transition-all ${
-                    morningTime === preset
-                      ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-                  }`}
-                >
-                  {preset}
-                </button>
-              ))}
-              <input
-                id="input-morning-time"
-                type="time"
-                value={morningTime}
-                onChange={(e) => handleMorningTimeChange(e.target.value)}
-                className="bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-xs text-slate-900 focus:outline-none focus:border-[#F29191] font-mono"
-              />
+          {/* 2. Trigger Time Selector (Requirement 3: strictly respects 24h / 12h format everywhere) */}
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-black dark:text-white">
+                  <Clock className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-normal text-black dark:text-white">Trigger Time</div>
+                  <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">
+                    Active: <strong className="font-mono text-black dark:text-white">{formatTriggerTimeDisplay(morningTime)}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Presets formatted according to 12h/24h setting */}
+            <div className="grid grid-cols-4 gap-1.5 pt-1">
+              {timePresets.map(({ value, label }) => {
+                const isSelected = morningTime === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => handleMorningTimeSelect(value)}
+                    className={`py-2 px-1 min-h-[36px] rounded-full text-center font-mono text-xs transition-all cursor-pointer active:scale-[0.97] ${
+                      isSelected
+                        ? 'bg-[#FF2D20] text-white font-medium shadow-xs'
+                        : 'bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </div>
 
-        {/* 2. Conditional 2-Hour Critical Alert Setting */}
-        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-rose-700">
-                <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
-                <span>2-Hour Missing Gear Critical Alarm</span>
+          {/* 3. 2-Hour Critical Alarm Toggle */}
+          <div className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-[#FF2D20]">
+                <AlertTriangle className="w-4 h-4 text-[#FF2D20]" />
               </div>
-              <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                If a shoot begins in 2 hours and items on the packing list are still marked as
-                &quot;Needed&quot; or &quot;Missing&quot; (not &quot;Packed&quot;), triggers a
-                high-priority emergency alert.
-              </p>
+              <div>
+                <div className="font-normal text-black dark:text-white">2-Hour Missing Gear Alarm</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">Urgent alarm if items remain unpacked</div>
+              </div>
             </div>
 
-            <label className="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
+            <label className="relative inline-flex items-center cursor-pointer shrink-0">
               <input
                 id="toggle-two-hour-alert"
                 type="checkbox"
                 checked={settings.enableTwoHourCriticalAlert}
-                onChange={(e) =>
+                onChange={(e) => {
                   onUpdateSettings({
                     ...settings,
                     enableTwoHourCriticalAlert: e.target.checked,
-                  })
-                }
+                  });
+                  triggerSavedToast();
+                }}
                 className="sr-only peer"
               />
-              <div className="w-10 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-4.5 after:w-4.5 after:transition-all peer-checked:bg-rose-500" />
+              <div className="w-11 h-6 bg-[#EBEBEB] dark:bg-[#1E1E1E] peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-black/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF2D20]" />
             </label>
           </div>
-        </div>
 
-        {/* 3. Push Notification Permission & Sound */}
-        <div className="grid grid-cols-2 gap-2.5 pt-1">
-          <button
-            id="btn-request-notifications"
-            onClick={requestNotificationPermission}
-            className="p-3.5 rounded-2xl bg-white border border-slate-200 text-left hover:border-slate-300 transition-colors flex flex-col justify-between shadow-xs"
-          >
-            <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold">
-              <Smartphone className="w-4 h-4 text-[#D45B5B]" />
-              <span>Push Alerts</span>
+          {/* 4. Alert Sound Effects */}
+          <div className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-black dark:text-white">
+                {settings.soundEnabled ? (
+                  <Volume2 className="w-4 h-4 text-black dark:text-white" />
+                ) : (
+                  <VolumeX className="w-4 h-4 text-[#8E8E93]" />
+                )}
+              </div>
+              <div>
+                <div className="font-normal text-black dark:text-white">Sound Effects</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">Alert chimes & packing clicks</div>
+              </div>
             </div>
-            <span className="text-[10px] text-slate-500 mt-2">
-              Status:{' '}
-              <strong
-                className={
-                  browserPermState === 'granted'
-                    ? 'text-emerald-600'
-                    : browserPermState === 'denied'
-                    ? 'text-rose-600'
-                    : 'text-[#D45B5B]'
-                }
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => playAlertChime('morning')}
+                className="text-[11px] font-mono text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white px-3 py-1 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] cursor-pointer"
               >
-                {browserPermState}
-              </strong>
-            </span>
-          </button>
+                Test
+              </button>
+              <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                <input
+                  id="toggle-sound"
+                  type="checkbox"
+                  checked={settings.soundEnabled}
+                  onChange={(e) => {
+                    onUpdateSettings({ ...settings, soundEnabled: e.target.checked });
+                    triggerSavedToast();
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-[#EBEBEB] dark:bg-[#1E1E1E] peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-black/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF2D20]" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <button
-            onClick={() => {
-              const nextVal = !settings.soundEnabled;
-              onUpdateSettings({ ...settings, soundEnabled: nextVal });
-              if (nextVal) playAlertChime('shutter');
-            }}
-            className="p-3.5 rounded-2xl bg-white border border-slate-200 text-left hover:border-slate-300 transition-colors flex flex-col justify-between shadow-xs"
-          >
-            <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold">
-              {settings.soundEnabled ? (
-                <Volume2 className="w-4 h-4 text-emerald-600" />
-              ) : (
-                <VolumeX className="w-4 h-4 text-slate-400" />
+      {/* ========================================================================= */}
+      {/* SECTION 3: ACCOUNT & DATA (Pulsar Card) */}
+      {/* ========================================================================= */}
+      <div className="mb-6">
+        <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93] px-3 block mb-2">
+          Account & Studio
+        </span>
+        <div className="rounded-[28px] bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] divide-y divide-black/[0.06] dark:divide-white/[0.06] overflow-hidden text-xs">
+          {/* Profile Photo (Requirement 7: avatar gets 20px radius, no borders) */}
+          <div className="p-4 flex items-center justify-between">
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handlePhotoSelect}
+            />
+            <div className="flex items-center gap-3">
+              <div className="relative w-14 h-14 rounded-[20px] bg-[#EBEBEB] dark:bg-[#1E1E1E] text-black dark:text-white flex items-center justify-center font-mono font-medium text-sm shadow-xs overflow-hidden shrink-0">
+                {user?.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={photographerName || 'Profile'}
+                    className="w-full h-full object-cover rounded-[20px]"
+                  />
+                ) : (
+                  <span>{(photographerName || user?.name || 'Photographer').slice(0, 2).toUpperCase()}</span>
+                )}
+                {isProcessingPhoto && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <Loader2 className="w-5 h-5 text-white animate-spin" />
+                  </div>
+                )}
+              </div>
+              <div>
+                <div className="font-normal text-black dark:text-white">Profile Photo</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">
+                  {user?.avatarUrl ? 'Photo active' : 'Initial fallback active'}
+                </div>
+                {photoError && (
+                  <div className="text-[10px] text-[#FF2D20] mt-0.5">{photoError}</div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => photoInputRef.current?.click()}
+                disabled={isProcessingPhoto}
+                className="px-3.5 py-1.5 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] hover:bg-[#262626] text-black dark:text-white font-medium text-xs active:scale-[0.97] transition-all cursor-pointer inline-flex items-center gap-1.5"
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>{user?.avatarUrl ? 'Change' : 'Upload'}</span>
+              </button>
+              {user?.avatarUrl && (
+                <button
+                  type="button"
+                  onClick={handleRemovePhoto}
+                  disabled={isProcessingPhoto}
+                  className="px-3 py-1.5 rounded-full bg-rose-500/10 hover:bg-rose-500/20 text-[#FF2D20] font-medium text-xs active:scale-[0.97] transition-all cursor-pointer"
+                  title="Remove photo"
+                >
+                  Remove
+                </button>
               )}
-              <span>Audio Chimes</span>
             </div>
-            <span className="text-[10px] text-slate-500 mt-2">
-              {settings.soundEnabled ? 'Enabled (Shutter)' : 'Muted'}
-            </span>
-          </button>
-        </div>
-
-        {/* 4. Live Simulation Trigger Sandbox */}
-        <div className="pt-3 border-t border-slate-100">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2 font-mono">
-            Automation Test Triggers (Instant Simulation)
-          </span>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              id="btn-simulate-morning-alert"
-              onClick={() => {
-                onTriggerSimulatedAlert('morning_review');
-                if (settings.soundEnabled) playAlertChime('shutter');
-              }}
-              className="p-3 rounded-2xl bg-[#FFF0F0] hover:bg-[#FFE5E5] text-[#8B2020] border border-[#F7ADAD]/60 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
-            >
-              <Bell className="w-3.5 h-3.5 text-[#D45B5B]" />
-              <span>Test 6:00 AM Alert</span>
-            </button>
-
-            <button
-              id="btn-simulate-critical-alert"
-              onClick={() => {
-                onTriggerSimulatedAlert('two_hour_critical');
-                if (settings.soundEnabled) playAlertChime('critical');
-              }}
-              className="p-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
-            >
-              <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
-              <span>Test 2-Hr Missing</span>
-            </button>
           </div>
-        </div>
-      </div>
 
-      {/* ========================================================================= */}
-      {/* SECTION 2: AUTHENTICATED ACCOUNT & ACCESS */}
-      {/* ========================================================================= */}
-      <div className="rounded-3xl bright-card p-5 space-y-4 shadow-xs">
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
-          <div className="flex items-center gap-2">
-            <User className="w-4 h-4 text-[#D45B5B]" />
-            <h3 className="text-sm font-bold text-slate-900 font-display">
-              Authenticated Account
-            </h3>
-          </div>
-          {user?.provider === 'google' && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-              <svg className="w-3 h-3" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
-                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-              </svg>
-              <span>Google Account</span>
-            </span>
-          )}
-          {user?.provider === 'apple' && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-900 text-white border border-slate-700">
-              <Apple className="w-3 h-3 fill-current" />
-              <span>Apple ID</span>
-            </span>
-          )}
-          {user?.provider === 'email' && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
-              <Mail className="w-3 h-3" />
-              <span>Email Verified</span>
-            </span>
-          )}
-        </div>
-
-        {user ? (
-          <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-50 border border-slate-200/80">
-            {user.avatarUrl ? (
-              <img
-                src={user.avatarUrl}
-                alt={user.name}
-                className="w-12 h-12 rounded-full object-cover border border-slate-200 shrink-0"
+          {/* Profile Name & Studio Editor */}
+          <form onSubmit={handleSaveProfile} className="p-4 space-y-3">
+            <div>
+              <label className="block text-[11px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93] mb-1">
+                Photographer Name
+              </label>
+              <input
+                id="input-photographer-name"
+                type="text"
+                value={photographerName}
+                onChange={(e) => setPhotographerName(e.target.value)}
+                placeholder="Your name"
+                className="w-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-full px-3.5 py-2 text-xs text-black dark:text-white focus:outline-none focus:border-[#FF2D20]"
               />
-            ) : (
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F29191] to-[#F7ADAD] text-white flex items-center justify-center font-bold text-sm shrink-0">
-                {user.name.charAt(0).toUpperCase()}
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93] mb-1">
+                Studio Name
+              </label>
+              <input
+                id="input-studio-name"
+                type="text"
+                value={studioName}
+                onChange={(e) => setStudioName(e.target.value)}
+                placeholder="Studio name"
+                className="w-full bg-[#EBEBEB] dark:bg-[#1E1E1E] border border-black/[0.08] dark:border-white/[0.08] rounded-full px-3.5 py-2 text-xs text-black dark:text-white focus:outline-none focus:border-[#FF2D20]"
+              />
+            </div>
+
+            <div className="pt-1 flex justify-end">
+              <button
+                type="submit"
+                className="min-h-[36px] px-5 rounded-full bg-black dark:bg-[#3A3A3C] text-white text-xs font-medium active:scale-[0.97] transition-all cursor-pointer"
+              >
+                Save Profile
+              </button>
+            </div>
+          </form>
+
+          {/* User Identity info */}
+          {user && (
+            <div className="p-4 flex items-center justify-between">
+              <div>
+                <div className="font-normal text-black dark:text-white">{user.email}</div>
+                <div className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93] capitalize">
+                  Auth via {user.provider}
+                </div>
               </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <h4 className="text-xs font-extrabold text-slate-900 truncate">
-                {user.name}
-              </h4>
-              <p className="text-[11px] text-slate-500 truncate">
-                {user.email}
-              </p>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-[10px] text-slate-400">Role:</span>
-                <span className="text-[10px] font-medium text-slate-700 truncate">
-                  {user.role || 'Pro Photographer'}
-                </span>
-              </div>
+              <span className="text-[10px] font-mono bg-[#EBEBEB] dark:bg-[#1E1E1E] px-2.5 py-0.5 rounded-full text-[#6E6E73] dark:text-[#8E8E93]">
+                Connected
+              </span>
+            </div>
+          )}
+
+          {/* Reset All Data Button (Requirement 4) */}
+          <div className="p-3">
+            <button
+              type="button"
+              id="btn-settings-reset-data"
+              onClick={() => setShowResetDataConfirm(true)}
+              className="w-full min-h-[44px] py-2.5 px-4 rounded-full text-[#FFD60A] hover:bg-black/5 dark:hover:bg-white/5 font-medium text-xs flex items-center justify-center gap-2 active:scale-[0.97] transition-all cursor-pointer font-mono"
+            >
+              <RotateCcw className="w-4 h-4" />
+              <span>RESET ALL DATA</span>
+            </button>
+          </div>
+
+          {/* Sign Out Button */}
+          {onLogout && (
+            <div className="p-3">
+              <button
+                type="button"
+                id="btn-settings-signout"
+                onClick={() => setShowSignOutConfirm(true)}
+                className="w-full min-h-[44px] py-2.5 px-4 rounded-full text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 font-medium text-xs flex items-center justify-center gap-2 active:scale-[0.97] transition-all cursor-pointer font-mono"
+              >
+                <LogOut className="w-4 h-4 text-[#8E8E93]" />
+                <span>SIGN OUT</span>
+              </button>
+            </div>
+          )}
+
+          {/* Delete Account & Data Button */}
+          <div className="p-3">
+            <button
+              type="button"
+              id="btn-settings-delete-account"
+              onClick={() => setShowDeleteDataConfirm(true)}
+              className="w-full min-h-[44px] py-2.5 px-4 rounded-full text-[#FF2D20] hover:bg-rose-500/10 font-medium text-xs flex items-center justify-center gap-2 active:scale-[0.97] transition-all cursor-pointer font-mono"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>DELETE ACCOUNT & DATA</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* SECTION 4: ABOUT (Pulsar Card) */}
+      {/* ========================================================================= */}
+      <div className="mb-6">
+        <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93] px-3 block mb-2">
+          About
+        </span>
+        <div className="rounded-[28px] bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] divide-y divide-black/[0.06] dark:divide-white/[0.06] overflow-hidden text-xs">
+          {/* App Version */}
+          <div className="p-4 flex items-center justify-between">
+            <div className="font-normal text-black dark:text-white">App Version</div>
+            <span className="font-mono text-[#6E6E73] dark:text-[#8E8E93]">1.2.0 (Build 42)</span>
+          </div>
+
+          {/* Privacy Policy */}
+          <button
+            type="button"
+            onClick={() => setShowPrivacyPolicy(true)}
+            className="w-full p-4 flex items-center justify-between text-left hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <Shield className="w-4 h-4 text-[#8E8E93]" />
+              <span className="font-normal text-black dark:text-white">Privacy Policy</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#8E8E93]" />
+          </button>
+
+          {/* Support Link */}
+          <button
+            type="button"
+            onClick={() => setShowTerms(true)}
+            className="w-full p-4 flex items-center justify-between text-left hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <HelpCircle className="w-4 h-4 text-[#8E8E93]" />
+              <span className="font-normal text-black dark:text-white">Support & Feedback</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#8E8E93]" />
+          </button>
+        </div>
+      </div>
+
+      {/* Confirmation Dialog: Sign Out */}
+      {showSignOutConfirm && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="w-full max-w-sm bg-[#FFFFFF] dark:bg-[#121212] rounded-[28px] p-6 border border-black/[0.08] dark:border-white/[0.08] shadow-2xl text-center">
+            <h3 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">
+              Sign Out?
+            </h3>
+            <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] mt-1 mb-5">
+              Are you sure you want to sign out of your account?
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setShowSignOutConfirm(false)}
+                className="min-h-[44px] py-2.5 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-black dark:text-white text-xs font-medium active:scale-[0.97] cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowSignOutConfirm(false);
+                  if (onLogout) onLogout();
+                }}
+                className="min-h-[44px] py-2.5 rounded-full bg-black dark:bg-[#3A3A3C] text-white text-xs font-medium active:scale-[0.97] cursor-pointer"
+              >
+                Sign Out
+              </button>
             </div>
           </div>
-        ) : (
-          <div className="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
-            Using guest vault profile. Sign in with Google or Apple to sync shoots across devices.
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 gap-2 pt-1">
-          {onSwitchAccount && (
-            <button
-              id="btn-settings-switch-account"
-              type="button"
-              onClick={onSwitchAccount}
-              className="py-2.5 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Switch Account</span>
-            </button>
-          )}
-          {onLogout && (
-            <button
-              id="btn-settings-sign-out"
-              type="button"
-              onClick={onLogout}
-              className="py-2.5 px-3 rounded-xl border border-rose-200 hover:bg-rose-50 text-rose-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>Sign Out</span>
-            </button>
-          )}
         </div>
-      </div>
+      )}
 
-      {/* ========================================================================= */}
-      {/* SECTION 3: PHOTOGRAPHER & STUDIO PROFILE */}
-      {/* ========================================================================= */}
-      <form
-        onSubmit={handleSaveProfile}
-        className="rounded-3xl bright-card p-5 space-y-4 shadow-xs"
-      >
-        <div className="flex items-center gap-2 pb-2.5 border-b border-slate-100">
-          <Camera className="w-4 h-4 text-[#D45B5B]" />
-          <h3 className="text-sm font-bold text-slate-900 font-display">Photographer Profile</h3>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-bold text-slate-600 mb-1">
-              Photographer Name
-            </label>
-            <input
-              id="settings-input-photographer-name"
-              type="text"
-              value={photographerName}
-              onChange={(e) => setPhotographerName(e.target.value)}
-              placeholder="e.g., Alex Rivera"
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#F29191]"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-slate-600 mb-1">
-              Studio / Brand Name
-            </label>
-            <input
-              id="settings-input-studio-name"
-              type="text"
-              value={studioName}
-              onChange={(e) => setStudioName(e.target.value)}
-              placeholder="e.g., Lumina Studios"
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#F29191]"
-            />
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-3 rounded-full bg-gradient-to-r from-[#F29191] to-[#F7ADAD] hover:brightness-105 text-white text-xs font-extrabold active:scale-95 transition-all shadow-md shadow-[#F29191]/30"
-        >
-          Save Profile Details
-        </button>
-      </form>
-
-      {/* ========================================================================= */}
-      {/* SECTION 3: IOS MOBILE APP INSTALLATION */}
-      {/* ========================================================================= */}
-      <div className="rounded-3xl bright-card p-5 space-y-3.5 shadow-xs">
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
-          <div className="flex items-center gap-2">
-            <Smartphone className="w-4 h-4 text-[#D45B5B]" />
-            <h3 className="text-sm font-bold text-slate-900 font-display">
-              Download for iOS
+      {/* Confirmation Dialog: Reset All Data (Requirement 4) */}
+      {showResetDataConfirm && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-sm bg-[#FFFFFF] dark:bg-[#121212] rounded-[28px] p-6 border border-black/[0.08] dark:border-white/[0.08] shadow-2xl text-center">
+            <div className="w-10 h-10 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FFD60A] flex items-center justify-center mx-auto mb-3">
+              <RotateCcw className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">
+              Reset All Data?
             </h3>
+            <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] mt-1 mb-5 leading-relaxed">
+              This will clear all gear inventory, scheduled shoots, packing checklists, moodboards, and saved locations. Your account profile and login will be preserved.
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setShowResetDataConfirm(false)}
+                className="min-h-[44px] py-2.5 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-black dark:text-white text-xs font-medium active:scale-[0.97] cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                id="btn-confirm-reset-all"
+                onClick={handlePerformResetData}
+                className="min-h-[44px] py-2.5 rounded-full bg-[#FFD60A] hover:bg-[#E5C009] text-black text-xs font-medium active:scale-[0.97] cursor-pointer"
+              >
+                Reset All Data
+              </button>
+            </div>
           </div>
-          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#CCFBFA] text-[#0F4E50] border border-[#B1E5E6]">
-            iPhone & iPad
-          </span>
         </div>
+      )}
 
-        <p className="text-xs text-slate-500 leading-relaxed">
-          Install the full standalone version on your iPhone home screen with offline gear caching, full-screen viewport, and high-performance camera tools.
-        </p>
-
-        <button
-          id="btn-settings-open-ios-modal"
-          onClick={() => setIsIOSModalOpen(true)}
-          className="w-full py-3 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold active:scale-95 transition-all shadow-md flex items-center justify-center gap-2"
-        >
-          <Smartphone className="w-4 h-4 text-[#F29191]" />
-          <span>Open iOS Download & Installation Guide</span>
-        </button>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* SECTION 4: DATA MANAGEMENT & BACKUP */}
-      {/* ========================================================================= */}
-      <div className="rounded-3xl bright-card p-5 space-y-3.5 shadow-xs">
-        <h3 className="text-sm font-bold text-slate-900 pb-2.5 border-b border-slate-100 font-display">
-          Data & Backup
-        </h3>
-
-        <div className="grid grid-cols-2 gap-2.5">
-          <button
-            onClick={handleExportJSON}
-            className="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-slate-100 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
-          >
-            <Download className="w-3.5 h-3.5 text-[#D45B5B]" />
-            <span>Export JSON Backup</span>
-          </button>
-
-          <button
-            onClick={() => {
-              if (
-                confirm(
-                  'Reset all gear, shoots, and moodboards back to initial demo data?'
-                )
-              ) {
-                onResetData();
-              }
-            }}
-            className="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-500 hover:text-rose-600 hover:bg-rose-50 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset Demo Data</span>
-          </button>
+      {/* Confirmation Dialog: Delete Account & Data */}
+      {showDeleteDataConfirm && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="w-full max-w-sm bg-[#FFFFFF] dark:bg-[#121212] rounded-[28px] p-6 border border-black/[0.08] dark:border-white/[0.08] shadow-2xl text-center">
+            <div className="w-10 h-10 rounded-full bg-rose-500/10 text-[#FF2D20] flex items-center justify-center mx-auto mb-3">
+              <Trash2 className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">
+              Delete Account & All Data?
+            </h3>
+            <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] mt-1 mb-5 leading-relaxed">
+              This will permanently delete your photographer profile, gear vault inventory, scheduled shoots, packing checklists, and moodboard items. This action cannot be undone.
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setShowDeleteDataConfirm(false)}
+                className="min-h-[44px] py-2.5 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-black dark:text-white text-xs font-medium active:scale-[0.97] cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                id="btn-confirm-delete-forever"
+                onClick={handlePerformDeleteAll}
+                className="min-h-[44px] py-2.5 rounded-full bg-[#FF2D20] hover:bg-[#E02619] text-white text-xs font-medium active:scale-[0.97] cursor-pointer"
+              >
+                Delete Forever
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* iOS Download Modal */}
-      <IOSDownloadModal
-        isOpen={isIOSModalOpen}
-        onClose={() => setIsIOSModalOpen(false)}
-      />
+      {/* Privacy Policy Modal */}
+      {showPrivacyPolicy && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="w-full max-w-lg bg-[#FFFFFF] dark:bg-[#121212] rounded-t-[28px] sm:rounded-[28px] border border-black/[0.08] dark:border-white/[0.08] p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">Privacy Policy</h2>
+              <button
+                onClick={() => setShowPrivacyPolicy(false)}
+                className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-[#8E8E93] hover:text-black dark:hover:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-3 text-xs text-[#6E6E73] dark:text-[#8E8E93] leading-relaxed">
+              <p>
+                <strong className="text-black dark:text-white font-medium">Lightbag</strong> values your privacy. Your data, equipment inventory, serial numbers, photoshoot bookings, and moodboard assets are stored on your device or linked account.
+              </p>
+              <p>
+                <strong className="text-black dark:text-white font-medium">Weather and Sun Times:</strong> Solar calculations are computed via mathematical algorithms on your device. Weather requests use Open-Meteo with no personal information or tracking.
+              </p>
+              <p>
+                <strong className="text-black dark:text-white font-medium">Camera EXIF Data:</strong> Metadata extracted from camera files is parsed locally to verify shutter counts and lens specifications. No camera images are transmitted to external servers.
+              </p>
+              <p>
+                <strong className="text-black dark:text-white font-medium">Data Deletion:</strong> You have full control to export or permanently delete your account and all associated data at any time via Settings.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Support Modal */}
+      {showTerms && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="w-full max-w-lg bg-[#FFFFFF] dark:bg-[#121212] rounded-t-[28px] sm:rounded-[28px] border border-black/[0.08] dark:border-white/[0.08] p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">Support & Feedback</h2>
+              <button
+                onClick={() => setShowTerms(false)}
+                className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] flex items-center justify-center text-[#8E8E93] hover:text-black dark:hover:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-3 text-xs text-[#6E6E73] dark:text-[#8E8E93] leading-relaxed">
+              <p>
+                Need assistance with your gear vault, shoot scheduler, or solar golden hour calculations?
+              </p>
+              <p>
+                Contact developer support at: <strong className="text-black dark:text-white font-mono">support@photogearvault.app</strong>
+              </p>
+              <p>
+                Version 1.2.0 • Capacitor iOS native build.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

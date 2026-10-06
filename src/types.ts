@@ -107,7 +107,16 @@ export interface AlertNotification {
   priority: 'normal' | 'high' | 'critical';
 }
 
-export type AuthProvider = 'google' | 'apple' | 'email';
+export type AuthProvider = 'github' | 'google' | 'apple' | 'email';
+
+export interface GitHubSyncMetadata {
+  gistId?: string;
+  gistUrl?: string;
+  rawUrl?: string;
+  lastSyncedAt?: string;
+  lastCommitSha?: string;
+  autoSyncEnabled?: boolean;
+}
 
 export interface UserProfile {
   id: string;
@@ -117,8 +126,27 @@ export interface UserProfile {
   provider: AuthProvider;
   role?: string;
   studioName?: string;
+  githubUsername?: string;
+  githubToken?: string;
+  githubSync?: GitHubSyncMetadata;
   createdAt: string;
   lastLoginAt: string;
+}
+
+export interface VaultBackupPayload {
+  version: string;
+  exportedAt: string;
+  photographer: {
+    name: string;
+    studioName?: string;
+    email: string;
+    githubUsername?: string;
+  };
+  gear: GearItem[];
+  shoots: Shoot[];
+  packing: PackingItem[];
+  moodboards: MoodboardItem[];
+  settings: AppSettings;
 }
 
 export interface AuthState {
@@ -127,16 +155,27 @@ export interface AuthState {
   isLoading: boolean;
 }
 
+export type ThemeMode = 'light' | 'dark' | 'system';
+export type TempUnit = 'C' | 'F';
+export type TimeFormat = '24h' | '12h';
+export type DateFormat = 'dd/mm/yyyy' | 'mm/dd/yyyy' | 'yyyy-mm-dd';
+
 export interface AppSettings {
+  theme?: ThemeMode;
+  tempUnit?: TempUnit;
+  timeFormat?: TimeFormat;
+  dateFormat?: DateFormat;
   morningAlertTime: string; // e.g. "06:00"
   enableMorningAlerts: boolean;
   enableTwoHourCriticalAlert: boolean;
   photographerName: string;
   studioName: string;
   soundEnabled: boolean;
+  selectedCity?: string;
+  enableGitHubAutoSync?: boolean;
 }
 
-export type NavigationTab = 'dashboard' | 'calendar' | 'weather' | 'gear_vault' | 'settings';
+export type NavigationTab = 'dashboard' | 'calendar' | 'weather' | 'gear_vault' | 'moodboards' | 'settings';
 
 export type WeatherConditionCode = 'sunny' | 'partly-cloudy' | 'cloudy' | 'rain' | 'windy' | 'fog';
 

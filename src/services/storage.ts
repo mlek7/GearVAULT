@@ -12,6 +12,10 @@ import {
   INITIAL_PACKING,
   INITIAL_MOODBOARDS,
   INITIAL_SETTINGS,
+  SEED_GEAR_IDS,
+  SEED_SHOOT_IDS,
+  SEED_PACKING_IDS,
+  SEED_MOODBOARD_IDS,
 } from '../data/initialData';
 
 const STORAGE_KEYS = {
@@ -21,7 +25,72 @@ const STORAGE_KEYS = {
   MOODBOARDS: 'shutterhub_moodboards',
   SETTINGS: 'shutterhub_settings',
   NOTIFICATIONS: 'shutterhub_notifications',
+  AUTH_USER: 'shutterhub_auth_user',
+  CLEANUP_DONE: 'shutterhub_seed_cleanup_done_v2',
 };
+
+// One-time cleanup that removes demo/seed data matching seed IDs without touching user items (Requirement 4)
+export function runSeedDataCleanup(): void {
+  try {
+    if (localStorage.getItem(STORAGE_KEYS.CLEANUP_DONE)) return;
+
+    // Clean gear: keep only user items
+    const rawGear = localStorage.getItem(STORAGE_KEYS.GEAR);
+    if (rawGear) {
+      const parsed = JSON.parse(rawGear) as GearItem[];
+      const cleaned = parsed.filter((g) => !SEED_GEAR_IDS.has(g.id));
+      localStorage.setItem(STORAGE_KEYS.GEAR, JSON.stringify(cleaned));
+    }
+
+    // Clean shoots: keep only user shoots
+    const rawShoots = localStorage.getItem(STORAGE_KEYS.SHOOTS);
+    if (rawShoots) {
+      const parsed = JSON.parse(rawShoots) as Shoot[];
+      const cleaned = parsed.filter((s) => !SEED_SHOOT_IDS.has(s.id));
+      localStorage.setItem(STORAGE_KEYS.SHOOTS, JSON.stringify(cleaned));
+    }
+
+    // Clean packing: filter out seed gear or seed shoots
+    const rawPacking = localStorage.getItem(STORAGE_KEYS.PACKING);
+    if (rawPacking) {
+      const parsed = JSON.parse(rawPacking) as PackingItem[];
+      const cleaned = parsed.filter(
+        (p) => !SEED_PACKING_IDS.has(p.id) && !SEED_SHOOT_IDS.has(p.shootId) && !SEED_GEAR_IDS.has(p.gearId)
+      );
+      localStorage.setItem(STORAGE_KEYS.PACKING, JSON.stringify(cleaned));
+    }
+
+    // Clean moodboards: filter out seed moodboard items
+    const rawMb = localStorage.getItem(STORAGE_KEYS.MOODBOARDS);
+    if (rawMb) {
+      const parsed = JSON.parse(rawMb) as MoodboardItem[];
+      const cleaned = parsed.filter((m) => !SEED_MOODBOARD_IDS.has(m.id));
+      localStorage.setItem(STORAGE_KEYS.MOODBOARDS, JSON.stringify(cleaned));
+    }
+
+    // Clean settings: reset demo studio name or photographer name
+    const rawSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+    if (rawSettings) {
+      const parsed = JSON.parse(rawSettings) as AppSettings;
+      let changed = false;
+      if (parsed.studioName === 'Lumina Studio SF' || parsed.studioName === 'Photo Studio Vault') {
+        parsed.studioName = '';
+        changed = true;
+      }
+      if (parsed.photographerName === 'Alex Rivera') {
+        parsed.photographerName = '';
+        changed = true;
+      }
+      if (changed) {
+        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(parsed));
+      }
+    }
+
+    localStorage.setItem(STORAGE_KEYS.CLEANUP_DONE, 'true');
+  } catch (err) {
+    console.warn('Silent seed cleanup error:', err);
+  }
+}
 
 // Safe JSON loader
 function loadFromStorage<T>(key: string, fallback: T): T {
@@ -74,7 +143,15 @@ export const StorageService = {
   },
 
   getSettings(): AppSettings {
-    return loadFromStorage<AppSettings>(STORAGE_KEYS.SETTINGS, INITIAL_SETTINGS);
+    const saved = loadFromStorage<AppSettings>(STORAGE_KEYS.SETTINGS, INITIAL_SETTINGS);
+    return {
+      ...INITIAL_SETTINGS,
+      ...saved,
+      tempUnit: saved.tempUnit || 'C',
+      timeFormat: saved.timeFormat || '24h',
+      dateFormat: saved.dateFormat || 'dd/mm/yyyy',
+      theme: saved.theme || 'system',
+    };
   },
   saveSettings(settings: AppSettings): void {
     saveToStorage(STORAGE_KEYS.SETTINGS, settings);
@@ -95,10 +172,24 @@ export const StorageService = {
     saveToStorage(STORAGE_KEYS.SETTINGS, INITIAL_SETTINGS);
     saveToStorage(STORAGE_KEYS.NOTIFICATIONS, []);
   },
+
+  clearAll(): void {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.GEAR);
+      localStorage.removeItem(STORAGE_KEYS.SHOOTS);
+      localStorage.removeItem(STORAGE_KEYS.PACKING);
+      localStorage.removeItem(STORAGE_KEYS.MOODBOARDS);
+      localStorage.removeItem(STORAGE_KEYS.SETTINGS);
+      localStorage.removeItem(STORAGE_KEYS.NOTIFICATIONS);
+      localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+    } catch {
+      // ignore
+    }
+  },
 };
 
 // Subtle Web Audio Sound generator for notifications
-export function playAlertChime(type: 'shutter' | 'critical' | 'success' = 'shutter'): void {
+export function playAlertChime(type: 'shutter' | 'critical' | 'success' | 'morning' = 'shutter'): void {
   try {
     const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (!AudioContextClass) return;

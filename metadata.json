@@ -1,6 +1,6 @@
 {
-  "name": "Photo Gear Vault & Shoot Manager",
-  "description": "Comprehensive mobile app for professional photographers with Google and Apple sign-in to manage gear inventory, schedule photoshoots, organize dynamic packing lists, configure morning alerts, check shoot location weather forecasts with golden hour calculations, and curate moodboards.",
+  "name": "Lightbag",
+  "description": "Lightbag: gear vault, golden hour, packing lists. A mobile app for professional photographers with Google, Apple, and GitHub authentication to manage gear inventory, schedule photoshoots, organize dynamic packing lists, configure morning alerts, check shoot location weather forecasts with golden hour calculations, curate moodboards, and store vault data securely in GitHub cloud storage.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

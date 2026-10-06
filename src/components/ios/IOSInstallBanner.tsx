@@ -34,10 +34,10 @@ export const IOSInstallBanner: React.FC<IOSInstallBannerProps> = ({ variant = 'p
         <button
           id="btn-ios-download-pill"
           onClick={handleAction}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold shadow-xs transition-all active:scale-95 border border-slate-700/50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1E1E1E] hover:bg-[#262626] text-white text-[11px] font-mono transition-all active:scale-[0.97] border border-white/[0.08]"
           title="Download or Install for iOS (iPhone & iPad)"
         >
-          <Smartphone className="w-3.5 h-3.5 text-[#F29191]" />
+          <Smartphone className="w-3.5 h-3.5 text-[#FF2D20]" />
           <span>iOS App</span>
         </button>
 
@@ -50,29 +50,29 @@ export const IOSInstallBanner: React.FC<IOSInstallBannerProps> = ({ variant = 'p
     <>
       <div
         id="ios-install-callout-banner"
-        className="mb-3.5 p-3 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-xs flex items-center justify-between gap-3 border border-slate-700/40"
+        className="mb-3.5 p-3.5 rounded-[20px] bg-[#FFFFFF] dark:bg-[#121212] text-black dark:text-white shadow-xs flex items-center justify-between gap-3 border border-black/[0.08] dark:border-white/[0.08]"
       >
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#F29191] to-[#F7ADAD] text-white flex items-center justify-center shrink-0 shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20] flex items-center justify-center shrink-0">
             <Smartphone className="w-4 h-4" />
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#CCFBFA]">
-                iOS Download Available
+              <span className="text-[10px] font-mono uppercase tracking-[0.08em] text-[#6E6E73] dark:text-[#8E8E93]">
+                iOS App Available
               </span>
             </div>
-            <p className="text-xs font-semibold text-slate-200 truncate">
-              Install Gear Vault onto your iPhone or iPad
+            <p className="text-xs font-normal text-black dark:text-white truncate">
+              Install Lightbag onto your iPhone or iPad
             </p>
           </div>
         </div>
 
         <button
           onClick={handleAction}
-          className="shrink-0 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF3E1] text-[11px] font-bold transition-all border border-white/10 inline-flex items-center gap-1 active:scale-95"
+          className="shrink-0 px-3 py-1.5 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] hover:bg-[#262626] text-black dark:text-white text-[11px] font-mono transition-all border border-black/[0.08] dark:border-white/[0.08] inline-flex items-center gap-1 active:scale-[0.97]"
         >
-          <Download className="w-3 h-3 text-[#F29191]" />
+          <Download className="w-3 h-3 text-[#FF2D20]" />
           <span>Get App</span>
         </button>
       </div>

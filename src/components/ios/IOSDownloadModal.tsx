@@ -50,69 +50,71 @@ export const IOSDownloadModal: React.FC<IOSDownloadModalProps> = ({ isOpen, onCl
   return (
     <div
       id="ios-download-backdrop"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-xs p-0 sm:p-4 animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4 animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
         id="ios-download-modal"
-        className="w-full max-w-lg bg-white border border-slate-200 rounded-t-[36px] sm:rounded-[36px] max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom-6 duration-200"
+        className="w-full max-w-lg bg-[#FFFFFF] dark:bg-[#121212] border border-black/[0.08] dark:border-white/[0.08] rounded-t-[28px] sm:rounded-[28px] max-h-[92vh] flex flex-col overflow-hidden animate-in slide-in-from-bottom-6 duration-200"
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100 bg-slate-50/70">
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-black/[0.08] dark:border-white/[0.08] bg-[#F2F2F2]/60 dark:bg-[#1E1E1E]/40">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#F29191] to-[#F7ADAD] p-0.5 shadow-md shadow-[#F29191]/30 flex items-center justify-center overflow-hidden">
+            <div className="w-10 h-10 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] text-[#FF2D20] p-0.5 flex items-center justify-center overflow-hidden">
               <img
                 src="/apple-touch-icon.png"
                 alt="App Icon"
-                className="w-full h-full rounded-[14px] object-cover"
+                className="w-full h-full rounded-full object-cover"
               />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <h2 className="text-base font-bold text-slate-900 font-display">
+                <h2 className="text-base font-normal tracking-[-0.03em] text-black dark:text-white">
                   Download for iOS
                 </h2>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#CCFBFA] text-[#0F4E50] border border-[#B1E5E6]">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/[0.08] dark:border-white/[0.08]">
                   iPhone & iPad
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500">
-                Photo Gear Vault & Shoot Manager
+              <p className="text-[11px] text-[#6E6E73] dark:text-[#8E8E93]">
+                Lightbag: Gear & Shoot Planner
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="p-2 rounded-full text-[#8E8E93] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Tab Selection */}
-        <div className="px-6 pt-3 pb-2 bg-slate-50/40 border-b border-slate-100 flex gap-2">
-          <button
-            onClick={() => setActiveTab('pwa')}
-            className={`flex-1 py-2 px-3 rounded-2xl text-xs font-bold transition-all text-center ${
-              activeTab === 'pwa'
-                ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-                : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
-            }`}
-          >
-            Instant iPhone Install (PWA)
-          </button>
-          <button
-            onClick={() => setActiveTab('native')}
-            className={`flex-1 py-2 px-3 rounded-2xl text-xs font-bold transition-all text-center ${
-              activeTab === 'native'
-                ? 'bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white shadow-xs'
-                : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
-            }`}
-          >
-            Native Xcode & IPA Build
-          </button>
+        {/* Tab Selection - Pulsar Pill Track */}
+        <div className="px-6 py-2.5 bg-[#F2F2F2] dark:bg-[#121212] border-b border-black/[0.08] dark:border-white/[0.08]">
+          <div className="flex p-1 rounded-full bg-[#EBEBEB] dark:bg-[#1E1E1E] gap-1">
+            <button
+              onClick={() => setActiveTab('pwa')}
+              className={`flex-1 py-1.5 px-3 rounded-full text-xs font-medium transition-all text-center ${
+                activeTab === 'pwa'
+                  ? 'bg-white dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                  : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+              }`}
+            >
+              Instant PWA
+            </button>
+            <button
+              onClick={() => setActiveTab('native')}
+              className={`flex-1 py-1.5 px-3 rounded-full text-xs font-medium transition-all text-center ${
+                activeTab === 'native'
+                  ? 'bg-white dark:bg-[#3A3A3C] text-black dark:text-white shadow-xs'
+                  : 'text-[#6E6E73] dark:text-[#8E8E93] hover:text-black dark:hover:text-white'
+              }`}
+            >
+              Native Build
+            </button>
+          </div>
         </div>
 
         {/* Modal Body */}
@@ -130,7 +132,7 @@ export const IOSDownloadModal: React.FC<IOSDownloadModalProps> = ({ isOpen, onCl
                       Already Installed on iOS
                     </h4>
                     <p className="text-[11px] text-emerald-700">
-                      You are currently running the standalone version of Gear Vault!
+                      You are currently running the standalone version of Lightbag!
                     </p>
                   </div>
                 </div>
@@ -188,7 +190,7 @@ export const IOSDownloadModal: React.FC<IOSDownloadModalProps> = ({ isOpen, onCl
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#D45B5B]">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#FF2D20]">
                       Instant Camera Scan
                     </span>
                     <h4 className="text-sm font-bold text-slate-900 font-display">
@@ -244,19 +246,19 @@ export const IOSDownloadModal: React.FC<IOSDownloadModalProps> = ({ isOpen, onCl
                 </div>
 
                 {/* Step 3 */}
-                <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xs">
-                  <div className="w-8 h-8 rounded-xl bg-[#FFF0F0] text-[#D45B5B] border border-[#F7ADAD] flex items-center justify-center shrink-0">
+                <div className="flex items-start gap-3.5 p-3.5 rounded-[18px] bg-white border border-slate-200 shadow-xs">
+                  <div className="w-8 h-8 rounded-full bg-[#EBEBEB] text-[#FF2D20] border border-black/[0.08] flex items-center justify-center shrink-0">
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#D45B5B] font-mono block">
+                    <span className="text-[10px] uppercase tracking-wider text-[#FF2D20] font-mono block">
                       Step 3
                     </span>
                     <h4 className="text-xs font-bold text-slate-900">
                       Tap &quot;Add&quot; in Top Right
                     </h4>
                     <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                      Confirm the app title <strong>Gear Vault</strong>. The app icon will be pinned directly onto your iPhone home screen!
+                      Confirm the app title <strong>Lightbag</strong>. The app icon will be pinned directly onto your iPhone home screen!
                     </p>
                   </div>
                 </div>
@@ -317,7 +319,7 @@ export const IOSDownloadModal: React.FC<IOSDownloadModalProps> = ({ isOpen, onCl
                     onClick={() =>
                       handleCopyCmd('npm i @capacitor/core @capacitor/cli @capacitor/ios', 'cmd1')
                     }
-                    className="text-[11px] text-[#D45B5B] hover:underline font-bold inline-flex items-center gap-1"
+                    className="text-[11px] text-[#FF2D20] hover:underline font-mono inline-flex items-center gap-1"
                   >
                     {copiedCmd === 'cmd1' ? (
                       <>
@@ -347,7 +349,7 @@ export const IOSDownloadModal: React.FC<IOSDownloadModalProps> = ({ isOpen, onCl
                     onClick={() =>
                       handleCopyCmd('npm run build && npx cap add ios && npx cap sync ios', 'cmd2')
                     }
-                    className="text-[11px] text-[#D45B5B] hover:underline font-bold inline-flex items-center gap-1"
+                    className="text-[11px] text-[#FF2D20] hover:underline font-mono inline-flex items-center gap-1"
                   >
                     {copiedCmd === 'cmd2' ? (
                       <>
@@ -375,7 +377,7 @@ export const IOSDownloadModal: React.FC<IOSDownloadModalProps> = ({ isOpen, onCl
                   </span>
                   <button
                     onClick={() => handleCopyCmd('npx cap open ios', 'cmd3')}
-                    className="text-[11px] text-[#D45B5B] hover:underline font-bold inline-flex items-center gap-1"
+                    className="text-[11px] text-[#FF2D20] hover:underline font-mono inline-flex items-center gap-1"
                   >
                     {copiedCmd === 'cmd3' ? (
                       <>
@@ -425,7 +427,7 @@ export const IOSDownloadModal: React.FC<IOSDownloadModalProps> = ({ isOpen, onCl
           </button>
           <button
             onClick={onClose}
-            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#F29191] to-[#F7ADAD] text-white text-xs font-bold shadow-md shadow-[#F29191]/30 hover:brightness-105 active:scale-95 transition-all"
+            className="px-6 py-2.5 rounded-full bg-[#FF2D20] hover:bg-[#E02619] text-white text-xs font-medium active:scale-[0.97] transition-all"
           >
             Got It
           </button>
